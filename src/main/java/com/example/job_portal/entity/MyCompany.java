@@ -1,6 +1,6 @@
 package com.example.job_portal.entity;
 
-import com.example.job_portal.constant.db.DbConstant;
+import com.example.job_portal.constant.db.DbConstant.DbMyCompany;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = DbConstant.DbCV.TABLE_NAME)
+@Table(name = DbMyCompany.TABLE_NAME)
 public class MyCompany extends AuditInfo{
 
     @ManyToMany(

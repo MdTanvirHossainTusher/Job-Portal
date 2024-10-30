@@ -48,4 +48,9 @@ public class DbConstant {
         public static final String COMPANY_TYPE = "company_type";
         public static final String WORKING_MODE = "working_mode";
     }
+
+    public static class DbMyCompany extends DbCommon {
+        public static final String TABLE_NAME = "tbl_my_company";
+    }
+
 }

@@ -45,5 +45,5 @@ public class Company extends AuditInfo {
             },
             fetch = FetchType.LAZY
     )
-    private List<Company> companies;
+    private List<MyCompany> myCompanies;
 }
