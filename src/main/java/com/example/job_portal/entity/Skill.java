@@ -21,7 +21,7 @@ import java.util.List;
 public class Skill extends AuditInfo {
 
     @Column(name = DbSkill.SKILL_NAME)
-    private String name;
+    private String skillName;
 
     @ManyToMany(mappedBy = "skills")
     private List<Profile> profiles;
