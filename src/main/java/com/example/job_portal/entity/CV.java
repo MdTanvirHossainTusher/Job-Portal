@@ -4,7 +4,6 @@ import com.example.job_portal.constant.db.DbConstant.DbCV;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.ZonedDateTime;
 import java.util.List;
 
 @Setter

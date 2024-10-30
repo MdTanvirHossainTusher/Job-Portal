@@ -1,6 +1,5 @@
 package com.example.job_portal.entity;
 
-import com.example.job_portal.constant.db.DbConstant;
 import com.example.job_portal.constant.db.DbConstant.DbJob;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -51,4 +50,7 @@ public class Job extends AuditInfo {
             fetch = FetchType.LAZY
     )
     private List<Company> companies;
+
+    @ManyToMany(mappedBy = "jobs")
+    private List<Profile> profiles;
 }

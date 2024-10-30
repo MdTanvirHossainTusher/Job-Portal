@@ -29,4 +29,7 @@ public class MyCompany extends AuditInfo{
             inverseJoinColumns = @JoinColumn(name = "company_id")
     )
     private List<Company> companies;
+
+    @ManyToOne
+    private List<Profile> profiles;
 }

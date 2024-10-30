@@ -57,4 +57,9 @@ public class DbConstant {
         public static final String TABLE_NAME = "roles";
         public static final String ROLE = "role";
     }
+
+    public static class DbProfile extends DbCommon {
+        public static final String TABLE_NAME = "profiles";
+        public static final String CV = "my_cv";
+    }
 }
