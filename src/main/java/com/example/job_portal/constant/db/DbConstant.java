@@ -18,4 +18,11 @@ public class DbConstant {
     public static class DbAudit extends DbCommon {
         public static final String TABLE_NAME = "tbl_audit";
     }
+
+    public static class DbUniversity extends DbCommon {
+        public static final String TABLE_NAME = "tbl_university";
+        public static final String UNIVERSITY_NAME = "university_name";
+        public static final String DEGREE = "degree";
+        public static final String PASSING_YEAR = "passing_year";
+    }
 }
