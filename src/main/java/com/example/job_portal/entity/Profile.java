@@ -51,4 +51,7 @@ public class Profile extends AuditInfo {
             inverseJoinColumns = @JoinColumn(name = "my_company_id")
     )
     private List<MyCompany> myCompanies;
+
+    @OneToOne(mappedBy = "profile")
+    private User user;
 }

@@ -15,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = DbMyCompany.TABLE_NAME)
-public class MyCompany extends AuditInfo{
+public class MyCompany extends AuditInfo {
 
     @ManyToMany(
             cascade = {

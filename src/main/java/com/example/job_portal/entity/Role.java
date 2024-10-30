@@ -20,9 +20,15 @@ public class Role extends AuditInfo {
     @Column(name = DbRole.ROLE)
     private String role;
 
-    @ManyToOne(
-            cascade = CascadeType.ALL,
-            fetch = FetchType.EAGER
+    @ManyToMany(
+            mappedBy = "roles",
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE,
+                    CascadeType.DETACH,
+                    CascadeType.REFRESH
+            },
+            fetch = FetchType.LAZY
     )
     private List<User> users;
 }

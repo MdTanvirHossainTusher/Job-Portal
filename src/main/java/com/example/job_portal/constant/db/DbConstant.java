@@ -62,4 +62,12 @@ public class DbConstant {
         public static final String TABLE_NAME = "profiles";
         public static final String CV = "my_cv";
     }
+
+    public static class DbUser extends DbCommon {
+        public static final String TABLE_NAME = "users";
+        public static final String USER_NAME = "name";
+        public static final String USER_EMAIL = "email";
+        public static final String USER_PASSWORD = "password";
+        public static final String TOTAL_EXPERIENCE = "total_experience";
+    }
 }
