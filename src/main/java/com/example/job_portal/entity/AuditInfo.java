@@ -21,7 +21,7 @@ public abstract class AuditInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = DbCommon.ID)
-    private Integer id;
+    private Long id;
 
     @CreationTimestamp
     @Column(name = DbCommon.CREATED_AT, nullable = false, updatable = false)

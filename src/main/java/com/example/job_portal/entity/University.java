@@ -12,6 +12,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = DbUniversity.TABLE_NAME)
 public class University extends AuditInfo {

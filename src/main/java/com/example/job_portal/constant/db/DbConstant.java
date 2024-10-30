@@ -15,10 +15,6 @@ public class DbConstant {
         }
     }
 
-    public static class DbAudit extends DbCommon {
-        public static final String TABLE_NAME = "tbl_audit";
-    }
-
     public static class DbUniversity extends DbCommon {
         public static final String TABLE_NAME = "tbl_university";
         public static final String UNIVERSITY_NAME = "university_name";
@@ -29,5 +25,19 @@ public class DbConstant {
     public static class DbSkill extends DbCommon {
         public static final String TABLE_NAME = "tbl_university";
         public static final String SKILL_NAME = "skill_name";
+    }
+
+    public static class DbCV extends DbCommon {
+        public static final String TABLE_NAME = "tbl_cv";
+        public static final String CV_FORMAT = "cv_format";
+        public static final String CV_SIZE = "cv_size";
+        public static final String CV_URL = "cv_url";
+    }
+
+    public static class DbJob extends DbCommon {
+        public static final String TABLE_NAME = "tbl_job";
+        public static final String JOB_DESCRIPTION = "job_description";
+        public static final String SALARY = "salary";
+        public static final String IS_FRAUDULENT = "is_fraudulent";
     }
 }
