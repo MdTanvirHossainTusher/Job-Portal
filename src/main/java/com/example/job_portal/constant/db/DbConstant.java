@@ -25,4 +25,9 @@ public class DbConstant {
         public static final String DEGREE = "degree";
         public static final String PASSING_YEAR = "passing_year";
     }
+
+    public static class DbSkill extends DbCommon {
+        public static final String TABLE_NAME = "tbl_university";
+        public static final String SKILL_NAME = "skill_name";
+    }
 }
