@@ -40,4 +40,12 @@ public class DbConstant {
         public static final String SALARY = "salary";
         public static final String IS_FRAUDULENT = "is_fraudulent";
     }
+
+    public static class DbCompany extends DbCommon {
+        public static final String TABLE_NAME = "tbl_company";
+        public static final String COMPANY_NAME = "company_name";
+        public static final String COMPANY_LOCATION = "company_location";
+        public static final String COMPANY_TYPE = "company_type";
+        public static final String WORKING_MODE = "working_mode";
+    }
 }

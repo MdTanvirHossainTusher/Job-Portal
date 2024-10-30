@@ -40,4 +40,15 @@ public class Job extends AuditInfo {
             inverseJoinColumns = @JoinColumn(name = "cv_id")
     )
     private List<CV> cvs;
+
+    @ManyToOne(
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE,
+                    CascadeType.DETACH,
+                    CascadeType.REFRESH,
+            },
+            fetch = FetchType.LAZY
+    )
+    private List<Company> companies;
 }

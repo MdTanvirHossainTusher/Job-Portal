@@ -1,12 +1,13 @@
 package com.example.job_portal.entity;
 
 import com.example.job_portal.constant.db.DbConstant;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Setter
 @Getter
@@ -14,5 +15,18 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 @Table(name = DbConstant.DbCV.TABLE_NAME)
-public class MyCompany {
+public class MyCompany extends AuditInfo{
+
+    @ManyToMany(
+            cascade = {
+                    CascadeType.DETACH,
+            },
+            fetch = FetchType.LAZY
+    )
+    @JoinTable(
+            name = "my_company_from_company",
+            joinColumns = @JoinColumn(name = "my_company_id"),
+            inverseJoinColumns = @JoinColumn(name = "company_id")
+    )
+    private List<Company> companies;
 }
