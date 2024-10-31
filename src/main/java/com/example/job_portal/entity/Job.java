@@ -52,5 +52,10 @@ public class Job extends AuditInfo {
     private List<Company> companies;
 
     @ManyToMany(mappedBy = "jobs")
+    @JoinTable(
+            name = "profile_job",
+            joinColumns = @JoinColumn(name = "job_id"),
+            inverseJoinColumns = @JoinColumn(name = "profile_id")
+    )
     private List<Profile> profiles;
 }
