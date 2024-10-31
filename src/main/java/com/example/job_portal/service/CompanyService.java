@@ -1,7 +1,7 @@
 package com.example.job_portal.service;
 
-import org.springframework.stereotype.Service;
+import com.example.job_portal.entity.Company;
 
-@Service
-public class CompanyService {
+public interface CompanyService {
+    void save(Company company);
 }
