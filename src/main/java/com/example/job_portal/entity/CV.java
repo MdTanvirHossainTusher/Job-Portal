@@ -23,7 +23,15 @@ public class CV extends AuditInfo{
     @Column(name = DbCV.CV_URL)
     private String cvUrl;
 
-    @ManyToMany(mappedBy = "cvs", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "cvs",
+            fetch = FetchType.LAZY,
+            cascade = {
+                CascadeType.PERSIST,
+                CascadeType.MERGE,
+                CascadeType.DETACH,
+                CascadeType.REFRESH
+            }
+    )
     private List<Job> jobs;
 
     @OneToOne(mappedBy = "cv")

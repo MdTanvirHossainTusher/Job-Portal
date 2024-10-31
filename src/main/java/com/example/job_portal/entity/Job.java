@@ -27,10 +27,7 @@ public class Job extends AuditInfo {
     private boolean isJobFraudulent;
 
     @ManyToMany(
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE
-            },
+            cascade = CascadeType.ALL,
             fetch = FetchType.LAZY
     )
     @JoinTable(
