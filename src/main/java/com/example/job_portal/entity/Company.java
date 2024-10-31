@@ -39,11 +39,16 @@ public class Company extends AuditInfo {
     private List<Job> jobs;
 
     @ManyToMany(
-            mappedBy = "myCompany",
+            mappedBy = "companies",
             cascade = {
                     CascadeType.ALL
             },
             fetch = FetchType.LAZY
+    )
+    @JoinTable(
+            name = "my_company_from_company",
+            joinColumns = @JoinColumn(name = "company_id"),
+            inverseJoinColumns = @JoinColumn(name = "my_company_id")
     )
     private List<MyCompany> myCompanies;
 }

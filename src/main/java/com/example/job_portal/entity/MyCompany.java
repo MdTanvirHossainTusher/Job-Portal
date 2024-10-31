@@ -17,12 +17,7 @@ import java.util.List;
 @Table(name = DbMyCompany.TABLE_NAME)
 public class MyCompany extends AuditInfo {
 
-    @ManyToMany(
-            cascade = {
-                    CascadeType.DETACH,
-            },
-            fetch = FetchType.LAZY
-    )
+    @ManyToMany
     @JoinTable(
             name = "my_company_from_company",
             joinColumns = @JoinColumn(name = "my_company_id"),
