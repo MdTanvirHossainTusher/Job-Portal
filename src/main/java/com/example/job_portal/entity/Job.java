@@ -44,9 +44,9 @@ public class Job extends AuditInfo {
                     CascadeType.DETACH,
                     CascadeType.REFRESH,
             },
-            fetch = FetchType.LAZY
+            fetch = FetchType.EAGER
     )
-    private List<Company> companies;
+    private Company company;
 
     @ManyToMany(mappedBy = "jobs")
     @JoinTable(
