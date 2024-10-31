@@ -52,6 +52,9 @@ public class Profile extends AuditInfo {
     )
     private List<MyCompany> myCompanies;
 
-    @OneToOne(mappedBy = "profile")
+    @OneToOne(
+            mappedBy = "profile",
+            cascade = CascadeType.ALL
+    )
     private User user;
 }

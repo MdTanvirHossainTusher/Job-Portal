@@ -30,5 +30,10 @@ public class Role extends AuditInfo {
             },
             fetch = FetchType.LAZY
     )
+    @JoinTable(
+            name = "user_role",
+            joinColumns = @JoinColumn(name = "role_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
     private List<User> users;
 }

@@ -39,7 +39,7 @@ public class User extends AuditInfo {
             cascade = {
                     CascadeType.ALL
             },
-            fetch = FetchType.EAGER
+            fetch = FetchType.LAZY
     )
     @JoinTable(
             name = "user_role",
@@ -51,5 +51,6 @@ public class User extends AuditInfo {
     @OneToOne(
             cascade = CascadeType.ALL,
             fetch = FetchType.EAGER)
+    @JoinColumn(name = "profile_id")
     private Profile profile;
 }
