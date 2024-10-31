@@ -17,7 +17,8 @@ import java.util.List;
 @Table(name = DbProfile.TABLE_NAME)
 public class Profile extends AuditInfo {
 
-    @Column(name = DbProfile.CV)
+    @OneToOne
+    @JoinColumn(name = "cv_id")
     private CV cv;
 
     @ManyToMany
@@ -44,7 +45,15 @@ public class Profile extends AuditInfo {
     )
     private List<Job> jobs;
 
-    @OneToMany(mappedBy = "profiles")
+    @ManyToMany(
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE,
+                    CascadeType.DETACH,
+                    CascadeType.REFRESH
+            },
+            fetch = FetchType.LAZY
+    )
     @JoinTable(
             name = "profile_my_company",
             joinColumns = @JoinColumn(name = "profile_id"),

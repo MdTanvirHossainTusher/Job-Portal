@@ -32,6 +32,9 @@ public class User extends AuditInfo {
     @Column(name = DbUser.USER_PASSWORD)
     private String password;
 
+    @Column(name = DbUser.IMAGE_URL)
+    private String imageUrl;
+
     @Column(name = DbUser.TOTAL_EXPERIENCE)
     private Double totalExperience;
 

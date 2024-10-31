@@ -68,6 +68,7 @@ public class DbConstant {
         public static final String USER_NAME = "name";
         public static final String USER_EMAIL = "email";
         public static final String USER_PASSWORD = "password";
+        public static final String IMAGE_URL = "profile_image_url";
         public static final String TOTAL_EXPERIENCE = "total_experience";
     }
 }

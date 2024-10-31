@@ -25,4 +25,7 @@ public class CV extends AuditInfo{
 
     @ManyToMany(mappedBy = "cvs", fetch = FetchType.LAZY)
     private List<Job> jobs;
+
+    @OneToOne(mappedBy = "cv")
+    private Profile profile;
 }

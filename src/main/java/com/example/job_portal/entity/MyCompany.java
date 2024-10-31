@@ -30,6 +30,19 @@ public class MyCompany extends AuditInfo {
     )
     private List<Company> companies;
 
-    @ManyToOne
+    @ManyToMany(
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE,
+                    CascadeType.DETACH,
+                    CascadeType.REFRESH
+            },
+            fetch = FetchType.LAZY
+    )
+    @JoinTable(
+            name = "profile_my_company",
+            joinColumns = @JoinColumn(name = "my_company_id"),
+            inverseJoinColumns = @JoinColumn(name = "profile_id")
+    )
     private List<Profile> profiles;
 }
