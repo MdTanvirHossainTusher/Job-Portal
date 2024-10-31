@@ -30,7 +30,7 @@ public class Company extends AuditInfo {
     private String workingMode;
 
     @OneToMany(
-//            mappedBy = "companies",
+            mappedBy = "company",
             cascade = {
                     CascadeType.ALL
             },
