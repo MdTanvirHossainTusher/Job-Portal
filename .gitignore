@@ -25,3 +25,11 @@ replay_pid*
 
 .idea/
 
+# Ignore macOS .DS_Store files
+.DS_Store
+
+# Ignore Help.md
+HELP.md
+
+# Ignore target folder
+target/
