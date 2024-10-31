@@ -25,7 +25,7 @@ public abstract class AuditInfo {
 
     @CreationTimestamp
     @Column(name = DbCommon.CREATED_AT, nullable = false, updatable = false)
-    private ZonedDateTime createdOn;
+    private ZonedDateTime createdAt;
 
     @UpdateTimestamp
     @Column(name = DbCommon.LAST_UPDATED_AT, nullable = false)

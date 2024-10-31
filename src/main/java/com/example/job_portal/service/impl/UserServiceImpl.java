@@ -6,6 +6,8 @@ import com.example.job_portal.service.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -19,5 +21,11 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void save(User user) {
         userRepository.save(user);
+    }
+
+    @Override
+    public User findUserById(Long id) {
+        Optional<User> user = userRepository.findById(id);
+        return user.orElse(null);
     }
 }

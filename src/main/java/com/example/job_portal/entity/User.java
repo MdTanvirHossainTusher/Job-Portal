@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Setter
@@ -56,4 +57,14 @@ public class User extends AuditInfo {
             fetch = FetchType.EAGER)
     @JoinColumn(name = "profile_id")
     private Profile profile;
+
+
+//    public User(Long id, ZonedDateTime createdOn, ZonedDateTime lastUpdatedAt, String createBy, String lastUpdatedBy, String name, String email, String password, String imageUrl, Double totalExperience) {
+//        super(id, createdOn, lastUpdatedAt, createBy, lastUpdatedBy);
+//        this.name = name;
+//        this.email = email;
+//        this.password = password;
+//        this.imageUrl = imageUrl;
+//        this.totalExperience = totalExperience;
+//    }
 }
