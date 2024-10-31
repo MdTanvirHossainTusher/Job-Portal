@@ -48,7 +48,8 @@ public class Job extends AuditInfo {
     )
     private Company company;
 
-    @ManyToMany(mappedBy = "jobs")
+//    @ManyToMany(mappedBy = "jobs")
+    @ManyToMany
     @JoinTable(
             name = "profile_job",
             joinColumns = @JoinColumn(name = "job_id"),

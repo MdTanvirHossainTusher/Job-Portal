@@ -37,6 +37,7 @@ public class Profile extends AuditInfo {
     )
     private List<University> universities;
 
+//    @ManyToMany(mappedBy = "jobs")
     @ManyToMany
     @JoinTable(
             name = "profile_job",

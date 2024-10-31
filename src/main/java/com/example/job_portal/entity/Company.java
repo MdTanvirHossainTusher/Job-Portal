@@ -30,7 +30,7 @@ public class Company extends AuditInfo {
     private String workingMode;
 
     @OneToMany(
-            mappedBy = "companies",
+//            mappedBy = "companies",
             cascade = {
                     CascadeType.ALL
             },
@@ -39,7 +39,7 @@ public class Company extends AuditInfo {
     private List<Job> jobs;
 
     @ManyToMany(
-            mappedBy = "companies",
+//            mappedBy = "companies",
             cascade = {
                     CascadeType.ALL
             },

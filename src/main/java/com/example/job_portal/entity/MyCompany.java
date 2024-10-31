@@ -17,6 +17,7 @@ import java.util.List;
 @Table(name = DbMyCompany.TABLE_NAME)
 public class MyCompany extends AuditInfo {
 
+//    @ManyToMany(mappedBy = "myCompanies")
     @ManyToMany
     @JoinTable(
             name = "my_company_from_company",
