@@ -1,10 +1,7 @@
 package com.example.job_portal.entity;
 
 import com.example.job_portal.constant.db.DbConstant.DbSkill;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

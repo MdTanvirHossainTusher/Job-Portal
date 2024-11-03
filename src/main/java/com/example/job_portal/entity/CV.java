@@ -36,4 +36,5 @@ public class CV extends AuditInfo{
 
     @OneToOne(mappedBy = "cv")
     private Profile profile;
+
 }

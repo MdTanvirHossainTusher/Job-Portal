@@ -11,6 +11,7 @@ public class RoleServiceImpl implements RoleService {
 
     private final RoleRepository roleRepository;
 
+
     public RoleServiceImpl(RoleRepository roleRepository) {
         this.roleRepository = roleRepository;
     }
@@ -19,5 +20,9 @@ public class RoleServiceImpl implements RoleService {
     @Transactional
     public void save(Role role) {
         roleRepository.save(role);
+    }
+
+    public Role findByRole(String roleName) {
+        return roleRepository.getByRole(roleName);
     }
 }

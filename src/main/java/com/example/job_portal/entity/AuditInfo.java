@@ -17,7 +17,6 @@ import java.time.ZonedDateTime;
 @NoArgsConstructor
 @MappedSuperclass
 public abstract class AuditInfo {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = DbCommon.ID)

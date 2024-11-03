@@ -21,7 +21,6 @@ public class Role extends AuditInfo {
     private String role;
 
     @ManyToMany(
-//            mappedBy = "roles",
             cascade = {
                     CascadeType.PERSIST,
                     CascadeType.MERGE,

@@ -1,98 +1,59 @@
 package com.example.job_portal;
 
 import com.example.job_portal.entity.*;
-import com.example.job_portal.repository.CompanyRepository;
-import com.example.job_portal.service.CompanyService;
-import com.example.job_portal.service.impl.CompanyServiceImpl;
-import org.junit.jupiter.api.BeforeEach;
+import com.example.job_portal.repository.UserRepository;
+import com.example.job_portal.service.impl.UserServiceImpl;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.boot.test.context.SpringBootTest;
-
-import java.lang.reflect.Array;
-import java.util.Arrays;
+import org.mockito.junit.jupiter.MockitoExtension;
+import java.util.ArrayList;
 import java.util.List;
 
-import static org.mockito.Mockito.times;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.util.AssertionErrors.assertEquals;
 
-@SpringBootTest
-class JobPortalApplicationTests {
 
-//	private CompanyService companyService;
-//
-//	public JobPortalApplicationTests(CompanyService companyService) {
-//		this.companyService = companyService;
-//	}
-//
-//	@Test
-//	void contextLoads() {
-//		companyService.save(new Company("Google", "US", "Software company", "onsite",
-//				new Job("traine SWE", "25000", false, Array. {"cv1", "cv2"},  ), new MyCompany()));
-//	}
-
+@ExtendWith(MockitoExtension.class)
+class UserServiceTest {
 
 	@Mock
-	private CompanyRepository companyRepository;
+	private UserRepository userRepository;
 
 	@InjectMocks
-	private CompanyServiceImpl companyService;
-
-	@BeforeEach
-	void setUp() {
-		MockitoAnnotations.openMocks(this);
-	}
+	private UserServiceImpl userService;
 
 	@Test
-	void testSaveCompany() {
-//
-//		User user = new User(
-//				"tusher", "tusher@gmail.com", "4332ed", "www.freeimage.com/tusher", "1.5",
-//				Arrays.asList("ROLE_ADMIN", "ROLE_USER"),
-//				Arrays.asList(new Profile())
-//				);
-//
-//
-//		List<CV> cvs = Arrays.asList(
-//				new CV()
-//		);
-//
-//		List<Job> jobs = Arrays.asList(
-//				new Job("Software Engineer", "50000", false, Arrays.asList(), new Company())
-////				new Job("Data Scientist", "60000", false)
-//		);
-//
-//		List<MyCompany> myCompanies = Arrays.asList(
-//				new MyCompany()
-//		);
-//
-//		Company company = new Company("Google", "US", "Software Company", "onsite", jobs, myCompanies);
-//
-//
-//		companyService.save(company);
-//
-//
-//		verify(companyRepository, times(1)).save(company);
+	void userSave() {
+		Profile profile = new Profile();
+		Role role = new Role();
+		role.setRole("ROLE_USER");
 
+		List<Role> roles = new ArrayList<>();
+		roles.add(role);
 
+		User user = new User(
+				"tusher",
+				"tusher@gmail.com",
+				"4332ed",
+				"www.freeimage.com/tusher",
+				1.5,
+				roles,
+				profile
+		);
 
-//		Profile profile = new Profile("2 years", "Java, Spring Boot, SQL");
-//
-//		CV cv1 = new CV("PDF", "2MB", "cv_url1");
-//		CV cv2 = new CV("PDF", "3MB", "cv_url2");
-//
-//		Job job1 = new Job("Trainee SWE", "25000", false, Arrays.asList(cv1), profile);
-//		Job job2 = new Job("Software Engineer", "50000", false, Arrays.asList(cv2), profile);
-//
-//		MyCompany myCompany = new MyCompany("Partner");
-//
-//		Company company = new Company("Google", "US", "Software Company", "Onsite",
-//				Arrays.asList(job1, job2),
-//				Arrays.asList(myCompany));
-//
-//		companyService.save(company);
+		when(userRepository.save(any(User.class))).thenReturn(user);
+
+		User savedUser = userService.save(user);
+
+		assertNotNull(savedUser);
+		assertEquals("name not matched", "tusher", savedUser.getName());
+		assertEquals("email not matched","tusher@gmail.com", savedUser.getEmail());
+
+		verify(userRepository).save(any(User.class));
 	}
-
 }

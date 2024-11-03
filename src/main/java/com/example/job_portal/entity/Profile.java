@@ -21,6 +21,12 @@ public class Profile extends AuditInfo {
     @JoinColumn(name = "cv_id")
     private CV cv;
 
+    @OneToOne(
+            mappedBy = "profile",
+            cascade = CascadeType.ALL
+    )
+    private User user;
+
     @ManyToMany
     @JoinTable(
             name = "profile_skill",
@@ -37,7 +43,6 @@ public class Profile extends AuditInfo {
     )
     private List<University> universities;
 
-//    @ManyToMany(mappedBy = "jobs")
     @ManyToMany
     @JoinTable(
             name = "profile_job",
@@ -62,9 +67,4 @@ public class Profile extends AuditInfo {
     )
     private List<MyCompany> myCompanies;
 
-    @OneToOne(
-            mappedBy = "profile",
-            cascade = CascadeType.ALL
-    )
-    private User user;
 }

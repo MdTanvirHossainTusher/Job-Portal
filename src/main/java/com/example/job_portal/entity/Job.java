@@ -48,7 +48,6 @@ public class Job extends AuditInfo {
     )
     private Company company;
 
-//    @ManyToMany(mappedBy = "jobs")
     @ManyToMany
     @JoinTable(
             name = "profile_job",
@@ -56,4 +55,5 @@ public class Job extends AuditInfo {
             inverseJoinColumns = @JoinColumn(name = "profile_id")
     )
     private List<Profile> profiles;
+
 }
