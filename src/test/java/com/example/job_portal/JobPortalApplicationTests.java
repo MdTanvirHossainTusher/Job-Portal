@@ -48,7 +48,7 @@ class UserServiceTest {
 
 		when(userRepository.save(any(User.class))).thenReturn(user);
 
-		User savedUser = userService.save(user);
+		User savedUser = userService.saveUser(user);
 
 		assertNotNull(savedUser);
 		assertEquals("name not matched", "tusher", savedUser.getName());

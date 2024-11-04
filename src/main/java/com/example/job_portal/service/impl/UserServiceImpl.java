@@ -7,6 +7,7 @@ import com.example.job_portal.service.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -20,10 +21,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-//    public User save(User user) {
-    public void save(User user) {
-//        return userRepository.save(user);
-        userRepository.save(user);
+    public User saveUser(User user) {
+//    public void saveUser(User user) {
+        return userRepository.save(user);
+//        userRepository.save(user);
     }
 
     @Override
@@ -50,5 +51,24 @@ public class UserServiceImpl implements UserService {
             existingUser.setTotalExperience(user.getTotalExperience());
         }
         return existingUser;
+    }
+
+    @Override
+    public List<User> findAll() {
+        return userRepository.findAll();
+    }
+
+    @Override
+    public void deleteUserById(Long id) {
+        User user = findUserById(id);
+        try {
+            if(user != null) userRepository.deleteById(id);
+        } catch (Exception ex) {
+            try {
+                throw new UserNotFoundException("User with the id: " + id + " is not found!");
+            } catch (UserNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 }
