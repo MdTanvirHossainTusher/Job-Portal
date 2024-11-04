@@ -1,9 +1,12 @@
 package com.example.job_portal.service.impl;
 
+import com.example.job_portal.dto.UserDTO;
 import com.example.job_portal.entity.User;
+import com.example.job_portal.exception.UserAlreadyExistsException;
 import com.example.job_portal.exception.UserNotFoundException;
 import com.example.job_portal.repository.UserRepository;
 import com.example.job_portal.service.UserService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,15 +17,37 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    @Override
+    public void createUser(UserDTO userDTO) {
+
+//        userRepository.existsByEmailIgnoreCase(userDTO.getEmail());
+        if(userRepository.existsByEmail(userDTO.getEmail())) {
+            throw new UserAlreadyExistsException("User has already exists!");
+        }
+        User newUser = new User();
+        newUser.setName(userDTO.getName());
+        newUser.setEmail(userDTO.getEmail());
+        newUser.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        newUser.setTotalExperience(userDTO.getTotalExperience());
+
+//        newUser.setCreateBy();
+
+        userRepository.save(newUser);
     }
 
     @Override
     @Transactional
     public User saveUser(User user) {
 //    public void saveUser(User user) {
+//        user.setName();
+//        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
 //        userRepository.save(user);
     }
@@ -41,14 +66,28 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUser(User user) {
-        User existingUser = findUserById(user.getId());
+    @Transactional
+    public User updateUser(Long id, User user) {
+        User existingUser = findUserById(id);
+
+//        System.out.println(user.getId());
+//        System.out.println(user.getName());
+//        System.out.println(user.getEmail());
+//        System.out.println(user.getTotalExperience());
+//        System.out.println(user.getImageUrl());
+////        System.out.println(user.getId());
+//        System.out.println(existingUser.getId() + " id......");
 
         if(existingUser != null) {
-            existingUser.setName(user.getName());
-            existingUser.setImageUrl(user.getImageUrl());
-            existingUser.setPassword(user.getPassword());
-            existingUser.setTotalExperience(user.getTotalExperience());
+            if(user.getName() != null) existingUser.setName(user.getName());
+            if(user.getName() != null) existingUser.setImageUrl(user.getImageUrl());
+            if(user.getName() != null) existingUser.setPassword(user.getPassword());
+            if(user.getName() != null) existingUser.setTotalExperience(user.getTotalExperience());
+
+            userRepository.save(existingUser);
+        }
+        else {
+            throw new UserNotFoundException("User with id: " + id + " not found!");
         }
         return existingUser;
     }

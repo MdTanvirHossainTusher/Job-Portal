@@ -1,6 +1,8 @@
 package com.example.job_portal;
 
+import com.example.job_portal.dto.UserDTO;
 import com.example.job_portal.entity.User;
+import com.example.job_portal.repository.UserRepository;
 import com.example.job_portal.service.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -17,18 +19,56 @@ public class JobPortalApplication {
 	}
 	@Bean
 	public CommandLineRunner commandLineRunner(UserService userService) {
+//	public CommandLineRunner commandLineRunner(UserRepository userRepository) {
 		return runner -> {
 			userOperations(userService);
+//			userOperations(userRepository);
 		};
 	}
 
 	private void userOperations(UserService userService) {
-		List<User> allUser = userService.findAll();
-		System.out.println("All users: ");
-		for(User user: allUser) {
-			System.out.println(user.getName());
-			System.out.println(user.getEmail());
-			System.out.println(user.getProfile());
-		}
+
+		UserDTO userDTO = new UserDTO();
+
+		userDTO.setName("sohan");
+		userDTO.setEmail("sohan@yahoo.com");
+		userDTO.setPassword("test123");
+		userDTO.setTotalExperience(0.2);
+
+		userService.createUser(userDTO);
+
+
+
+
+//		List<User> allUser = userService.findAll();
+//
+//		for(User user: allUser) {
+//			System.out.println(user.getId());
+//			System.out.println(user.getName());
+//			System.out.println(user.getEmail());
+//			System.out.println(user.getProfile());
+//			System.out.println(user.getImageUrl());
+//			System.out.println(user.getTotalExperience());
+//		}
+//
+//		System.out.println("Update user: ");
+//
+//		User u = new User();
+//		u.setName("tanvir");
+//		u.setTotalExperience(2.0);
+//
+//		User updateUser = userService.updateUser(2L, u);
+//
+//		System.out.println("After updating .... ");
+//		List<User> allUser1 = userService.findAll();
+//		for(User user: allUser1) {
+//			System.out.println(user.getId());
+//			System.out.println(user.getName());
+//			System.out.println(user.getEmail());
+//			System.out.println(user.getProfile());
+//			System.out.println(user.getImageUrl());
+//			System.out.println(user.getTotalExperience());
+//		}
+
 	}
 }

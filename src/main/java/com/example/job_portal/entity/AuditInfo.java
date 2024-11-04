@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.ZonedDateTime;
 
@@ -16,6 +19,7 @@ import java.time.ZonedDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @MappedSuperclass
+@EntityListeners(AuditingEntityListener.class)
 public abstract class AuditInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,9 +34,17 @@ public abstract class AuditInfo {
     @Column(name = DbCommon.LAST_UPDATED_AT, nullable = false)
     private ZonedDateTime lastUpdatedAt;
 
+//    @Column(name = DbCommon.CREATED_BY, nullable = false, updatable = false)
+//    private String createBy;
+//
+//    @Column(name = DbCommon.LAST_UPDATED_BY, nullable = false)
+//    private String lastUpdatedBy;
+
+    @CreatedBy
     @Column(name = DbCommon.CREATED_BY, nullable = false, updatable = false)
     private String createBy;
 
+    @LastModifiedBy
     @Column(name = DbCommon.LAST_UPDATED_BY, nullable = false)
     private String lastUpdatedBy;
 }
