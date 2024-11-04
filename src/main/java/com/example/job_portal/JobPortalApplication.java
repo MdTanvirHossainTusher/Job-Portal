@@ -8,10 +8,12 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import java.util.List;
 
 @SpringBootApplication
+@EnableJpaAuditing
 public class JobPortalApplication {
 
 	public static void main(String[] args) {
@@ -30,10 +32,11 @@ public class JobPortalApplication {
 
 		UserDTO userDTO = new UserDTO();
 
-		userDTO.setName("sohan");
-		userDTO.setEmail("sohan@yahoo.com");
+		userDTO.setName("tanvir");
+		userDTO.setEmail("tanvir@gmail.com");
 		userDTO.setPassword("test123");
-		userDTO.setTotalExperience(0.2);
+		userDTO.setProfileImageUrl("tushers.com/img/tanvir.png");
+		userDTO.setTotalExperience(0.8);
 
 		userService.createUser(userDTO);
 

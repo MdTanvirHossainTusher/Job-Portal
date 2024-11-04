@@ -34,12 +34,6 @@ public abstract class AuditInfo {
     @Column(name = DbCommon.LAST_UPDATED_AT, nullable = false)
     private ZonedDateTime lastUpdatedAt;
 
-//    @Column(name = DbCommon.CREATED_BY, nullable = false, updatable = false)
-//    private String createBy;
-//
-//    @Column(name = DbCommon.LAST_UPDATED_BY, nullable = false)
-//    private String lastUpdatedBy;
-
     @CreatedBy
     @Column(name = DbCommon.CREATED_BY, nullable = false, updatable = false)
     private String createBy;

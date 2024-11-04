@@ -40,7 +40,8 @@ public class User extends AuditInfo {
 
     @ManyToMany(
             cascade = {
-                    CascadeType.ALL
+//                    CascadeType.ALL
+                    CascadeType.MERGE
             },
             fetch = FetchType.LAZY
     )
