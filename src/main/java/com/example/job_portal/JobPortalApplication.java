@@ -2,7 +2,7 @@ package com.example.job_portal;
 
 import com.example.job_portal.dao.CompanyDAO;
 import com.example.job_portal.dao.UserDAO;
-import com.example.job_portal.dao.impl.JobDAO;
+import com.example.job_portal.dao.JobDAO;
 import com.example.job_portal.dto.CompanyDTO;
 import com.example.job_portal.dto.JobDTO;
 import com.example.job_portal.entity.Company;
@@ -39,19 +39,19 @@ public class JobPortalApplication {
 		return runner -> {
 //			userOperations(userService, userDAO);
 //			companyOperations(companyService, companyDAO);
-			jobOperations(jobService, jobDAO);
+//			jobOperations(jobService, jobDAO);
 		};
 	}
 
 	private void createJob(JobService jobService) {
 		JobDTO jobDTO = new JobDTO();
 
-		jobDTO.setJobTitle("QA Intern");
+		jobDTO.setJobTitle("SWE-1");
 		jobDTO.setJobDescription("Job description: " +
-				"1. clear understanding of any programming language 2. B2 English proficiency");
-		jobDTO.setSalary("1000");
+				"1. java 2. git 3. spring");
+		jobDTO.setSalary("45000");
 		jobDTO.setJobLocation("BD");
-		jobDTO.setJobPosition("Intern");
+		jobDTO.setJobPosition("Mid");
 
 		jobService.createJob(jobDTO);
 	}
@@ -75,20 +75,28 @@ public class JobPortalApplication {
 	private void jobOperations(JobService jobService, JobDAO jobDAO) {
 //		createJob(jobService);
 //		updateJob(jobService);
-
-//		findAllJob(jobService);
-//		System.out.println(companyService.findCompanyById(1L).getCompanyName());
+//
+//		findAllJob(jobService); // problem
+//		System.out.println(jobService.findJobById(8L).getJobLocation());
 //		jobService.deleteJobById(3L);
+
+//		List<Job> jobs = jobDAO.filterJobByJobLocation("sk");
+//		List<Job> jobs = jobDAO.filterJobByJobPosition("in");
+//
+//		for(Job job: jobs) {
+//			System.out.println(job.getJobLocation() + " " + job.getSalary()
+//			+ " " + job.getJobPosition());
+//		}
 	}
 
 
 
 	private void createCompany(CompanyService companyService) {
 		CompanyDTO company = new CompanyDTO();
-		company.setCompanyName("MS");
-		company.setCompanyType("Software");
-		company.setWorkingMode("Hybrid");
-		company.setCompanyLocation("Multinational");
+		company.setCompanyName("micro1");
+		company.setCompanyType("Software and Data annotations");
+		company.setWorkingMode("Remote");
+		company.setCompanyLocation("South Asia");
 
 		companyService.createCompany(company);
 	}

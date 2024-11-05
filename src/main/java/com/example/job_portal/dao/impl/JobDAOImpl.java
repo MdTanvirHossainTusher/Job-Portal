@@ -1,10 +1,11 @@
 package com.example.job_portal.dao.impl;
 
-import com.example.job_portal.dao.CompanyDAO;
-import com.example.job_portal.entity.Company;
+import com.example.job_portal.dao.JobDAO;
+import com.example.job_portal.entity.Job;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -18,4 +19,23 @@ public class JobDAOImpl implements JobDAO {
     }
 
 
+    @Override
+//    @Transactional
+    public List<Job> filterJobByJobLocation(String jobLocation) {
+        TypedQuery<Job> query = entityManager.createQuery(
+                "SELECT j FROM Job j WHERE LOWER(j.jobLocation) LIKE :data", Job.class
+        );
+        query.setParameter("data", "%" + jobLocation + "%");
+        return query.getResultList();
+    }
+
+    @Override
+//    @Transactional
+    public List<Job> filterJobByJobPosition(String jobPosition) {
+        TypedQuery<Job> query = entityManager.createQuery(
+                "SELECT j FROM Job j WHERE LOWER(j.jobPosition) LIKE :data", Job.class
+        );
+        query.setParameter("data", "%" + jobPosition + "%");
+        return query.getResultList();
+    }
 }
