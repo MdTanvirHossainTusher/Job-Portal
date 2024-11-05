@@ -36,9 +36,12 @@ public class DbConstant {
 
     public static class DbJob extends DbCommon {
         public static final String TABLE_NAME = "jobs";
+        public static final String JOB_TITLE = "job_title";
         public static final String JOB_DESCRIPTION = "job_description";
         public static final String SALARY = "salary";
         public static final String IS_FRAUDULENT = "is_fraudulent";
+        public static final String JOB_POSITION = "job_position";
+        public static final String JOB_LOCATION= "job_location";
     }
 
     public static class DbCompany extends DbCommon {

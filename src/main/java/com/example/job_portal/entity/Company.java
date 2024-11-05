@@ -2,13 +2,11 @@ package com.example.job_portal.entity;
 
 import com.example.job_portal.constant.db.DbConstant.DbCompany;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
+//@ToString
 @Setter
 @Getter
 @NoArgsConstructor
@@ -35,6 +33,7 @@ public class Company extends AuditInfo {
                     CascadeType.ALL
             },
             fetch = FetchType.LAZY
+//            fetch = FetchType.EAGER
     )
     private List<Job> jobs;
 
@@ -43,6 +42,7 @@ public class Company extends AuditInfo {
                     CascadeType.ALL
             },
             fetch = FetchType.LAZY
+//            fetch = FetchType.EAGER
     )
     @JoinTable(
             name = "my_company_from_company",

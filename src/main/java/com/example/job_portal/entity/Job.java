@@ -2,13 +2,11 @@ package com.example.job_portal.entity;
 
 import com.example.job_portal.constant.db.DbConstant.DbJob;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
+@ToString
 @Setter
 @Getter
 @NoArgsConstructor
@@ -17,11 +15,20 @@ import java.util.List;
 @Table(name = DbJob.TABLE_NAME)
 public class Job extends AuditInfo {
 
+    @Column(name = DbJob.JOB_TITLE)
+    private String jobTitle;
+
     @Column(name = DbJob.JOB_DESCRIPTION)
     private String jobDescription;
 
     @Column(name = DbJob.SALARY)
     private String salary;
+
+    @Column(name = DbJob.JOB_POSITION)
+    private String jobPosition;
+
+    @Column(name = DbJob.JOB_LOCATION)
+    private String jobLocation;
 
     @Column(name = DbJob.IS_FRAUDULENT)
     private boolean isJobFraudulent;

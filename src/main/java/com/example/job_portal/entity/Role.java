@@ -2,13 +2,11 @@ package com.example.job_portal.entity;
 
 import com.example.job_portal.constant.db.DbConstant.DbRole;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
+@ToString
 @Setter
 @Getter
 @NoArgsConstructor

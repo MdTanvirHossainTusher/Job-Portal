@@ -2,7 +2,7 @@ package com.example.job_portal.service;
 
 import com.example.job_portal.dto.CompanyDTO;
 import com.example.job_portal.entity.Company;
-import com.example.job_portal.entity.Company;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -14,7 +14,6 @@ public interface CompanyService {
 
     Company findCompanyById(Long id);
 
-    //    Company updateCompany(Company user);
     Company updateCompany(Long id, Company company);
 
     List<Company> findAll();

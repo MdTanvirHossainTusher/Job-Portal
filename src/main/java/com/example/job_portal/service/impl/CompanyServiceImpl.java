@@ -23,7 +23,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    @Transactional
+//    @Transactional
     public void createCompany(CompanyDTO companyDTO) {
 
         if(companyRepository.existsByName(companyDTO.getCompanyName())) {
@@ -62,6 +62,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
+    @Transactional
     public Company updateCompany(Long id, Company company) {
         Company existingCompany = findCompanyById(id);
 
@@ -84,6 +85,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
+    @Transactional
     public void deleteCompanyById(Long id) {
         Company company = findCompanyById(id);
         try {
@@ -92,6 +94,4 @@ public class CompanyServiceImpl implements CompanyService {
             throw new CompanyNotFoundException("Company : " + company.getCompanyName() + " not found!");
         }
     }
-
-
 }

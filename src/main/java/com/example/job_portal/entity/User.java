@@ -2,13 +2,11 @@ package com.example.job_portal.entity;
 
 import com.example.job_portal.constant.db.DbConstant.DbUser;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
+@ToString
 @Setter
 @Getter
 @NoArgsConstructor
@@ -44,17 +42,20 @@ public class User extends AuditInfo {
                     CascadeType.MERGE
             },
             fetch = FetchType.LAZY
+//            fetch = FetchType.EAGER
     )
     @JoinTable(
             name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
+    @ToString.Exclude
     private List<Role> roles;
 
     @OneToOne(
             cascade = CascadeType.ALL,
             fetch = FetchType.EAGER)
     @JoinColumn(name = "profile_id")
+    @ToString.Exclude
     private Profile profile;
 }

@@ -10,4 +10,7 @@ import org.springframework.stereotype.Repository;
 public interface CompanyRepository extends JpaRepository<Company, Long> {
     @Query("SELECT CASE WHEN COUNT(c) > 0 THEN true ELSE false END FROM Company c WHERE c.companyName = :companyName")
     boolean existsByName(@Param("companyName") String companyName);
+
+    @Query("SELECT c FROM Company c WHERE LOWER(c.companyName) = LOWER(:companyName)")
+    Company findCompanyByName(@Param("companyName") String companyName);
 }

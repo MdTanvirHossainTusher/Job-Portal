@@ -1,9 +1,14 @@
 package com.example.job_portal;
 
+import com.example.job_portal.dao.CompanyDAO;
 import com.example.job_portal.dao.UserDAO;
-import com.example.job_portal.dto.UserDTO;
+import com.example.job_portal.dao.impl.JobDAO;
+import com.example.job_portal.dto.CompanyDTO;
+import com.example.job_portal.dto.JobDTO;
+import com.example.job_portal.entity.Company;
 import com.example.job_portal.entity.User;
-import com.example.job_portal.repository.UserRepository;
+import com.example.job_portal.service.CompanyService;
+import com.example.job_portal.service.JobService;
 import com.example.job_portal.service.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -11,9 +16,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 @SpringBootApplication
@@ -25,18 +27,81 @@ public class JobPortalApplication {
 	}
 
 	@Bean
-	public CommandLineRunner commandLineRunner(UserService userService, UserDAO userDAO) {
-//	public CommandLineRunner commandLineRunner(UserRepository userRepository) {
+	public CommandLineRunner commandLineRunner(
+			UserService userService,
+			UserDAO userDAO,
+			CompanyService companyService,
+			CompanyDAO companyDAO,
+			JobService jobService,
+			JobDAO jobDAO
+			) {
 		return runner -> {
-			userOperations(userService, userDAO);
-//			userOperations(userRepository);
+//			userOperations(userService, userDAO);
+//			companyOperations(companyService, companyDAO);
+			jobOperations(jobService, jobDAO);
 		};
 	}
 
+	private void createJob(JobService jobService) {
+		JobDTO jobDTO = new JobDTO();
+
+		jobDTO.setJobTitle("QA Intern");
+		jobDTO.setJobDescription("Job description: " +
+				"1. clear understanding of any programming language 2. B2 English proficiency");
+		jobDTO.setSalary("1000");
+		jobDTO.setJobLocation("BD");
+		jobDTO.setJobPosition("Intern");
+
+		jobService.createJob(jobDTO);
+	}
+
+	private void jobOperations(JobService jobService, JobDAO jobDAO) {
+//		createJob(jobService);
+	}
+
+
+
+	private void createCompany(CompanyService companyService) {
+		CompanyDTO company = new CompanyDTO();
+		company.setCompanyName("MS");
+		company.setCompanyType("Software");
+		company.setWorkingMode("Hybrid");
+		company.setCompanyLocation("Multinational");
+
+		companyService.createCompany(company);
+	}
+
+	private void updateCompany(CompanyService companyService) {
+		Company company = new Company();
+//		company.setCompanyName("Google");
+		company.setCompanyType("Software Company");
+//		company.setWorkingMode("Onsite");
+		company.setCompanyLocation("World-wide");
+
+		companyService.updateCompany(1L, company);
+	}
+
+	private void findAllCompany(CompanyService companyService) {
+		List<Company> companies = companyService.findAll();
+
+		for(Company company: companies) {
+			System.out.println(company.getCompanyName() + " " + company.getCompanyType());
+		}
+	}
+
+	private void companyOperations(CompanyService companyService, CompanyDAO companyDAO) {
+//		createCompany(companyService);
+//		updateCompany(companyService);
+//		findAllCompany(companyService);
+//		System.out.println(companyService.findCompanyById(1L).getCompanyName());
+//		companyService.deleteCompanyById(3L);
+	}
+
+
 	private void userOperations(UserService userService, UserDAO userDAO) {
 
-		List<User> users = userDAO.searchUserByEmailPattern("sh");
-//		List<User> users = userDAO.searchUserByYearOfExperience(0.2);
+//		List<User> users = userDAO.searchUserByEmailPattern("vi");
+		List<User> users = userDAO.searchUserByYearOfExperience(2.0);
 //
 //
 //		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
