@@ -14,5 +14,5 @@ public class JobDTO {
     private String salary;
     private String jobPosition;
     private String jobLocation;
-    private boolean isJobFraudulent;
+//    private boolean isJobFraudulent;
 }

@@ -100,6 +100,7 @@ public class JobServiceImpl implements JobService {
             if(job.getJobDescription() != null) existingJob.setJobDescription(job.getJobDescription());
             if(job.getJobPosition() != null) existingJob.setJobPosition(job.getJobPosition());
             if(job.getSalary() != null) existingJob.setSalary(job.getSalary());
+//            if(!job.isJobFraudulent()) existingJob.setJobFraudulent(false);
 
             jobRepository.save(existingJob);
         }
@@ -119,7 +120,7 @@ public class JobServiceImpl implements JobService {
     public void deleteJobById(Long id) {
         Job job = findJobById(id);
         try {
-            if(job != null) companyRepository.deleteById(id);
+            if(job != null) jobRepository.deleteById(id);
         } catch (Exception ex) {
             throw new JobNotFoundException("Job with id: "+ id + " is not found!");
         }

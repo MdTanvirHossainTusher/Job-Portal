@@ -30,8 +30,8 @@ public class Job extends AuditInfo {
     @Column(name = DbJob.JOB_LOCATION)
     private String jobLocation;
 
-    @Column(name = DbJob.IS_FRAUDULENT)
-    private boolean isJobFraudulent;
+//    @Column(name = DbJob.IS_FRAUDULENT)
+//    private boolean isJobFraudulent;
 
     @ManyToMany(
             cascade = CascadeType.ALL,

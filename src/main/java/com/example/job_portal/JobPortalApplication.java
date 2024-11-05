@@ -6,6 +6,7 @@ import com.example.job_portal.dao.impl.JobDAO;
 import com.example.job_portal.dto.CompanyDTO;
 import com.example.job_portal.dto.JobDTO;
 import com.example.job_portal.entity.Company;
+import com.example.job_portal.entity.Job;
 import com.example.job_portal.entity.User;
 import com.example.job_portal.service.CompanyService;
 import com.example.job_portal.service.JobService;
@@ -55,8 +56,29 @@ public class JobPortalApplication {
 		jobService.createJob(jobDTO);
 	}
 
+	private void updateJob(JobService jobService) {
+		Job job = new Job();
+
+		job.setSalary("10000");
+
+		jobService.updateJob(9L, job);
+	}
+
+	private void findAllJob(JobService jobService) {
+		List<Job> jobs = jobService.findAll();
+
+		for(Job job: jobs) {
+			System.out.println(job.getJobTitle() + " " + job.getCompany().getCompanyName());
+		}
+	}
+
 	private void jobOperations(JobService jobService, JobDAO jobDAO) {
 //		createJob(jobService);
+//		updateJob(jobService);
+
+//		findAllJob(jobService);
+//		System.out.println(companyService.findCompanyById(1L).getCompanyName());
+//		jobService.deleteJobById(3L);
 	}
 
 
