@@ -17,7 +17,7 @@ import java.util.List;
 @Table(name = DbCompany.TABLE_NAME)
 public class Company extends AuditInfo {
 
-    @Column(name = DbCompany.COMPANY_NAME)
+    @Column(name = DbCompany.COMPANY_NAME, unique = true)
     private String companyName;
 
     @Column(name = DbCompany.COMPANY_LOCATION)

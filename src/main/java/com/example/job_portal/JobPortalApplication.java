@@ -35,20 +35,20 @@ public class JobPortalApplication {
 
 	private void userOperations(UserService userService, UserDAO userDAO) {
 
-//		List<User> users = userDAO.searchUserByEmailPattern("sh");
+		List<User> users = userDAO.searchUserByEmailPattern("sh");
 //		List<User> users = userDAO.searchUserByYearOfExperience(0.2);
-
-
-		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-
-
-		Date userCreationDate = null;
-		try {
-			userCreationDate = dateFormat.parse("4-11-2024");
-		} catch (ParseException e) {
-			throw new RuntimeException(e);
-		}
-		List<User> users = userDAO.searchUserByUserCreationDate(userCreationDate);
+//
+//
+//		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+//
+//
+//		Date userCreationDate = null;
+//		try {
+//			userCreationDate = dateFormat.parse("4-11-2024");
+//		} catch (ParseException e) {
+//			throw new RuntimeException(e);
+//		}
+//		List<User> users = userDAO.searchUserByUserCreationDate(userCreationDate);
 
 		for(User user: users) {
 			System.out.println(user.getEmail() + " " + user.getName() + " " + user.getTotalExperience());

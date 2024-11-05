@@ -33,7 +33,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public void createUser(UserDTO userDTO) {
 
-//        userRepository.existsByEmailIgnoreCase(userDTO.getEmail());
         if(userRepository.existsByEmail(userDTO.getEmail())) {
             throw new UserAlreadyExistsException("User has already exists!");
         }
@@ -44,7 +43,6 @@ public class UserServiceImpl implements UserService {
         newUser.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         newUser.setTotalExperience(userDTO.getTotalExperience());
 
-//        Profile profile = new Profile();
         Role role = roleRepository.getByRole("ROLE_USER");
 
         List<Role> roles = new ArrayList<>();
@@ -59,22 +57,11 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public User saveUser(User user) {
-//    public void saveUser(User user) {
-//        user.setName();
-//        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
-//        userRepository.save(user);
     }
 
     @Override
     public User findUserById(Long id) {
-//        try {
-//            return userRepository.findById(id).orElseThrow(() ->
-//                        new UserNotFoundException("User with id: " + id + " is not found!")
-//                );
-//        } catch (UserNotFoundException e) {
-//            throw new RuntimeException(e);
-//        }
         Optional<User> user = userRepository.findById(id);
         return user.orElse(null);
     }
@@ -83,14 +70,6 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public User updateUser(Long id, User user) {
         User existingUser = findUserById(id);
-
-//        System.out.println(user.getId());
-//        System.out.println(user.getName());
-//        System.out.println(user.getEmail());
-//        System.out.println(user.getTotalExperience());
-//        System.out.println(user.getImageUrl());
-////        System.out.println(user.getId());
-//        System.out.println(existingUser.getId() + " id......");
 
         if(existingUser != null) {
             if(user.getName() != null) existingUser.setName(user.getName());
@@ -118,16 +97,7 @@ public class UserServiceImpl implements UserService {
         try {
             if(user != null) userRepository.deleteById(id);
         } catch (Exception ex) {
-            try {
-                throw new UserNotFoundException("User with the id: " + id + " is not found!");
-            } catch (UserNotFoundException e) {
-                throw new RuntimeException(e);
-            }
+            throw new UserNotFoundException("User with the id: " + id + " is not found!");
         }
     }
-
-//    @Override
-//    public User SearchUserByEmail(String email) {
-//        return null;
-//    }
 }
