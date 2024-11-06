@@ -7,15 +7,15 @@ import com.example.job_portal.entity.User;
 import java.util.List;
 
 public interface UserService {
-    void createUser(UserDTO userDTO);
+    UserDTO createUser(UserDTO userDTO);
 
     User saveUser(User user);
 
-    User findUserById(Long id);
+    UserDTO findUserById(Long id);
 
-    User updateUser(Long id, User user);
+    UserDTO updateUser(Long id, UserDTO userDTO);
 
-    List<User> findAll();
+    List<UserDTO> findAll();
 
     void deleteUserById(Long id);
 }

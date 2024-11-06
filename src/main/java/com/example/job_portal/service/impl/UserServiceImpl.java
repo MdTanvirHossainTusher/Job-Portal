@@ -23,15 +23,17 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
+    private final UserDTO userDTO;
 
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository, UserDTO userDTO) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
+        this.userDTO = userDTO;
     }
 
     @Override
-    public void createUser(UserDTO userDTO) {
+    public UserDTO createUser(UserDTO userDTO) {
 
         if(userRepository.existsByEmail(userDTO.getEmail())) {
             throw new UserAlreadyExistsException("User has already exists!");
@@ -51,7 +53,7 @@ public class UserServiceImpl implements UserService {
         newUser.setRoles(roles);
         newUser.setProfile(new Profile());
 
-        userRepository.save(newUser);
+        return convertUserToUserDTO(userRepository.save(newUser));
     }
 
     @Override
@@ -60,40 +62,61 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
+    public UserDTO convertUserToUserDTO(User user) {
+        return new UserDTO(
+                user.getName(),
+                user.getEmail(),
+                user.getPassword(),
+                user.getImageUrl(),
+                user.getTotalExperience()
+        );
+    }
+
     @Override
-    public User findUserById(Long id) {
-        Optional<User> user = userRepository.findById(id);
-        return user.orElse(null);
+    public UserDTO findUserById(Long id) {
+        Optional<User> userOptional = userRepository.findById(id);
+        User user = userOptional.orElse(null);
+        return user != null ? convertUserToUserDTO(user) : null;
     }
 
     @Override
     @Transactional
-    public User updateUser(Long id, User user) {
-        User existingUser = findUserById(id);
+    public UserDTO updateUser(Long id, UserDTO userDTO) {
 
-        if(existingUser != null) {
-            if(user.getName() != null) existingUser.setName(user.getName());
-            if(user.getName() != null) existingUser.setImageUrl(user.getImageUrl());
-            if(user.getName() != null) existingUser.setPassword(user.getPassword());
-            if(user.getName() != null) existingUser.setTotalExperience(user.getTotalExperience());
+        User existingUser = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User with id: " + id + " not found!"));
 
-            userRepository.save(existingUser);
+        if(userDTO.getName() != null) {
+            existingUser.setName(userDTO.getName());
         }
-        else {
-            throw new UserNotFoundException("User with id: " + id + " not found!");
+        if(userDTO.getProfileImageUrl() != null) existingUser.setImageUrl(userDTO.getProfileImageUrl());
+        if(userDTO.getPassword() != null) {
+            existingUser.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         }
-        return existingUser;
+
+        if(userDTO.getTotalExperience() != null) existingUser.setTotalExperience(userDTO.getTotalExperience());
+        if(userDTO.getEmail() != null) existingUser.setEmail(userDTO.getEmail());
+
+        User savedUser = userRepository.save(existingUser);
+        return convertUserToUserDTO(savedUser);
     }
 
+
     @Override
-    public List<User> findAll() {
-        return userRepository.findAll();
+    public List<UserDTO> findAll() {
+        List<User> users = userRepository.findAll();
+        List<UserDTO> userDTOs = new ArrayList<>();
+
+        for (User user : users) {
+            userDTOs.add(convertUserToUserDTO(user));
+        }
+        return userDTOs;
     }
 
     @Override
     @Transactional
     public void deleteUserById(Long id) {
-        User user = findUserById(id);
+        UserDTO user = findUserById(id);
         try {
             if(user != null) userRepository.deleteById(id);
         } catch (Exception ex) {

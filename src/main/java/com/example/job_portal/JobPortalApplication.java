@@ -78,7 +78,11 @@ public class JobPortalApplication {
 //
 //		findAllJob(jobService); // problem
 //		System.out.println(jobService.findJobById(8L).getJobLocation());
-//		jobService.deleteJobById(3L);
+//		jobService.deleteJobById(8L);
+//		jobService.deleteJobById(10L);
+//		jobService.deleteJobById(11L);
+//		jobService.deleteJobById(12L);
+//		jobService.deleteJobById(13L);
 
 //		List<Job> jobs = jobDAO.filterJobByJobLocation("sk");
 //		List<Job> jobs = jobDAO.filterJobByJobPosition("in");
@@ -124,14 +128,14 @@ public class JobPortalApplication {
 //		updateCompany(companyService);
 //		findAllCompany(companyService);
 //		System.out.println(companyService.findCompanyById(1L).getCompanyName());
-//		companyService.deleteCompanyById(3L);
+//		companyService.deleteCompanyById(8L);
 	}
 
 
 	private void userOperations(UserService userService, UserDAO userDAO) {
 
 //		List<User> users = userDAO.searchUserByEmailPattern("vi");
-		List<User> users = userDAO.searchUserByYearOfExperience(2.0);
+//		List<User> users = userDAO.searchUserByYearOfExperience(2.0);
 //
 //
 //		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
@@ -145,9 +149,9 @@ public class JobPortalApplication {
 //		}
 //		List<User> users = userDAO.searchUserByUserCreationDate(userCreationDate);
 
-		for(User user: users) {
-			System.out.println(user.getEmail() + " " + user.getName() + " " + user.getTotalExperience());
-		}
+//		for(User user: users) {
+//			System.out.println(user.getEmail() + " " + user.getName() + " " + user.getTotalExperience());
+//		}
 
 
 //		System.out.println(users.get(0).getEmail());

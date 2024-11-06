@@ -1,6 +1,6 @@
 package com.example.job_portal.config;
 
-import com.example.job_portal.audit.SpringSecurityAuditorAware;
+//import com.example.job_portal.audit.SpringSecurityAuditorAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;

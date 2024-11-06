@@ -36,15 +36,15 @@ public class CompanyServiceImpl implements CompanyService {
         newCompany.setCompanyType(companyDTO.getCompanyType());
         newCompany.setWorkingMode(companyDTO.getWorkingMode());
 
-        Job job = new Job();
-        List<Job> jobs = new ArrayList<>();
-        jobs.add(job);
-
-        List<MyCompany> myCompanies = new ArrayList<>();
-        myCompanies.add(new MyCompany());
-
-        newCompany.setJobs(jobs);
-        newCompany.setMyCompanies(myCompanies);
+//        Job job = new Job();
+//        List<Job> jobs = new ArrayList<>();
+//        jobs.add(job);
+//
+//        List<MyCompany> myCompanies = new ArrayList<>();
+//        myCompanies.add(new MyCompany());
+//
+//        newCompany.setJobs(jobs);
+//        newCompany.setMyCompanies(myCompanies);
 
         companyRepository.save(newCompany);
     }
