@@ -24,13 +24,17 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
-    private final UserDTO userDTO;
+//    private final UserDTO userDTO;
 
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository, UserDTO userDTO) {
+    public UserServiceImpl(UserRepository userRepository,
+                           PasswordEncoder passwordEncoder,
+                           RoleRepository roleRepository
+//                           UserDTO userDTO
+    ) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
-        this.userDTO = userDTO;
+//        this.userDTO = userDTO;
     }
 
     @Override
@@ -63,16 +67,6 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
-//    public UserDTO convertUserToUserDTO(User user) {
-//        return new UserDTO(
-//                user.getName(),
-//                user.getEmail(),
-//                user.getPassword(),
-//                user.getImageUrl(),
-//                user.getTotalExperience()
-//        );
-//    }
-
     @Override
     public UserDTO findUserById(Long id) {
         Optional<User> userOptional = userRepository.findById(id);
@@ -97,6 +91,7 @@ public class UserServiceImpl implements UserService {
 
         if(userDTO.getTotalExperience() != null) existingUser.setTotalExperience(userDTO.getTotalExperience());
         if(userDTO.getEmail() != null) existingUser.setEmail(userDTO.getEmail());
+        if(userDTO.isDeleted()) existingUser.setDeleted(true);
 
         User savedUser = userRepository.save(existingUser);
         return EntityToEntityDTOConverter.convertUserToUserDTO(savedUser);
@@ -109,7 +104,9 @@ public class UserServiceImpl implements UserService {
         List<UserDTO> userDTOs = new ArrayList<>();
 
         for (User user : users) {
-            userDTOs.add(EntityToEntityDTOConverter.convertUserToUserDTO(user));
+            if(!user.isDeleted()) {
+                userDTOs.add(EntityToEntityDTOConverter.convertUserToUserDTO(user));
+            }
         }
         return userDTOs;
     }
@@ -119,7 +116,15 @@ public class UserServiceImpl implements UserService {
     public void deleteUserById(Long id) {
         UserDTO user = findUserById(id);
         try {
-            if(user != null) userRepository.deleteById(id);
+            System.out.println(" --");
+            if(user != null) {
+//                userRepository.deleteById(id);
+                user.setDeleted(true);
+
+                System.out.println(" -vvvv");
+
+            }
+            userRepository.save(user);
         } catch (Exception ex) {
             throw new UserNotFoundException("User with the id: " + id + " is not found!");
         }

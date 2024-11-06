@@ -14,7 +14,8 @@ public class EntityToEntityDTOConverter {
                 user.getEmail(),
                 user.getPassword(),
                 user.getImageUrl(),
-                user.getTotalExperience()
+                user.getTotalExperience(),
+                user.isDeleted()
         );
     }
 

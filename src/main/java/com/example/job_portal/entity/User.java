@@ -33,6 +33,9 @@ public class User extends AuditInfo {
     @Column(name = DbUser.IMAGE_URL)
     private String imageUrl;
 
+    @Column(name = DbUser.IS_USER_DELETED)
+    private boolean isDeleted = false;
+
     @Column(name = DbUser.TOTAL_EXPERIENCE)
     private Double totalExperience;
 
