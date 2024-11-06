@@ -1,8 +1,9 @@
 package com.example.job_portal.controller;
 
+import com.example.job_portal.dao.UserDAO;
 import com.example.job_portal.dto.UserDTO;
-import com.example.job_portal.entity.User;
 import com.example.job_portal.service.UserService;
+import com.example.job_portal.utils.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,12 +15,14 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final UserDAO userDAO;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, UserDAO userDAO) {
         this.userService = userService;
+        this.userDAO = userDAO;
     }
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<List<UserDTO>> getAllUsers() {
         List<UserDTO> users = userService.findAll();
         return new ResponseEntity<>(users, HttpStatus.OK);
@@ -31,7 +34,7 @@ public class UserController {
         return new ResponseEntity<>(userDTO, HttpStatus.OK);
     }
 
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) {
         UserDTO createdUser = userService.createUser(userDTO);
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
@@ -44,8 +47,23 @@ public class UserController {
     }
 
     @DeleteMapping("/{userId}")
-    public void deleteUser(@PathVariable Long userId) {
+    public ResponseEntity<?> deleteUser(@PathVariable Long userId) {
         userService.deleteUserById(userId);
-//        return new ResponseEntity<>(updatedUser, HttpStatus.OK);
+        return new ResponseEntity<>(
+                new ApiResponse("User deleted successfully", true),
+                HttpStatus.OK);
     }
+
+    @GetMapping("/search-by-email")
+    public ResponseEntity<List<UserDTO>> searchUsersByEmailPattern(@RequestParam String email) {
+        List<UserDTO> users = userDAO.searchUserByEmailPattern(email);
+        return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+
+    @GetMapping("/search-by-experience")
+    public ResponseEntity<List<UserDTO>> searchUsersByExperience(@RequestParam Double experience) {
+        List<UserDTO> users = userDAO.searchUserByYearOfExperience(experience);
+        return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+
 }

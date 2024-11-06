@@ -9,6 +9,7 @@ import com.example.job_portal.exception.UserNotFoundException;
 import com.example.job_portal.repository.RoleRepository;
 import com.example.job_portal.repository.UserRepository;
 import com.example.job_portal.service.UserService;
+import com.example.job_portal.utils.EntityToEntityDTOConvert;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,7 +54,7 @@ public class UserServiceImpl implements UserService {
         newUser.setRoles(roles);
         newUser.setProfile(new Profile());
 
-        return convertUserToUserDTO(userRepository.save(newUser));
+        return EntityToEntityDTOConvert.convertUserToUserDTO(userRepository.save(newUser));
     }
 
     @Override
@@ -62,21 +63,21 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
-    public UserDTO convertUserToUserDTO(User user) {
-        return new UserDTO(
-                user.getName(),
-                user.getEmail(),
-                user.getPassword(),
-                user.getImageUrl(),
-                user.getTotalExperience()
-        );
-    }
+//    public UserDTO convertUserToUserDTO(User user) {
+//        return new UserDTO(
+//                user.getName(),
+//                user.getEmail(),
+//                user.getPassword(),
+//                user.getImageUrl(),
+//                user.getTotalExperience()
+//        );
+//    }
 
     @Override
     public UserDTO findUserById(Long id) {
         Optional<User> userOptional = userRepository.findById(id);
         User user = userOptional.orElse(null);
-        return user != null ? convertUserToUserDTO(user) : null;
+        return user != null ? EntityToEntityDTOConvert.convertUserToUserDTO(user) : null;
     }
 
     @Override
@@ -98,7 +99,7 @@ public class UserServiceImpl implements UserService {
         if(userDTO.getEmail() != null) existingUser.setEmail(userDTO.getEmail());
 
         User savedUser = userRepository.save(existingUser);
-        return convertUserToUserDTO(savedUser);
+        return EntityToEntityDTOConvert.convertUserToUserDTO(savedUser);
     }
 
 
@@ -108,7 +109,7 @@ public class UserServiceImpl implements UserService {
         List<UserDTO> userDTOs = new ArrayList<>();
 
         for (User user : users) {
-            userDTOs.add(convertUserToUserDTO(user));
+            userDTOs.add(EntityToEntityDTOConvert.convertUserToUserDTO(user));
         }
         return userDTOs;
     }
