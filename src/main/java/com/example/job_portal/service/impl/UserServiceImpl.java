@@ -9,7 +9,7 @@ import com.example.job_portal.exception.UserNotFoundException;
 import com.example.job_portal.repository.RoleRepository;
 import com.example.job_portal.repository.UserRepository;
 import com.example.job_portal.service.UserService;
-import com.example.job_portal.utils.EntityToEntityDTOConvert;
+import com.example.job_portal.utils.EntityToEntityDTOConverter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService {
         newUser.setRoles(roles);
         newUser.setProfile(new Profile());
 
-        return EntityToEntityDTOConvert.convertUserToUserDTO(userRepository.save(newUser));
+        return EntityToEntityDTOConverter.convertUserToUserDTO(userRepository.save(newUser));
     }
 
     @Override
@@ -77,7 +77,7 @@ public class UserServiceImpl implements UserService {
     public UserDTO findUserById(Long id) {
         Optional<User> userOptional = userRepository.findById(id);
         User user = userOptional.orElse(null);
-        return user != null ? EntityToEntityDTOConvert.convertUserToUserDTO(user) : null;
+        return user != null ? EntityToEntityDTOConverter.convertUserToUserDTO(user) : null;
     }
 
     @Override
@@ -99,7 +99,7 @@ public class UserServiceImpl implements UserService {
         if(userDTO.getEmail() != null) existingUser.setEmail(userDTO.getEmail());
 
         User savedUser = userRepository.save(existingUser);
-        return EntityToEntityDTOConvert.convertUserToUserDTO(savedUser);
+        return EntityToEntityDTOConverter.convertUserToUserDTO(savedUser);
     }
 
 
@@ -109,7 +109,7 @@ public class UserServiceImpl implements UserService {
         List<UserDTO> userDTOs = new ArrayList<>();
 
         for (User user : users) {
-            userDTOs.add(EntityToEntityDTOConvert.convertUserToUserDTO(user));
+            userDTOs.add(EntityToEntityDTOConverter.convertUserToUserDTO(user));
         }
         return userDTOs;
     }

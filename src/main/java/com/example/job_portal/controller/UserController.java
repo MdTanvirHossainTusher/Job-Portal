@@ -54,16 +54,24 @@ public class UserController {
                 HttpStatus.OK);
     }
 
-    @GetMapping("/search-by-email")
-    public ResponseEntity<List<UserDTO>> searchUsersByEmailPattern(@RequestParam String email) {
-        List<UserDTO> users = userDAO.searchUserByEmailPattern(email);
+    @GetMapping("/filter")
+    public ResponseEntity<List<UserDTO>> filterFromUsers(@RequestParam(required = false) String email,
+                                                       @RequestParam(required = false) Double experience,
+                                                       @RequestParam(required = false) String universityName) {
+        List<UserDTO> users = userDAO.filterUsers(email, experience, universityName);
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
-    @GetMapping("/search-by-experience")
-    public ResponseEntity<List<UserDTO>> searchUsersByExperience(@RequestParam Double experience) {
-        List<UserDTO> users = userDAO.searchUserByYearOfExperience(experience);
-        return new ResponseEntity<>(users, HttpStatus.OK);
-    }
+//    @GetMapping("/search-by-email")
+//    public ResponseEntity<List<UserDTO>> searchUsersByEmailPattern(@RequestParam String email) {
+//        List<UserDTO> users = userDAO.searchUserByEmailPattern(email);
+//        return new ResponseEntity<>(users, HttpStatus.OK);
+//    }
+//
+//    @GetMapping("/search-by-experience")
+//    public ResponseEntity<List<UserDTO>> searchUsersByExperience(@RequestParam Double experience) {
+//        List<UserDTO> users = userDAO.searchUserByYearOfExperience(experience);
+//        return new ResponseEntity<>(users, HttpStatus.OK);
+//    }
 
 }

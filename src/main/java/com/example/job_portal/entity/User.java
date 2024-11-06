@@ -38,11 +38,9 @@ public class User extends AuditInfo {
 
     @ManyToMany(
             cascade = {
-//                    CascadeType.ALL
                     CascadeType.MERGE
             },
             fetch = FetchType.LAZY
-//            fetch = FetchType.EAGER
     )
     @JoinTable(
             name = "user_role",
