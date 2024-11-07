@@ -3,6 +3,7 @@ package com.example.job_portal.dao.impl;
 import com.example.job_portal.dao.UserDAO;
 import com.example.job_portal.dto.UserDTO;
 import com.example.job_portal.entity.User;
+import com.example.job_portal.exception.UserNotFoundException;
 import com.example.job_portal.utils.EntityToEntityDTOConverter;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
@@ -35,7 +36,7 @@ public class UserDAOImpl implements UserDAO {
             queryBuilder.append(" JOIN p.universities univ");
         }
 
-        queryBuilder.append(" WHERE 1=1");
+        queryBuilder.append(" WHERE 1=1 AND u.isDeleted = false");
         Map<String, Object> parameters = new HashMap<>();
 
         if (email != null && !email.trim().isEmpty()) {
@@ -53,11 +54,16 @@ public class UserDAOImpl implements UserDAO {
             parameters.put("universityName", "%" + universityName + "%");
         }
 
-        TypedQuery<User> query = entityManager.createQuery(queryBuilder.toString(), User.class);
+        try {
+            TypedQuery<User> query = entityManager.createQuery(queryBuilder.toString(), User.class);
 
-        parameters.forEach(query::setParameter);
+            parameters.forEach(query::setParameter);
 
-        return EntityToEntityDTOConverter.convertUsersToUsersDTO(query.getResultList());
+            return EntityToEntityDTOConverter.convertUsersToUsersDTO(query.getResultList());
+        }
+        catch (Exception e) {
+            throw new UserNotFoundException("No user found!");
+        }
 
     }
 

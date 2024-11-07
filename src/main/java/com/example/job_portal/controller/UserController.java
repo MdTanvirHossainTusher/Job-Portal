@@ -2,10 +2,13 @@ package com.example.job_portal.controller;
 
 import com.example.job_portal.dao.UserDAO;
 import com.example.job_portal.dto.UserDTO;
+import com.example.job_portal.exception.UserNotFoundException;
 import com.example.job_portal.service.UserService;
-import com.example.job_portal.utils.ApiResponse;
+import com.example.job_portal.entity.api_response.ApiResponse;
+import com.example.job_portal.entity.api_response.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+//import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -58,8 +61,21 @@ public class UserController {
     public ResponseEntity<List<UserDTO>> filterFromUsers(@RequestParam(required = false) String email,
                                                        @RequestParam(required = false) Double experience,
                                                        @RequestParam(required = false) String universityName) {
-        List<UserDTO> users = userDAO.filterUsers(email, experience, universityName);
-        return new ResponseEntity<>(users, HttpStatus.OK);
+        try {
+            List<UserDTO> users = userDAO.filterUsers(email, experience, universityName);
+            return new ResponseEntity<>(users, HttpStatus.OK);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+//        catch (UserNotFoundException e) {
+//            return new ResponseEntity<>(new ErrorResponse(e.getMessage()), HttpStatus.NOT_FOUND);
+//        }
+//        catch (Exception e) {
+//            return new ResponseEntity<>(
+//                    new ErrorResponse("An unexpected error occurred while filtering users"),
+//                    HttpStatus.INTERNAL_SERVER_ERROR
+//            );
+//        }
     }
 
 //    @GetMapping("/search-by-email")

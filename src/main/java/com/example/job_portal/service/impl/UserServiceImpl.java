@@ -44,6 +44,7 @@ public class UserServiceImpl implements UserService {
             throw new UserAlreadyExistsException("User has already exists!");
         }
         User newUser = new User();
+        newUser.setId(userDTO.getId());
         newUser.setName(userDTO.getName());
         newUser.setEmail(userDTO.getEmail());
         newUser.setImageUrl(userDTO.getProfileImageUrl());
@@ -69,8 +70,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO findUserById(Long id) {
-        Optional<User> userOptional = userRepository.findById(id);
+        Optional<User> userOptional = userRepository.findUserById(id);
         User user = userOptional.orElse(null);
+//        User user = userRepository.findById(id);
         return user != null ? EntityToEntityDTOConverter.convertUserToUserDTO(user) : null;
     }
 
@@ -78,20 +80,20 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserDTO updateUser(Long id, UserDTO userDTO) {
 
-        User existingUser = userRepository.findById(id)
+        User existingUser = userRepository.findUserById(id)
                 .orElseThrow(() -> new UserNotFoundException("User with id: " + id + " not found!"));
 
         if(userDTO.getName() != null) {
             existingUser.setName(userDTO.getName());
         }
         if(userDTO.getProfileImageUrl() != null) existingUser.setImageUrl(userDTO.getProfileImageUrl());
-        if(userDTO.getPassword() != null) {
-            existingUser.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-        }
+//        if(userDTO.getPassword() != null) {
+//            existingUser.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+//        }
 
         if(userDTO.getTotalExperience() != null) existingUser.setTotalExperience(userDTO.getTotalExperience());
-        if(userDTO.getEmail() != null) existingUser.setEmail(userDTO.getEmail());
-        if(userDTO.isDeleted()) existingUser.setDeleted(true);
+//        if(userDTO.getEmail() != null) existingUser.setEmail(userDTO.getEmail());
+//        if(!userDTO.isDeleted()) existingUser.setDeleted(true);
 
         User savedUser = userRepository.save(existingUser);
         return EntityToEntityDTOConverter.convertUserToUserDTO(savedUser);
@@ -100,7 +102,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDTO> findAll() {
-        List<User> users = userRepository.findAll();
+        List<User> users = userRepository.findAllUser();
         List<UserDTO> userDTOs = new ArrayList<>();
 
         for (User user : users) {
@@ -114,19 +116,43 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void deleteUserById(Long id) {
-        UserDTO user = findUserById(id);
-        try {
-            System.out.println(" --");
-            if(user != null) {
-//                userRepository.deleteById(id);
-                user.setDeleted(true);
+        Optional<User> userOptional = userRepository.findUserById(id);
+        User user = userOptional.orElse(null);
 
-                System.out.println(" -vvvv");
-
-            }
-            userRepository.save(user);
-        } catch (Exception ex) {
+        if (user != null) {
+            userRepository.softDeleteUserById(id);
+        } else {
             throw new UserNotFoundException("User with the id: " + id + " is not found!");
         }
     }
+
+//    @Override
+//    @Transactional
+//    public void deleteUserById(Long id) {
+////        UserDTO userDTO = findUserById(id);
+//
+////        Optional<User> user = userRepository.findById(id);
+//
+//        Optional<User> userOptional = userRepository.findUserById(id);
+//        User user = userOptional.orElse(null);
+//
+////        User user = new User();
+//        try {
+//            System.out.println(" --");
+//
+//            if(user != null) {
+////                userRepository.deleteById(id);
+//                user.setDeleted(true);
+////                saveUser(user);
+////                updateUser(user.getId(), user);
+//
+//                System.out.println(" -vvvv");
+////
+//            }
+////            userRepository.save(user);
+//        } catch (Exception ex) {
+//            throw new UserNotFoundException("User with the id: " + id + " is not found!");
+//        }
+//    }
+//
 }

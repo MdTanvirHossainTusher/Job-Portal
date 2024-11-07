@@ -10,6 +10,7 @@ public class EntityToEntityDTOConverter {
 
     public static UserDTO convertUserToUserDTO(User user) {
         return new UserDTO(
+                user.getId(),
                 user.getName(),
                 user.getEmail(),
                 user.getPassword(),

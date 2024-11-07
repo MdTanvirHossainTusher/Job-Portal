@@ -1,4 +1,4 @@
-package com.example.job_portal.utils;
+package com.example.job_portal.entity.api_response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
