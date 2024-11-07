@@ -8,6 +8,7 @@ import com.example.job_portal.service.RoleService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,14 +37,14 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     @Transactional
-    public void createRole(String roleName) {
-
+    public Role createRole(String roleName) {
+        Role newRole = new Role();
         if(!roleRepository.existsByRole(roleName)) {
-            Role newRole = new Role();
             String newRoleName = "ROLE_" + roleName.toUpperCase();
             newRole.setRole(newRoleName);
             roleRepository.save(newRole);
         }
+        return newRole;
     }
 
     @Override
@@ -79,17 +80,37 @@ public class RoleServiceImpl implements RoleService {
                     user.getRoles().remove(role);
                 }
             }
+            userRepository.save(user);
         }
+
     }
 
     @Override
-    public void deleteById(Long id) {
-        roleRepository.deleteById(id);
+    public void deleteById(Long roleId) {
+        roleRepository.deleteById(roleId);
     }
 
     @Override
     public List<String> getUserRoles(Long userId) {
-        return roleRepository.getRoleByUserId(userId);
+//        return userRepository.getRoleByUserId(userId);
+//        return roleRepository.getRoleByUserId(userId);
+        Optional<User> userOptional = userRepository.findUserById(userId);
+        User user = userOptional.orElse(null);
+
+        List<String> roles = new ArrayList<>();
+
+        if(user != null) {
+            for(Role role: user.getRoles()) {
+//                Long roleId = role.getId();
+//                roles.add()
+//                if(role.getId()) {
+//                    user.getRoles().remove(role);
+//                }
+                roles.add(role.getRole());
+            }
+//            userRepository.save(user);
+        }
+        return roles;
     }
 
     public Role findByRole(String roleName) {

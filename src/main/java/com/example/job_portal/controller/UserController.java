@@ -2,13 +2,10 @@ package com.example.job_portal.controller;
 
 import com.example.job_portal.dao.UserDAO;
 import com.example.job_portal.dto.UserDTO;
-import com.example.job_portal.exception.UserNotFoundException;
 import com.example.job_portal.service.UserService;
 import com.example.job_portal.entity.api_response.ApiResponse;
-import com.example.job_portal.entity.api_response.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-//import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

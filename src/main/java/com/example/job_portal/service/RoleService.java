@@ -10,13 +10,13 @@ public interface RoleService {
 
     List<Role> findAllRoles();
 
-    void createRole(String roleName);
+    Role createRole(String roleName);
 
     void updateUserRole(Long userId, String roleName);
 
     void deleteUserRole(Long userId, String roleName);
 
-    void deleteById(Long id);
+    void deleteById(Long roleId);
 
     List<String> getUserRoles(Long id);
 }

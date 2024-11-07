@@ -2,6 +2,7 @@ package com.example.job_portal.repository;
 
 import com.example.job_portal.entity.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -12,7 +13,8 @@ public interface RoleRepository extends JpaRepository<Role, Long> {
 
     boolean existsByRole(String role);
 
-    List<String> getRoleByUserId(Long id);
+//    @Query("SELECT u, r FROM User u LEFT JOIN Role r on u.user_id ")
+//    List<String> getRoleByUserId(Long id);
 
     void deleteByRole(String roleName);
 }
