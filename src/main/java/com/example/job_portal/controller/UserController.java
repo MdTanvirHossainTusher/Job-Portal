@@ -67,27 +67,6 @@ public class UserController {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-//        catch (UserNotFoundException e) {
-//            return new ResponseEntity<>(new ErrorResponse(e.getMessage()), HttpStatus.NOT_FOUND);
-//        }
-//        catch (Exception e) {
-//            return new ResponseEntity<>(
-//                    new ErrorResponse("An unexpected error occurred while filtering users"),
-//                    HttpStatus.INTERNAL_SERVER_ERROR
-//            );
-//        }
     }
-
-//    @GetMapping("/search-by-email")
-//    public ResponseEntity<List<UserDTO>> searchUsersByEmailPattern(@RequestParam String email) {
-//        List<UserDTO> users = userDAO.searchUserByEmailPattern(email);
-//        return new ResponseEntity<>(users, HttpStatus.OK);
-//    }
-//
-//    @GetMapping("/search-by-experience")
-//    public ResponseEntity<List<UserDTO>> searchUsersByExperience(@RequestParam Double experience) {
-//        List<UserDTO> users = userDAO.searchUserByYearOfExperience(experience);
-//        return new ResponseEntity<>(users, HttpStatus.OK);
-//    }
 
 }

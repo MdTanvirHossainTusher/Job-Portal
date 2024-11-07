@@ -41,6 +41,7 @@ public class UserServiceImpl implements UserService {
     public UserDTO createUser(UserDTO userDTO) {
 
         if(userRepository.existsByEmail(userDTO.getEmail())) {
+//        if(userRepository.existsByEmailAndIsDeletedFalse(userDTO.getEmail())) {
             throw new UserAlreadyExistsException("User has already exists!");
         }
         User newUser = new User();
@@ -71,6 +72,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO findUserById(Long id) {
         Optional<User> userOptional = userRepository.findUserById(id);
+//        Optional<User> userOptional = userRepository.findByIdAndIsDeletedFalse(id);
         User user = userOptional.orElse(null);
 //        User user = userRepository.findById(id);
         return user != null ? EntityToEntityDTOConverter.convertUserToUserDTO(user) : null;
@@ -81,6 +83,7 @@ public class UserServiceImpl implements UserService {
     public UserDTO updateUser(Long id, UserDTO userDTO) {
 
         User existingUser = userRepository.findUserById(id)
+//        User existingUser = userRepository.findByIdAndIsDeletedFalse(id)
                 .orElseThrow(() -> new UserNotFoundException("User with id: " + id + " not found!"));
 
         if(userDTO.getName() != null) {
@@ -103,6 +106,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDTO> findAll() {
         List<User> users = userRepository.findAllUser();
+//        List<User> users = userRepository.findByIsDeletedFalse();
         List<UserDTO> userDTOs = new ArrayList<>();
 
         for (User user : users) {
@@ -117,10 +121,12 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void deleteUserById(Long id) {
         Optional<User> userOptional = userRepository.findUserById(id);
+//        Optional<User> userOptional = userRepository.findByIdAndIsDeletedFalse(id);
         User user = userOptional.orElse(null);
 
         if (user != null) {
             userRepository.softDeleteUserById(id);
+//            userRepository.deleteByIdAndIsDeletedFalse(id);
         } else {
             throw new UserNotFoundException("User with the id: " + id + " is not found!");
         }

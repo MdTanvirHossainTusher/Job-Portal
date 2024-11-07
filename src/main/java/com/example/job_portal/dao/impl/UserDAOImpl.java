@@ -24,11 +24,6 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public List<UserDTO> filterUsers(String email, Double experience, String universityName) {
-//        TypedQuery<User> query = entityManager.createQuery(
-//                "SELECT u FROM User u WHERE u.email LIKE :pattern", User.class
-//        );
-//        query.setParameter("pattern", "%" + email + "%");
-//        return EntityToEntityDTOConverter.convertUsersToUsersDTO(query.getResultList());
 
         StringBuilder queryBuilder = new StringBuilder("SELECT DISTINCT u FROM User u JOIN u.profile p");
 
@@ -67,27 +62,4 @@ public class UserDAOImpl implements UserDAO {
 
     }
 
-//    @Override
-//    public List<UserDTO> searchUserByEmailPattern(String pattern) {
-//
-//        TypedQuery<User> query = entityManager.createQuery(
-//                "SELECT u FROM User u WHERE u.email LIKE :pattern", User.class
-//        );
-//        query.setParameter("pattern", "%" + pattern + "%");
-//
-//        return EntityToEntityDTOConverter.convertUsersToUsersDTO(query.getResultList());
-//
-//    }
-//
-//    @Override
-//    public List<UserDTO> searchUserByYearOfExperience(Double yearOfExperience) {
-//
-//        TypedQuery<User> query = entityManager.createQuery(
-//                "SELECT u FROM User u WHERE u.totalExperience = :year", User.class
-//        );
-//        query.setParameter("year", yearOfExperience);
-//
-//        return EntityToEntityDTOConverter.convertUsersToUsersDTO(query.getResultList());
-//
-//    }
 }
