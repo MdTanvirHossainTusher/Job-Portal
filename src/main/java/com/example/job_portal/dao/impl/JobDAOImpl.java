@@ -20,7 +20,6 @@ public class JobDAOImpl implements JobDAO {
 
 
     @Override
-//    @Transactional
     public List<Job> filterJobByJobLocation(String jobLocation) {
         TypedQuery<Job> query = entityManager.createQuery(
                 "SELECT j FROM Job j WHERE LOWER(j.jobLocation) LIKE :data", Job.class
@@ -30,7 +29,6 @@ public class JobDAOImpl implements JobDAO {
     }
 
     @Override
-//    @Transactional
     public List<Job> filterJobByJobPosition(String jobPosition) {
         TypedQuery<Job> query = entityManager.createQuery(
                 "SELECT j FROM Job j WHERE LOWER(j.jobPosition) LIKE :data", Job.class

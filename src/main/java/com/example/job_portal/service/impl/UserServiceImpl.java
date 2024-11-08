@@ -1,6 +1,5 @@
 package com.example.job_portal.service.impl;
 
-import com.example.job_portal.dto.RoleDTO;
 import com.example.job_portal.dto.UserDTO;
 import com.example.job_portal.entity.Profile;
 import com.example.job_portal.entity.Role;
@@ -25,24 +24,20 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
-//    private final UserDTO userDTO;
 
     public UserServiceImpl(UserRepository userRepository,
                            PasswordEncoder passwordEncoder,
                            RoleRepository roleRepository
-//                           UserDTO userDTO
     ) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
-//        this.userDTO = userDTO;
     }
 
     @Override
     public UserDTO createUser(UserDTO userDTO) {
 
         if(userRepository.existsByEmail(userDTO.getEmail())) {
-//        if(userRepository.existsByEmailAndIsDeletedFalse(userDTO.getEmail())) {
             throw new UserAlreadyExistsException("User has already exists!");
         }
         User newUser = new User();
@@ -73,9 +68,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO findUserById(Long id) {
         Optional<User> userOptional = userRepository.findUserById(id);
-//        Optional<User> userOptional = userRepository.findByIdAndIsDeletedFalse(id);
         User user = userOptional.orElse(null);
-//        User user = userRepository.findById(id);
         return user != null ? EntityToEntityDTOConverter.convertUserToUserDTO(user) : null;
     }
 
@@ -84,20 +77,14 @@ public class UserServiceImpl implements UserService {
     public UserDTO updateUser(Long id, UserDTO userDTO) {
 
         User existingUser = userRepository.findUserById(id)
-//        User existingUser = userRepository.findByIdAndIsDeletedFalse(id)
                 .orElseThrow(() -> new UserNotFoundException("User with id: " + id + " not found!"));
 
         if(userDTO.getName() != null) {
             existingUser.setName(userDTO.getName());
         }
         if(userDTO.getProfileImageUrl() != null) existingUser.setImageUrl(userDTO.getProfileImageUrl());
-//        if(userDTO.getPassword() != null) {
-//            existingUser.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-//        }
 
         if(userDTO.getTotalExperience() != null) existingUser.setTotalExperience(userDTO.getTotalExperience());
-//        if(userDTO.getEmail() != null) existingUser.setEmail(userDTO.getEmail());
-//        if(!userDTO.isDeleted()) existingUser.setDeleted(true);
 
         User savedUser = userRepository.save(existingUser);
         return EntityToEntityDTOConverter.convertUserToUserDTO(savedUser);
@@ -107,7 +94,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDTO> findAll() {
         List<User> users = userRepository.findAllUser();
-//        List<User> users = userRepository.findByIsDeletedFalse();
         List<UserDTO> userDTOs = new ArrayList<>();
 
         for (User user : users) {
@@ -122,12 +108,10 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void deleteUserById(Long id) {
         Optional<User> userOptional = userRepository.findUserById(id);
-//        Optional<User> userOptional = userRepository.findByIdAndIsDeletedFalse(id);
         User user = userOptional.orElse(null);
 
         if (user != null) {
             userRepository.softDeleteUserById(id);
-//            userRepository.deleteByIdAndIsDeletedFalse(id);
         } else {
             throw new UserNotFoundException("User with the id: " + id + " is not found!");
         }
@@ -136,31 +120,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<String> getUserRoles(Long userId) {
-//    public List<RoleDTO> getUserRoles(Long userId) {
-
         Optional<User> userOptional = userRepository.findUserById(userId);
         User user = userOptional.orElse(null);
 
         List<String> roles = new ArrayList<>();
-//        List<RoleDTO> roles = new ArrayList<>();
-//        roles.clear();
 
         if(user != null) {
-            System.out.println(user.getRoles() + " --- ");
-//            for(Role role: user.getRoles()) {
             for(Role role: user.getRoles()) {
-//                Long roleId = role.getId();
-//                roles.add()s
-//                if(role.getId()) {
-//                    user.getRoles().remove(role);
-//                }
-//                System.out.println(role.getRole() + " role ---");
-//                System.out.println(role.getRoleName() + " role ---");
-
                 roles.add(role.getRole());
-//                roles.add(EntityToEntityDTOConverter.convertRoleToRoleDTO(role));
             }
-//            userRepository.save(user);
         }
         return roles;
     }
@@ -171,63 +139,16 @@ public class UserServiceImpl implements UserService {
         Optional<User> userOptional = userRepository.findUserById(userId);
         User user = userOptional.orElse(null);
 
-        System.out.println(user + " user ");
-
-        System.out.println(user.getId() + " uuuuuuuuuuuuuuuuuuuu");
-
-
         if(user != null) {
-            System.out.println("dhukse...");
             for(Role role: user.getRoles()) {
                 String newRoleName = "ROLE_" + roleName.toUpperCase();
-//                if(role.getRole().contains(roleName.toLowerCase())) {
-
-                System.out.println(newRoleName + " nnnnnnnnnnnnnnnn ");
 
                 if(role.getRole().equals(newRoleName)) {
-                    System.out.println(user.getId() + " ididid ");
                     user.getRoles().remove(role);
-
-                    System.out.println("removed -----------");
                     userRepository.save(user);
-                    System.out.println("saved ==================");
-
                 }
             }
-//            userRepository.save(user);
         }
-
     }
 
-
-
-//    @Override
-//    @Transactional
-//    public void deleteUserById(Long id) {
-////        UserDTO userDTO = findUserById(id);
-//
-////        Optional<User> user = userRepository.findById(id);
-//
-//        Optional<User> userOptional = userRepository.findUserById(id);
-//        User user = userOptional.orElse(null);
-//
-////        User user = new User();
-//        try {
-//            System.out.println(" --");
-//
-//            if(user != null) {
-////                userRepository.deleteById(id);
-//                user.setDeleted(true);
-////                saveUser(user);
-////                updateUser(user.getId(), user);
-//
-//                System.out.println(" -vvvv");
-////
-//            }
-////            userRepository.save(user);
-//        } catch (Exception ex) {
-//            throw new UserNotFoundException("User with the id: " + id + " is not found!");
-//        }
-//    }
-//
 }

@@ -1,11 +1,10 @@
 package com.example.job_portal.controller;
 
 import com.example.job_portal.dao.UserDAO;
-import com.example.job_portal.dto.RoleDTO;
 import com.example.job_portal.dto.UserDTO;
+import com.example.job_portal.entity.api_response.ApiResponse;
 import com.example.job_portal.service.RoleService;
 import com.example.job_portal.service.UserService;
-import com.example.job_portal.entity.api_response.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -92,10 +91,8 @@ public class UserController {
     public ResponseEntity<Void> deleteUserRole(
             @PathVariable("userId") Long userId,
             @RequestParam(required = true) String roleName
-//            @PathVariable("roleName") String roleName
     ) {
         try {
-            System.out.println("+++++++++++++++");
             userService.deleteUserRole(userId, roleName);
             return ResponseEntity.noContent().build();
         } catch (Exception e) {

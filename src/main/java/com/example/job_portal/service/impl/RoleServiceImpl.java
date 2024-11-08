@@ -1,7 +1,6 @@
 package com.example.job_portal.service.impl;
 
 import com.example.job_portal.dto.RoleDTO;
-import com.example.job_portal.dto.UserDTO;
 import com.example.job_portal.entity.Role;
 import com.example.job_portal.entity.User;
 import com.example.job_portal.repository.RoleRepository;
@@ -35,83 +34,25 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public List<RoleDTO> findAllRoles() {
-
         List<Role> roles = roleRepository.findAll();
-//        List<User> users = userRepository.findByIsDeletedFalse();
         List<RoleDTO> roleDTOS = new ArrayList<>();
 
         for (Role role : roles) {
             roleDTOS.add(EntityToEntityDTOConverter.convertRoleToRoleDTO(role));
         }
         return roleDTOS;
-//        return roleRepository.findAll();
     }
 
     @Override
     @Transactional
-//    public RoleDTO createRole(String roleName) {
     public RoleDTO createRole(RoleDTO roleDTO) {
         Role newRole = new Role();
         if(!roleRepository.existsByRole(roleDTO.getRoleName())) {
-//            System.out.println(roleDTO.getRoleName() + " ssssseer ");
-//
             String newRoleName = "ROLE_" + roleDTO.getRoleName().toUpperCase();
-
-//            System.out.println(newRoleName + " nnnnnnnnnnnnnnnnnnn ");
-
             newRole.setRole(newRoleName);
         }
         return EntityToEntityDTOConverter.convertRoleToRoleDTO(roleRepository.save(newRole));
-//        return newRole;
     }
-
-//    @Override
-//    @Transactional
-//    public void updateUserRole(Long userId, String roleName) {
-//
-//        Optional<User> userOptional = userRepository.findUserById(userId);
-//        User user = userOptional.orElse(null);
-//
-//        if(user != null) {
-//            for(Role role: user.getRoles()) {
-//                if(!role.getRole().contains(roleName.toUpperCase())) {
-//                    String newRoleName = "ROLE_" + roleName.toUpperCase();
-//
-//                    Role existingRole = roleRepository.getByRole(newRoleName);
-//                    List<Role> roles = user.getRoles();
-//                    roles.add(existingRole);
-//                    user.setRoles(roles);
-//                    userRepository.save(user);
-//                }
-//            }
-//        }
-//    }
-
-//    @Override
-//    @Transactional
-//    public void deleteUserRole(Long userId, String roleName) {
-//        Optional<User> userOptional = userRepository.findUserById(userId);
-//        User user = userOptional.orElse(null);
-//
-//
-//        if(user != null) {
-//            for(Role role: user.getRoles()) {
-//                String newRoleName = "ROLE_" + role.getRole().toUpperCase();
-////                if(role.getRole().contains(roleName.toLowerCase())) {
-//                if(role.getRole().contains(newRoleName)) {
-//                    System.out.println(user.getId() + " ididid ");
-//                    user.getRoles().remove(role);
-//
-//                    System.out.println("removed -----------");
-//                    userRepository.save(user);
-//                    System.out.println("saved ==================");
-//
-//                }
-//            }
-////            userRepository.save(user);
-//        }
-//
-//    }
 
     @Override
     @Transactional
@@ -127,46 +68,16 @@ public class RoleServiceImpl implements RoleService {
             Optional<User> optionalUser = userRepository.findUserById(userId);
             User user = optionalUser.orElse(null);
 
-//            System.out.println(user.getId() + " " + user.getRoles() + "----");
-
             if(user != null) {
-//                String newRoleName = "ROLE_" + role.toUpperCase();
-//                System.out.println(newRoleName + " nnnn ");
                 Role existingRole = roleRepository.getByRole(newRoleName);
-
-//                System.out.println(existingRole.getId() + " ididid");
 
                 if (!user.getRoles().contains(existingRole)) {
                     user.getRoles().add(existingRole);
-//                    System.out.println(existingRole + " eeeeeeeeeeeee ");
                     userRepository.save(user);
                 }
             }
         }
     }
-
-//    @Override
-//    public List<String> getUserRoles(Long userId) {
-////        return userRepository.getRoleByUserId(userId);
-////        return roleRepository.getRoleByUserId(userId);
-//        Optional<User> userOptional = userRepository.findUserById(userId);
-//        User user = userOptional.orElse(null);
-//
-//        List<String> roles = new ArrayList<>();
-//
-//        if(user != null) {
-//            for(Role role: user.getRoles()) {
-////                Long roleId = role.getId();
-////                roles.add()
-////                if(role.getId()) {
-////                    user.getRoles().remove(role);
-////                }
-//                roles.add(role.getRole());
-//            }
-////            userRepository.save(user);
-//        }
-//        return roles;
-//    }
 
     public Role findByRole(String roleName) {
         return roleRepository.getByRole(roleName);

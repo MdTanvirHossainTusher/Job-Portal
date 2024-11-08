@@ -13,10 +13,5 @@ public interface RoleRepository extends JpaRepository<Role, Long> {
 
     boolean existsByRole(String role);
 
-//    Role findByRoleName(String roleName);
-
-//    @Query("SELECT u, r FROM User u LEFT JOIN Role r on u.user_id ")
-//    List<String> getRoleByUserId(Long id);
-
     void deleteByRole(String roleName);
 }
