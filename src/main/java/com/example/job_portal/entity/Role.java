@@ -12,7 +12,14 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = DbRole.TABLE_NAME)
+@Table(
+        name = DbRole.TABLE_NAME,
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "unique_user_role",
+                        columnNames = {DbRole.ROLE}
+                )
+        })
 public class Role extends AuditInfo {
 
     @Column(name = DbRole.ROLE)

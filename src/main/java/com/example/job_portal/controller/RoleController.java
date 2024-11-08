@@ -41,25 +41,25 @@ public class RoleController {
 
     @DeleteMapping("/{roleId}")
     public ResponseEntity<?> deleteRoleById(@PathVariable Long roleId) {
-        roleService.deleteById(roleId);
+        roleService.deleteRoleById(roleId);
         return new ResponseEntity<>(new ApiResponse("Role deleted successfully!", true),
                 HttpStatus.OK);
     }
 
 //    void deleteUserRole(Long userId, String roleName);
 
-    @DeleteMapping("/{userId}/roles/{roleName}")
-    public ResponseEntity<Void> deleteUserRole(
-            @PathVariable("userId") Long userId,
-            @PathVariable("roleName") String roleName
-    ) {
-        try {
-            roleService.deleteUserRole(userId, roleName);
-            return ResponseEntity.noContent().build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
+//    @DeleteMapping("/{userId}/roles/{roleName}")
+//    public ResponseEntity<Void> deleteUserRole(
+//            @PathVariable("userId") Long userId,
+//            @PathVariable("roleName") String roleName
+//    ) {
+//        try {
+//            roleService.deleteUserRole(userId, roleName);
+//            return ResponseEntity.noContent().build();
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+//        }
+//    }
 
 
 }

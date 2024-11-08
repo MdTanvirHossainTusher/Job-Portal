@@ -19,7 +19,9 @@ public interface RoleService {
 
     void deleteUserRole(Long userId, String roleName);
 
-    void deleteById(Long roleId);
+    void deleteRoleById(Long roleId);
+
+    void addRoleToUser(Long userId, String role);
 
 //    List<String> getUserRoles(Long id);
 }

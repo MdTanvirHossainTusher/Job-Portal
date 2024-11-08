@@ -104,8 +104,33 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public void deleteById(Long roleId) {
+    public void deleteRoleById(Long roleId) {
         roleRepository.deleteById(roleId);
+    }
+
+    @Override
+    public void addRoleToUser(Long userId, String role) {
+        String newRoleName = "ROLE_" + role.toUpperCase();
+        if(roleRepository.existsByRole(newRoleName)) {
+            Optional<User> optionalUser = userRepository.findUserById(userId);
+            User user = optionalUser.orElse(null);
+
+//            System.out.println(user.getId() + " " + user.getRoles() + "----");
+
+            if(user != null) {
+//                String newRoleName = "ROLE_" + role.toUpperCase();
+//                System.out.println(newRoleName + " nnnn ");
+                Role existingRole = roleRepository.getByRole(newRoleName);
+
+//                System.out.println(existingRole.getId() + " ididid");
+
+                if (!user.getRoles().contains(existingRole)) {
+                    user.getRoles().add(existingRole);
+//                    System.out.println(existingRole + " eeeeeeeeeeeee ");
+                    userRepository.save(user);
+                }
+            }
+        }
     }
 
 //    @Override

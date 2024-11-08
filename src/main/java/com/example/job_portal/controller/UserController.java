@@ -72,11 +72,39 @@ public class UserController {
 
     @GetMapping("/{userId}/roles")
     public ResponseEntity<List<String>> getUserRolesName(@PathVariable Long userId) {
-//    public ResponseEntity<List<RoleDTO>> getUserRolesName(@PathVariable Long userId) {
-//        return new ResponseEntity<>(roleService.getUserRoles(userId), HttpStatus.OK);
-        System.out.println(" calling....");
         return new ResponseEntity<>(userService.getUserRoles(userId), HttpStatus.OK);
-//        return new ResponseEntity<>(userService.getUserRoles(userId), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{userId}/roles/{roleName}")
+    public ResponseEntity<Void> deleteUserRole(
+            @PathVariable("userId") Long userId,
+            @PathVariable("roleName") String roleName
+    ) {
+        try {
+            roleService.deleteUserRole(userId, roleName);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PostMapping("/{userId}/create-role")
+    public ResponseEntity<Void> addNewRoleToUser(
+            @PathVariable("userId") Long userId,
+            @RequestParam(required = true) String roleName
+//            @PathVariable("roleName") String roleName
+    ) {
+        try {
+//            System.out.println(" =====================");
+            roleService.addRoleToUser(userId, roleName);
+//            System.out.println(" ++++++++ ");
+
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+//            System.out.println(" .............");
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
 }
