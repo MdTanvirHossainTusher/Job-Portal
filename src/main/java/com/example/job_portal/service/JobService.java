@@ -10,16 +10,18 @@ import java.util.List;
 
 public interface JobService {
 
-    JobDTO createJob(JobDTO jobDTO);
+    JobDTO createJob(Long companyId, JobDTO jobDTO);
 
     Job saveJob(Job job);
 
-    JobDTO findJobById(Long id);
+    JobDTO findJobById(Long companyId, Long id);
 
-    JobDTO updateJob(Long id, JobDTO companyDTO);
+    JobDTO updateJob(Long companyId, Long id, JobDTO companyDTO);
 
-    List<JobDTO> findAllJobs();
+//    List<JobDTO> getAllJobsUnderOneCompany(Long companyId);
 
-    void deleteJobById(Long companyId);
+    void deleteJobById(Long companyId, Long jobId);
+
+    void applyToJobByUser(Long companyId, Long jobId, Long userId);
 
 }

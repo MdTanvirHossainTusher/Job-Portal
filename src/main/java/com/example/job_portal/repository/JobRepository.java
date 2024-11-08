@@ -32,10 +32,14 @@ public interface JobRepository extends JpaRepository<Job, Long> {
     @Query("SELECT j FROM Job j WHERE j.isDeleted = false")
     List<Job> findAllJobs();
 
-    @Query("SELECT j FROM Job j WHERE j.isDeleted = false AND j.id = :id")
-    Optional<Job> findJobById(@Param("id") Long id);
+    @Query("SELECT j FROM Job j WHERE j.isDeleted = false AND j.companyId = :companyId AND j.id = :jobId")
+    Optional<Job> findJobById(
+            @Param("companyId") Long companyId,
+            @Param("jobId") Long id);
 
     @Modifying
-    @Query("UPDATE Job j SET j.isDeleted = true WHERE j.id = :id")
-    void softDeleteJobById(@Param("id") Long id);
+    @Query("UPDATE Job j SET j.isDeleted = true WHERE j.companyId = :companyId AND j.id = :jobId")
+    void softDeleteJobById(
+            @Param("companyId") Long companyId,
+            @Param("jobId") Long jobId);
 }
