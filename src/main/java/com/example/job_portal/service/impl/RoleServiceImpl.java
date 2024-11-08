@@ -1,10 +1,13 @@
 package com.example.job_portal.service.impl;
 
+import com.example.job_portal.dto.RoleDTO;
+import com.example.job_portal.dto.UserDTO;
 import com.example.job_portal.entity.Role;
 import com.example.job_portal.entity.User;
 import com.example.job_portal.repository.RoleRepository;
 import com.example.job_portal.repository.UserRepository;
 import com.example.job_portal.service.RoleService;
+import com.example.job_portal.utils.EntityToEntityDTOConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,20 +34,35 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public List<Role> findAllRoles() {
-        return roleRepository.findAll();
+    public List<RoleDTO> findAllRoles() {
+
+        List<Role> roles = roleRepository.findAll();
+//        List<User> users = userRepository.findByIsDeletedFalse();
+        List<RoleDTO> roleDTOS = new ArrayList<>();
+
+        for (Role role : roles) {
+            roleDTOS.add(EntityToEntityDTOConverter.convertRoleToRoleDTO(role));
+        }
+        return roleDTOS;
+//        return roleRepository.findAll();
     }
 
     @Override
     @Transactional
-    public Role createRole(String roleName) {
+//    public RoleDTO createRole(String roleName) {
+    public RoleDTO createRole(RoleDTO roleDTO) {
         Role newRole = new Role();
-        if(!roleRepository.existsByRole(roleName)) {
-            String newRoleName = "ROLE_" + roleName.toUpperCase();
+        if(!roleRepository.existsByRole(roleDTO.getRoleName())) {
+//            System.out.println(roleDTO.getRoleName() + " ssssseer ");
+//
+            String newRoleName = "ROLE_" + roleDTO.getRoleName().toUpperCase();
+
+//            System.out.println(newRoleName + " nnnnnnnnnnnnnnnnnnn ");
+
             newRole.setRole(newRoleName);
-            roleRepository.save(newRole);
         }
-        return newRole;
+        return EntityToEntityDTOConverter.convertRoleToRoleDTO(roleRepository.save(newRole));
+//        return newRole;
     }
 
     @Override

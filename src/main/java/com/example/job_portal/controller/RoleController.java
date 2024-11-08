@@ -1,5 +1,6 @@
 package com.example.job_portal.controller;
 
+import com.example.job_portal.dto.RoleDTO;
 import com.example.job_portal.dto.UserDTO;
 import com.example.job_portal.entity.Role;
 import com.example.job_portal.entity.api_response.ApiResponse;
@@ -22,14 +23,15 @@ public class RoleController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Role>> getAllRoles() {
+    public ResponseEntity<List<RoleDTO>> getAllRoles() {
         return new ResponseEntity<>(roleService.findAllRoles(), HttpStatus.OK);
     }
 
-
     @PostMapping
-    public ResponseEntity<Role> createUserRole(@RequestBody String roleName) {
-        return new ResponseEntity<>(roleService.createRole(roleName), HttpStatus.CREATED);
+    public ResponseEntity<RoleDTO> createUserRole(@RequestBody RoleDTO roleDTO) {
+//        System.out.println(roleName + " connnnnn ");
+        RoleDTO createdRole = roleService.createRole(roleDTO);
+        return new ResponseEntity<>(createdRole, HttpStatus.CREATED);
     }
 
     @GetMapping("/{userId}")

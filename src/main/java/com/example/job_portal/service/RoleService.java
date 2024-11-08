@@ -1,6 +1,7 @@
 package com.example.job_portal.service;
 
 
+import com.example.job_portal.dto.RoleDTO;
 import com.example.job_portal.entity.Role;
 
 import java.util.List;
@@ -8,9 +9,11 @@ import java.util.List;
 public interface RoleService {
     void save(Role role);
 
-    List<Role> findAllRoles();
+//    List<Role> findAllRoles();
+    List<RoleDTO> findAllRoles();
 
-    Role createRole(String roleName);
+//    RoleDTO createRole(String roleName);
+    RoleDTO createRole(RoleDTO roleDTO);
 
     void updateUserRole(Long userId, String roleName);
 
