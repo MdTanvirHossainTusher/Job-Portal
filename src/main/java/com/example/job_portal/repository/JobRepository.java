@@ -26,20 +26,20 @@ public interface JobRepository extends JpaRepository<Job, Long> {
                              @Param("jobPosition") String jobPosition,
                              @Param("jobLocation") String jobLocation);
 
-    @Query("SELECT j FROM Job j WHERE j.companyId = :companyId AND j.isDeleted = false")
-    List<Job> findAllJobsUnderCompanyByCompanyId(@Param("companyId") Long companyId);
+//    @Query("SELECT j FROM Job j WHERE j.companyId = :companyId AND j.isDeleted = false")
+//    List<Job> findAllJobsUnderCompanyByCompanyId(@Param("companyId") Long companyId);
 
-    @Query("SELECT j FROM Job j WHERE j.isDeleted = false")
-    List<Job> findAllJobs();
-
-    @Query("SELECT j FROM Job j WHERE j.isDeleted = false AND j.companyId = :companyId AND j.id = :jobId")
-    Optional<Job> findJobById(
-            @Param("companyId") Long companyId,
-            @Param("jobId") Long id);
-
-    @Modifying
-    @Query("UPDATE Job j SET j.isDeleted = true WHERE j.companyId = :companyId AND j.id = :jobId")
-    void softDeleteJobById(
-            @Param("companyId") Long companyId,
-            @Param("jobId") Long jobId);
+//    @Query("SELECT j FROM Job j WHERE j.isDeleted = false")
+//    List<Job> findAllJobs();
+//
+//    @Query("SELECT j FROM Job j WHERE j.isDeleted = false AND j.companyId = :companyId AND j.id = :jobId")
+//    Optional<Job> findJobById(
+//            @Param("companyId") Long companyId,
+//            @Param("jobId") Long id);
+//
+//    @Modifying
+//    @Query("UPDATE Job j SET j.isDeleted = true WHERE j.companyId = :companyId AND j.id = :jobId")
+//    void softDeleteJobById(
+//            @Param("companyId") Long companyId,
+//            @Param("jobId") Long jobId);
 }

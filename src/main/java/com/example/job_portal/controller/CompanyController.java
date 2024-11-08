@@ -66,6 +66,8 @@ public class CompanyController {
 //        }
 //    }
 
+    /////////////////////////////////////////////////
+
     @GetMapping("/{companyId}/jobs")
     public ResponseEntity<List<JobDTO>> getAllJobsUnderOneCompany(
             @PathVariable Long companyId
@@ -74,57 +76,64 @@ public class CompanyController {
     }
 
 
-    /////////////////////////////////////////////////
 
-    @GetMapping("/{companyId}/jobs/{jobId}")
-    public ResponseEntity<JobDTO> getJobById(
-            @PathVariable Long companyId,
-            @PathVariable Long jobId) {
-        JobDTO jobDTO = jobService.findJobById(companyId, jobId);
-        return new ResponseEntity<>(jobDTO, HttpStatus.OK);
-    }
+
+//    @GetMapping("/{companyId}/jobs/{jobId}")
+//    public ResponseEntity<JobDTO> getJobById(
+//            @PathVariable Long companyId,
+//            @PathVariable Long jobId) {
+//        JobDTO jobDTO = jobService.findJobById(companyId, jobId);
+//        return new ResponseEntity<>(jobDTO, HttpStatus.OK);
+//    }
 
     @PostMapping("/{companyId}/jobs")
     public ResponseEntity<JobDTO> createJob(
             @PathVariable Long companyId,
             @RequestBody JobDTO jobDTO) {
-        JobDTO createdJob = jobService.createJob(companyId, jobDTO);
-        return new ResponseEntity<>(createdJob, HttpStatus.CREATED);
-    }
 
-    @PutMapping("/{companyId}/jobs/{jobId}")
-    public ResponseEntity<JobDTO> updateJob(
-            @RequestBody JobDTO jobDTO,
-            @PathVariable Long companyId,
-            @PathVariable Long jobId) {
-        JobDTO updatedJob = jobService.updateJob(companyId, jobId, jobDTO);
-        return new ResponseEntity<>(updatedJob, HttpStatus.OK);
-    }
 
-    @GetMapping("/{companyId}/{jobId}/apply")
-    public ResponseEntity<Void> applyToJob(
-            @PathVariable Long companyId,
-            @PathVariable Long jobId,
-            @RequestBody Long userId
-    ) {
         try {
-            jobService.applyToJobByUser(companyId, jobId, userId);
-            return ResponseEntity.noContent().build();
+            JobDTO createdJob = jobService.createJob(companyId, jobDTO);
+            return new ResponseEntity<>(createdJob, HttpStatus.CREATED);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+
     }
 
-    @DeleteMapping("/{companyId}/{jobId}")
-    public ResponseEntity<?> deleteJob(
-            @PathVariable Long companyId,
-            @PathVariable Long jobId
-    ) {
-        jobService.deleteJobById(companyId, jobId);
-        return new ResponseEntity<>(
-                new ApiResponse("Job deleted successfully", true),
-                HttpStatus.OK);
-    }
+//    @PutMapping("/{companyId}/jobs/{jobId}")
+//    public ResponseEntity<JobDTO> updateJob(
+//            @RequestBody JobDTO jobDTO,
+//            @PathVariable Long companyId,
+//            @PathVariable Long jobId) {
+//        JobDTO updatedJob = jobService.updateJob(companyId, jobId, jobDTO);
+//        return new ResponseEntity<>(updatedJob, HttpStatus.OK);
+//    }
+//
+//    @GetMapping("/{companyId}/{jobId}/apply")
+//    public ResponseEntity<Void> applyToJob(
+//            @PathVariable Long companyId,
+//            @PathVariable Long jobId,
+//            @RequestBody Long userId
+//    ) {
+//        try {
+//            jobService.applyToJobByUser(companyId, jobId, userId);
+//            return ResponseEntity.noContent().build();
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+//        }
+//    }
+//
+//    @DeleteMapping("/{companyId}/{jobId}")
+//    public ResponseEntity<?> deleteJob(
+//            @PathVariable Long companyId,
+//            @PathVariable Long jobId
+//    ) {
+//        jobService.deleteJobById(companyId, jobId);
+//        return new ResponseEntity<>(
+//                new ApiResponse("Job deleted successfully", true),
+//                HttpStatus.OK);
+//    }
 
 
 

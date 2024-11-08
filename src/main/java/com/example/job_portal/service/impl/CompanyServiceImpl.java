@@ -106,10 +106,15 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public List<JobDTO> getAllJobsUnderOneCompany(Long companyId) {
-        CompanyDTO company = findCompanyById(companyId);
+//        CompanyDTO company = findCompanyById(companyId);
+
+        Company company = companyRepository.findCompanyById(companyId)
+                .orElseThrow(() -> new CompanyNotFoundException("Company with id: " + companyId + " is not found!"));
+
 
         if(company != null) {
-            List<Job> jobs = jobRepository.findAllJobsUnderCompanyByCompanyId(companyId);
+//            List<Job> jobs = jobRepository.findAllJobsUnderCompanyByCompanyId(companyId);
+            List<Job> jobs = company.getJobs();
             return EntityToEntityDTOConverter.convertJobsToJobsDTO(jobs);
         }
         else throw new CompanyNotFoundException("Company is not found!");
