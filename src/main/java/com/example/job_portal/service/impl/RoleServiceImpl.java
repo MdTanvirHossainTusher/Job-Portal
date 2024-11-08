@@ -65,50 +65,62 @@ public class RoleServiceImpl implements RoleService {
 //        return newRole;
     }
 
+//    @Override
+//    @Transactional
+//    public void updateUserRole(Long userId, String roleName) {
+//
+//        Optional<User> userOptional = userRepository.findUserById(userId);
+//        User user = userOptional.orElse(null);
+//
+//        if(user != null) {
+//            for(Role role: user.getRoles()) {
+//                if(!role.getRole().contains(roleName.toUpperCase())) {
+//                    String newRoleName = "ROLE_" + roleName.toUpperCase();
+//
+//                    Role existingRole = roleRepository.getByRole(newRoleName);
+//                    List<Role> roles = user.getRoles();
+//                    roles.add(existingRole);
+//                    user.setRoles(roles);
+//                    userRepository.save(user);
+//                }
+//            }
+//        }
+//    }
+
+//    @Override
+//    @Transactional
+//    public void deleteUserRole(Long userId, String roleName) {
+//        Optional<User> userOptional = userRepository.findUserById(userId);
+//        User user = userOptional.orElse(null);
+//
+//
+//        if(user != null) {
+//            for(Role role: user.getRoles()) {
+//                String newRoleName = "ROLE_" + role.getRole().toUpperCase();
+////                if(role.getRole().contains(roleName.toLowerCase())) {
+//                if(role.getRole().contains(newRoleName)) {
+//                    System.out.println(user.getId() + " ididid ");
+//                    user.getRoles().remove(role);
+//
+//                    System.out.println("removed -----------");
+//                    userRepository.save(user);
+//                    System.out.println("saved ==================");
+//
+//                }
+//            }
+////            userRepository.save(user);
+//        }
+//
+//    }
+
     @Override
     @Transactional
-    public void updateUserRole(Long userId, String roleName) {
-
-        Optional<User> userOptional = userRepository.findUserById(userId);
-        User user = userOptional.orElse(null);
-
-        if(user != null) {
-            for(Role role: user.getRoles()) {
-                if(!role.getRole().contains(roleName.toUpperCase())) {
-                    String newRoleName = "ROLE_" + roleName.toUpperCase();
-
-                    Role existingRole = roleRepository.getByRole(newRoleName);
-                    List<Role> roles = user.getRoles();
-                    roles.add(existingRole);
-                    user.setRoles(roles);
-                    userRepository.save(user);
-                }
-            }
-        }
-    }
-
-    @Override
-    public void deleteUserRole(Long userId, String roleName) {
-        Optional<User> userOptional = userRepository.findUserById(userId);
-        User user = userOptional.orElse(null);
-
-        if(user != null) {
-            for(Role role: user.getRoles()) {
-                if(role.getRole().contains(roleName.toLowerCase())) {
-                    user.getRoles().remove(role);
-                }
-            }
-            userRepository.save(user);
-        }
-
-    }
-
-    @Override
     public void deleteRoleById(Long roleId) {
         roleRepository.deleteById(roleId);
     }
 
     @Override
+    @Transactional
     public void addRoleToUser(Long userId, String role) {
         String newRoleName = "ROLE_" + role.toUpperCase();
         if(roleRepository.existsByRole(newRoleName)) {

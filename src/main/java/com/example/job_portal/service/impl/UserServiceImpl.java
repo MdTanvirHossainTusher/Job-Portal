@@ -166,6 +166,40 @@ public class UserServiceImpl implements UserService {
     }
 
 
+    @Override
+    public void deleteUserRole(Long userId, String roleName) {
+        Optional<User> userOptional = userRepository.findUserById(userId);
+        User user = userOptional.orElse(null);
+
+        System.out.println(user + " user ");
+
+        System.out.println(user.getId() + " uuuuuuuuuuuuuuuuuuuu");
+
+
+        if(user != null) {
+            System.out.println("dhukse...");
+            for(Role role: user.getRoles()) {
+                String newRoleName = "ROLE_" + roleName.toUpperCase();
+//                if(role.getRole().contains(roleName.toLowerCase())) {
+
+                System.out.println(newRoleName + " nnnnnnnnnnnnnnnn ");
+
+                if(role.getRole().equals(newRoleName)) {
+                    System.out.println(user.getId() + " ididid ");
+                    user.getRoles().remove(role);
+
+                    System.out.println("removed -----------");
+                    userRepository.save(user);
+                    System.out.println("saved ==================");
+
+                }
+            }
+//            userRepository.save(user);
+        }
+
+    }
+
+
 
 //    @Override
 //    @Transactional

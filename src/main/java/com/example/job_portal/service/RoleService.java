@@ -15,9 +15,9 @@ public interface RoleService {
 //    RoleDTO createRole(String roleName);
     RoleDTO createRole(RoleDTO roleDTO);
 
-    void updateUserRole(Long userId, String roleName);
+//    void updateUserRole(Long userId, String roleName);
 
-    void deleteUserRole(Long userId, String roleName);
+//    void deleteUserRole(Long userId, String roleName);
 
     void deleteRoleById(Long roleId);
 

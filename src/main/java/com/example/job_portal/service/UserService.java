@@ -23,4 +23,6 @@ public interface UserService {
     List<String> getUserRoles(Long id);
 //    List<RoleDTO> getUserRoles(Long id);
 
+    void deleteUserRole(Long userId, String roleName);
+
 }
