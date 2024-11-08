@@ -21,5 +21,5 @@ public interface RoleService {
 
     void deleteById(Long roleId);
 
-    List<String> getUserRoles(Long id);
+//    List<String> getUserRoles(Long id);
 }

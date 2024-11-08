@@ -18,4 +18,7 @@ public interface UserService {
     List<UserDTO> findAll();
 
     void deleteUserById(Long id);
+
+    List<String> getUserRoles(Long id);
+
 }

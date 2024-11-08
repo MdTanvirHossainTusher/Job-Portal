@@ -2,6 +2,7 @@ package com.example.job_portal.controller;
 
 import com.example.job_portal.dao.UserDAO;
 import com.example.job_portal.dto.UserDTO;
+import com.example.job_portal.service.RoleService;
 import com.example.job_portal.service.UserService;
 import com.example.job_portal.entity.api_response.ApiResponse;
 import org.springframework.http.HttpStatus;
@@ -15,10 +16,12 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final RoleService roleService;
     private final UserDAO userDAO;
 
-    public UserController(UserService userService, UserDAO userDAO) {
+    public UserController(UserService userService, RoleService roleService, UserDAO userDAO) {
         this.userService = userService;
+        this.roleService = roleService;
         this.userDAO = userDAO;
     }
 
@@ -64,6 +67,12 @@ public class UserController {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @GetMapping("/{userId}/roles")
+    public ResponseEntity<List<String>> getUserRolesName(@PathVariable Long userId) {
+//        return new ResponseEntity<>(roleService.getUserRoles(userId), HttpStatus.OK);
+        return new ResponseEntity<>(userService.getUserRoles(userId), HttpStatus.OK);
     }
 
 }

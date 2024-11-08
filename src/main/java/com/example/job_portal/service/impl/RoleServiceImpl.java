@@ -108,28 +108,28 @@ public class RoleServiceImpl implements RoleService {
         roleRepository.deleteById(roleId);
     }
 
-    @Override
-    public List<String> getUserRoles(Long userId) {
-//        return userRepository.getRoleByUserId(userId);
-//        return roleRepository.getRoleByUserId(userId);
-        Optional<User> userOptional = userRepository.findUserById(userId);
-        User user = userOptional.orElse(null);
-
-        List<String> roles = new ArrayList<>();
-
-        if(user != null) {
-            for(Role role: user.getRoles()) {
-//                Long roleId = role.getId();
-//                roles.add()
-//                if(role.getId()) {
-//                    user.getRoles().remove(role);
-//                }
-                roles.add(role.getRole());
-            }
-//            userRepository.save(user);
-        }
-        return roles;
-    }
+//    @Override
+//    public List<String> getUserRoles(Long userId) {
+////        return userRepository.getRoleByUserId(userId);
+////        return roleRepository.getRoleByUserId(userId);
+//        Optional<User> userOptional = userRepository.findUserById(userId);
+//        User user = userOptional.orElse(null);
+//
+//        List<String> roles = new ArrayList<>();
+//
+//        if(user != null) {
+//            for(Role role: user.getRoles()) {
+////                Long roleId = role.getId();
+////                roles.add()
+////                if(role.getId()) {
+////                    user.getRoles().remove(role);
+////                }
+//                roles.add(role.getRole());
+//            }
+////            userRepository.save(user);
+//        }
+//        return roles;
+//    }
 
     public Role findByRole(String roleName) {
         return roleRepository.getByRole(roleName);

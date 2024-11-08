@@ -34,10 +34,10 @@ public class RoleController {
         return new ResponseEntity<>(createdRole, HttpStatus.CREATED);
     }
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<List<String>> getUserRolesName(@PathVariable Long userId) {
-        return new ResponseEntity<>(roleService.getUserRoles(userId), HttpStatus.OK);
-    }
+//    @GetMapping("/{userId}")
+//    public ResponseEntity<List<String>> getUserRolesName(@PathVariable Long userId) {
+//        return new ResponseEntity<>(roleService.getUserRoles(userId), HttpStatus.OK);
+//    }
 
     @DeleteMapping("/{roleId}")
     public ResponseEntity<?> deleteRoleById(@PathVariable Long roleId) {
