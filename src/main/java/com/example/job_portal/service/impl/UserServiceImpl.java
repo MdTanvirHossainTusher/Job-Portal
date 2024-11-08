@@ -1,5 +1,6 @@
 package com.example.job_portal.service.impl;
 
+import com.example.job_portal.dto.RoleDTO;
 import com.example.job_portal.dto.UserDTO;
 import com.example.job_portal.entity.Profile;
 import com.example.job_portal.entity.Role;
@@ -133,24 +134,31 @@ public class UserServiceImpl implements UserService {
     }
 
 
-//    @Override
+    @Override
     public List<String> getUserRoles(Long userId) {
-//        return userRepository.getRoleByUserId(userId);
-//        return roleRepository.getRoleByUserId(userId);
+//    public List<RoleDTO> getUserRoles(Long userId) {
+
         Optional<User> userOptional = userRepository.findUserById(userId);
         User user = userOptional.orElse(null);
 
         List<String> roles = new ArrayList<>();
-        roles.clear();
+//        List<RoleDTO> roles = new ArrayList<>();
+//        roles.clear();
 
         if(user != null) {
+            System.out.println(user.getRoles() + " --- ");
+//            for(Role role: user.getRoles()) {
             for(Role role: user.getRoles()) {
 //                Long roleId = role.getId();
-//                roles.add()
+//                roles.add()s
 //                if(role.getId()) {
 //                    user.getRoles().remove(role);
 //                }
+//                System.out.println(role.getRole() + " role ---");
+//                System.out.println(role.getRoleName() + " role ---");
+
                 roles.add(role.getRole());
+//                roles.add(EntityToEntityDTOConverter.convertRoleToRoleDTO(role));
             }
 //            userRepository.save(user);
         }

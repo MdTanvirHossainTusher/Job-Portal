@@ -1,6 +1,7 @@
 package com.example.job_portal.controller;
 
 import com.example.job_portal.dao.UserDAO;
+import com.example.job_portal.dto.RoleDTO;
 import com.example.job_portal.dto.UserDTO;
 import com.example.job_portal.service.RoleService;
 import com.example.job_portal.service.UserService;
@@ -71,8 +72,11 @@ public class UserController {
 
     @GetMapping("/{userId}/roles")
     public ResponseEntity<List<String>> getUserRolesName(@PathVariable Long userId) {
+//    public ResponseEntity<List<RoleDTO>> getUserRolesName(@PathVariable Long userId) {
 //        return new ResponseEntity<>(roleService.getUserRoles(userId), HttpStatus.OK);
+        System.out.println(" calling....");
         return new ResponseEntity<>(userService.getUserRoles(userId), HttpStatus.OK);
+//        return new ResponseEntity<>(userService.getUserRoles(userId), HttpStatus.OK);
     }
 
 }
