@@ -1,15 +1,18 @@
 package com.example.job_portal.service.impl;
 
 import com.example.job_portal.dto.JobDTO;
+import com.example.job_portal.dto.JobDTO;
 import com.example.job_portal.entity.*;
-import com.example.job_portal.exception.CompanyNotFoundException;
+import com.example.job_portal.exception.JobAlreadyExistsException;
+import com.example.job_portal.exception.JobNotFoundException;
 import com.example.job_portal.exception.JobAlreadyExistsException;
 import com.example.job_portal.exception.JobNotFoundException;
 import com.example.job_portal.repository.CVRepository;
-import com.example.job_portal.repository.CompanyRepository;
+import com.example.job_portal.repository.JobRepository;
 import com.example.job_portal.repository.JobRepository;
 import com.example.job_portal.repository.ProfileRepository;
 import com.example.job_portal.service.JobService;
+import com.example.job_portal.utils.EntityToEntityDTOConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,61 +24,27 @@ import java.util.Optional;
 public class JobServiceImpl implements JobService {
 
     private final JobRepository jobRepository;
-    private final CompanyRepository companyRepository;
-    private final CVRepository cvRepository;
-    private final ProfileRepository profileRepository;
 
-    public JobServiceImpl(JobRepository jobRepository, CompanyRepository companyRepository, CVRepository cvRepository, ProfileRepository profileRepository) {
+    public JobServiceImpl(JobRepository jobRepository) {
         this.jobRepository = jobRepository;
-        this.companyRepository = companyRepository;
-        this.cvRepository = cvRepository;
-        this.profileRepository = profileRepository;
     }
 
     @Override
     @Transactional
-    public void createJob(JobDTO jobDTO) {
-        if(jobRepository.existsSimilarJob(
-                jobDTO.getJobTitle(),
-                jobDTO.getJobDescription(),
-                jobDTO.getSalary(),
-                jobDTO.getJobPosition(),
-                jobDTO.getJobLocation())
-        ) {
-            throw new JobAlreadyExistsException("Job is already exists!");
-        }
+    public JobDTO createJob(JobDTO jobDTO) {
 
-        Job job = new Job();
-        job.setJobTitle(jobDTO.getJobTitle());
-        job.setJobDescription(jobDTO.getJobDescription());
-        job.setJobLocation(jobDTO.getJobLocation());
-        job.setJobPosition(jobDTO.getJobPosition());
-        job.setSalary(jobDTO.getSalary());
+        Job existingJob = jobRepository.findJobById(jobDTO.getId())
+                .orElseThrow(() -> new JobNotFoundException("Job with id: " + jobDTO.getId() + " is not found!"));
 
-        CV cv = new CV();
-        cv = cvRepository.save(cv);
-        List<CV> cvs = new ArrayList<>();
-        cvs.add(cv);
-        job.setCvs(cvs);
+        Job newJob = new Job();
+        newJob.setId(jobDTO.getId());
+        newJob.setJobTitle(jobDTO.getJobTitle());
+        newJob.setJobDescription(jobDTO.getJobDescription());
+        newJob.setSalary(jobDTO.getSalary());
+        newJob.setJobPosition(jobDTO.getJobPosition());
+        newJob.setJobLocation(jobDTO.getJobLocation());
 
-        Company company = companyRepository.findCompanyByName("google");
-
-        if(company != null) {
-            job.setCompany(company);
-
-            Profile profile = new Profile();
-            profile = profileRepository.save(profile);
-            List<Profile> profiles = new ArrayList<>();
-            profiles.add(profile);
-
-            job.setProfiles(profiles);
-
-            jobRepository.save(job);
-        }
-        else {
-            throw new CompanyNotFoundException("This job is not associated with any registered company!!");
-        }
-
+        return EntityToEntityDTOConverter.convertJobToJobDTO(jobRepository.save(newJob));
     }
 
     @Override
@@ -85,44 +54,48 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public Job findJobById(Long id) {
-        Optional<Job> job = jobRepository.findById(id);
-        return job.orElse(null);
+    public JobDTO findJobById(Long id) {
+        Optional<Job> jobOptional = jobRepository.findJobById(id);
+        Job job = jobOptional.orElse(null);
+        return job != null ? EntityToEntityDTOConverter.convertJobToJobDTO(job) : null;
     }
 
     @Override
     @Transactional
-    public Job updateJob(Long id, Job job) {
-        Job existingJob = findJobById(id);
+    public JobDTO updateJob(Long id, JobDTO jobDTO) {
+        Job existingJob = jobRepository.findJobById(id)
+                .orElseThrow(() -> new JobNotFoundException("Job with id: " + id + " is not found!"));
 
         if(existingJob != null) {
-            if(job.getJobTitle() != null) existingJob.setJobTitle(job.getJobTitle());
-            if(job.getJobDescription() != null) existingJob.setJobDescription(job.getJobDescription());
-            if(job.getJobPosition() != null) existingJob.setJobPosition(job.getJobPosition());
-            if(job.getSalary() != null) existingJob.setSalary(job.getSalary());
-//            if(!job.isJobFraudulent()) existingJob.setJobFraudulent(false);
+            if(jobDTO.getJobTitle() != null) existingJob.setJobTitle(jobDTO.getJobTitle());
+            if(jobDTO.getJobDescription() != null) existingJob.setJobDescription(jobDTO.getJobDescription());
+            if(jobDTO.getSalary() != null) existingJob.setSalary(jobDTO.getSalary());
+            if(jobDTO.getJobPosition() != null) existingJob.setJobPosition(jobDTO.getJobPosition());
 
-            jobRepository.save(existingJob);
+            Job job = jobRepository.save(existingJob);
+
+            return EntityToEntityDTOConverter.convertJobToJobDTO(job);
+
         }
         else {
-            throw new JobNotFoundException("Job with id: "+ id + " is not found!");
+            throw new JobNotFoundException("Job with id: " + id + " is not found!");
         }
-        return existingJob;
     }
 
     @Override
-    public List<Job> findAll() {
-        return jobRepository.findAll();
+    public List<JobDTO> findAllJobs() {
+        return EntityToEntityDTOConverter.convertJobsToJobsDTO(jobRepository.findAllJobs());
     }
 
     @Override
     @Transactional
     public void deleteJobById(Long id) {
-        Job job = findJobById(id);
+        JobDTO job = findJobById(id);
         try {
-            if(job != null) jobRepository.deleteById(id);
+            if(job != null) jobRepository.softDeleteJobById(id);
         } catch (Exception ex) {
-            throw new JobNotFoundException("Job with id: "+ id + " is not found!");
+            throw new JobNotFoundException("Job is not found!");
         }
     }
+
 }

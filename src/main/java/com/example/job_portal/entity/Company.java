@@ -1,5 +1,6 @@
 package com.example.job_portal.entity;
 
+import com.example.job_portal.constant.db.DbConstant;
 import com.example.job_portal.constant.db.DbConstant.DbCompany;
 import jakarta.persistence.*;
 import lombok.*;
@@ -12,7 +13,14 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = DbCompany.TABLE_NAME)
+@Table(
+        name = DbCompany.TABLE_NAME,
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "unique_company_name",
+                        columnNames = {DbCompany.COMPANY_NAME}
+                )
+        })
 public class Company extends AuditInfo {
 
     @Column(name = DbCompany.COMPANY_NAME, unique = true)
@@ -26,6 +34,9 @@ public class Company extends AuditInfo {
 
     @Column(name = DbCompany.WORKING_MODE)
     private String workingMode;
+
+    @Column(name = DbCompany.IS_COMPANY_DELETED)
+    private boolean isDeleted = false;
 
     @OneToMany(
             mappedBy = "company",

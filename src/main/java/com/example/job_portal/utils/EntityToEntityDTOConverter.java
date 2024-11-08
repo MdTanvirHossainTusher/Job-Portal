@@ -1,7 +1,11 @@
 package com.example.job_portal.utils;
 
+import com.example.job_portal.dto.CompanyDTO;
+import com.example.job_portal.dto.JobDTO;
 import com.example.job_portal.dto.RoleDTO;
 import com.example.job_portal.dto.UserDTO;
+import com.example.job_portal.entity.Company;
+import com.example.job_portal.entity.Job;
 import com.example.job_portal.entity.Role;
 import com.example.job_portal.entity.User;
 
@@ -34,6 +38,7 @@ public class EntityToEntityDTOConverter {
 
     public static RoleDTO convertRoleToRoleDTO(Role role) {
         return new RoleDTO(
+                role.getId(),
                 role.getRole()
         );
     }
@@ -45,5 +50,46 @@ public class EntityToEntityDTOConverter {
             roleDTOs.add(EntityToEntityDTOConverter.convertRoleToRoleDTO(role));
         }
         return roleDTOs;
+    }
+
+    public static CompanyDTO convertCompanyToCompanyDTO(Company company) {
+        return new CompanyDTO(
+                company.getId(),
+                company.getCompanyName(),
+                company.getCompanyLocation(),
+                company.getCompanyType(),
+                company.getWorkingMode(),
+                company.isDeleted()
+        );
+    }
+
+    public static List<CompanyDTO> convertCompaniesToCompaniesDTO(List<Company> companyList) {
+        List<CompanyDTO> companyDTOS = new ArrayList<>();
+
+        for (Company company : companyList) {
+            companyDTOS.add(EntityToEntityDTOConverter.convertCompanyToCompanyDTO(company));
+        }
+        return companyDTOS;
+    }
+
+    public static JobDTO convertJobToJobDTO(Job job) {
+        return new JobDTO(
+                job.getId(),
+                job.getJobTitle(),
+                job.getJobDescription(),
+                job.getSalary(),
+                job.getJobPosition(),
+                job.getJobLocation(),
+                job.isDeleted()
+        );
+    }
+
+    public static List<JobDTO> convertJobsToJobsDTO(List<Job> jobList) {
+        List<JobDTO> jobDTOs = new ArrayList<>();
+
+        for (Job job : jobList) {
+            jobDTOs.add(EntityToEntityDTOConverter.convertJobToJobDTO(job));
+        }
+        return jobDTOs;
     }
 }

@@ -50,6 +50,7 @@ public class DbConstant {
         public static final String COMPANY_LOCATION = "company_location";
         public static final String COMPANY_TYPE = "company_type";
         public static final String WORKING_MODE = "working_mode";
+        public static final String IS_COMPANY_DELETED = "is_company_deleted";
     }
 
     public static class DbMyCompany extends DbCommon {

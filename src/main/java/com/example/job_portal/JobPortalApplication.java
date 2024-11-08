@@ -27,52 +27,52 @@ public class JobPortalApplication {
 		SpringApplication.run(JobPortalApplication.class, args);
 	}
 
-	@Bean
-	public CommandLineRunner commandLineRunner(
-			UserService userService,
-			UserDAO userDAO,
-			CompanyService companyService,
-			CompanyDAO companyDAO,
-			JobService jobService,
-			JobDAO jobDAO
-			) {
-		return runner -> {
-//			userOperations(userService, userDAO);
-//			companyOperations(companyService, companyDAO);
-//			jobOperations(jobService, jobDAO);
-		};
-	}
+//	@Bean
+//	public CommandLineRunner commandLineRunner(
+//			UserService userService,
+//			UserDAO userDAO,
+//			CompanyService companyService,
+//			CompanyDAO companyDAO,
+//			JobService jobService,
+//			JobDAO jobDAO
+//			) {
+//		return runner -> {
+////			userOperations(userService, userDAO);
+////			companyOperations(companyService, companyDAO);
+////			jobOperations(jobService, jobDAO);
+//		};
+//	}
 
-	private void createJob(JobService jobService) {
-		JobDTO jobDTO = new JobDTO();
+//	private void createJob(JobService jobService) {
+//		JobDTO jobDTO = new JobDTO();
+//
+//		jobDTO.setJobTitle("SWE-1");
+//		jobDTO.setJobDescription("Job description: " +
+//				"1. java 2. git 3. spring");
+//		jobDTO.setSalary("45000");
+//		jobDTO.setJobLocation("BD");
+//		jobDTO.setJobPosition("Mid");
+//
+//		jobService.createJob(jobDTO);
+//	}
+//
+//	private void updateJob(JobService jobService) {
+//		Job job = new Job();
+//
+//		job.setSalary("10000");
+//
+//		jobService.updateJob(9L, job);
+//	}
+//
+//	private void findAllJob(JobService jobService) {
+//		List<Job> jobs = jobService.findAll();
+//
+//		for(Job job: jobs) {
+//			System.out.println(job.getJobTitle() + " " + job.getCompany().getCompanyName());
+//		}
+//	}
 
-		jobDTO.setJobTitle("SWE-1");
-		jobDTO.setJobDescription("Job description: " +
-				"1. java 2. git 3. spring");
-		jobDTO.setSalary("45000");
-		jobDTO.setJobLocation("BD");
-		jobDTO.setJobPosition("Mid");
-
-		jobService.createJob(jobDTO);
-	}
-
-	private void updateJob(JobService jobService) {
-		Job job = new Job();
-
-		job.setSalary("10000");
-
-		jobService.updateJob(9L, job);
-	}
-
-	private void findAllJob(JobService jobService) {
-		List<Job> jobs = jobService.findAll();
-
-		for(Job job: jobs) {
-			System.out.println(job.getJobTitle() + " " + job.getCompany().getCompanyName());
-		}
-	}
-
-	private void jobOperations(JobService jobService, JobDAO jobDAO) {
+//	private void jobOperations(JobService jobService, JobDAO jobDAO) {
 //		createJob(jobService);
 //		updateJob(jobService);
 //
@@ -91,48 +91,48 @@ public class JobPortalApplication {
 //			System.out.println(job.getJobLocation() + " " + job.getSalary()
 //			+ " " + job.getJobPosition());
 //		}
-	}
+//	}
 
 
 
-	private void createCompany(CompanyService companyService) {
-		CompanyDTO company = new CompanyDTO();
-		company.setCompanyName("micro1");
-		company.setCompanyType("Software and Data annotations");
-		company.setWorkingMode("Remote");
-		company.setCompanyLocation("South Asia");
-
-		companyService.createCompany(company);
-	}
-
-	private void updateCompany(CompanyService companyService) {
-		Company company = new Company();
-//		company.setCompanyName("Google");
-		company.setCompanyType("Software Company");
-//		company.setWorkingMode("Onsite");
-		company.setCompanyLocation("World-wide");
-
-		companyService.updateCompany(1L, company);
-	}
-
-	private void findAllCompany(CompanyService companyService) {
-		List<Company> companies = companyService.findAll();
-
-		for(Company company: companies) {
-			System.out.println(company.getCompanyName() + " " + company.getCompanyType());
-		}
-	}
-
-	private void companyOperations(CompanyService companyService, CompanyDAO companyDAO) {
+//	private void createCompany(CompanyService companyService) {
+//		CompanyDTO company = new CompanyDTO();
+//		company.setCompanyName("micro1");
+//		company.setCompanyType("Software and Data annotations");
+//		company.setWorkingMode("Remote");
+//		company.setCompanyLocation("South Asia");
+//
+//		companyService.createCompany(company);
+//	}
+//
+//	private void updateCompany(CompanyService companyService) {
+//		Company company = new Company();
+////		company.setCompanyName("Google");
+//		company.setCompanyType("Software Company");
+////		company.setWorkingMode("Onsite");
+//		company.setCompanyLocation("World-wide");
+//
+//		companyService.updateCompany(1L, company);
+//	}
+//
+//	private void findAllCompany(CompanyService companyService) {
+//		List<Company> companies = companyService.findAll();
+//
+//		for(Company company: companies) {
+//			System.out.println(company.getCompanyName() + " " + company.getCompanyType());
+//		}
+//	}
+//
+//	private void companyOperations(CompanyService companyService, CompanyDAO companyDAO) {
 //		createCompany(companyService);
 //		updateCompany(companyService);
 //		findAllCompany(companyService);
 //		System.out.println(companyService.findCompanyById(1L).getCompanyName());
 //		companyService.deleteCompanyById(8L);
-	}
+//	}
 
 
-	private void userOperations(UserService userService, UserDAO userDAO) {
+//	private void userOperations(UserService userService, UserDAO userDAO) {
 
 //		List<User> users = userDAO.searchUserByEmailPattern("vi");
 //		List<User> users = userDAO.searchUserByYearOfExperience(2.0);
@@ -209,5 +209,6 @@ public class JobPortalApplication {
 //			System.out.println(user.getTotalExperience());
 //		}
 
-	}
+//	}
+
 }

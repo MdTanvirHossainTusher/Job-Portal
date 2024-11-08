@@ -1,6 +1,8 @@
 package com.example.job_portal.service;
 
 import com.example.job_portal.dto.JobDTO;
+import com.example.job_portal.dto.JobDTO;
+import com.example.job_portal.entity.Job;
 import com.example.job_portal.entity.Job;
 import com.example.job_portal.entity.Job;
 
@@ -8,16 +10,16 @@ import java.util.List;
 
 public interface JobService {
 
-    void createJob(JobDTO companyDTO);
+    JobDTO createJob(JobDTO jobDTO);
 
-    Job saveJob(Job company);
+    Job saveJob(Job job);
 
-    Job findJobById(Long id);
+    JobDTO findJobById(Long id);
 
-    Job updateJob(Long id, Job company);
+    JobDTO updateJob(Long id, JobDTO companyDTO);
 
-    List<Job> findAll();
+    List<JobDTO> findAllJobs();
 
-    void deleteJobById(Long id);
+    void deleteJobById(Long companyId);
 
 }

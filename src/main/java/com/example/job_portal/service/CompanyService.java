@@ -1,6 +1,7 @@
 package com.example.job_portal.service;
 
 import com.example.job_portal.dto.CompanyDTO;
+import com.example.job_portal.dto.JobDTO;
 import com.example.job_portal.entity.Company;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -8,16 +9,18 @@ import java.util.List;
 
 public interface CompanyService {
 
-    void createCompany(CompanyDTO companyDTO);
+    CompanyDTO createCompany(CompanyDTO companyDTO);
 
     Company saveCompany(Company company);
 
-    Company findCompanyById(Long id);
+    CompanyDTO findCompanyById(Long id);
 
-    Company updateCompany(Long id, Company company);
+    CompanyDTO updateCompany(Long id, CompanyDTO companyDTO);
 
-    List<Company> findAll();
+    List<CompanyDTO> findAllCompany();
 
-    void deleteCompanyById(Long id);
+    void deleteCompanyById(Long companyId);
+
+    List<JobDTO> getAllJobsUnderOneCompany(Long companyId);
 
 }

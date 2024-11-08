@@ -1,5 +1,6 @@
 package com.example.job_portal.entity;
 
+import com.example.job_portal.constant.db.DbConstant;
 import com.example.job_portal.constant.db.DbConstant.DbJob;
 import jakarta.persistence.*;
 import lombok.*;
@@ -12,7 +13,14 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = DbJob.TABLE_NAME)
+@Table(
+        name = DbJob.TABLE_NAME,
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "unique_job_location",
+                        columnNames = {DbJob.JOB_LOCATION}
+                )
+        })
 public class Job extends AuditInfo {
 
     @Column(name = DbJob.JOB_TITLE)
@@ -29,6 +37,9 @@ public class Job extends AuditInfo {
 
     @Column(name = DbJob.JOB_LOCATION)
     private String jobLocation;
+
+    @Column(name = DbConstant.DbUser.IS_USER_DELETED)
+    private boolean isDeleted = false;
 
 //    @Column(name = DbJob.IS_FRAUDULENT)
 //    private boolean isJobFraudulent;

@@ -77,7 +77,7 @@ public class UserServiceImpl implements UserService {
     public UserDTO updateUser(Long id, UserDTO userDTO) {
 
         User existingUser = userRepository.findUserById(id)
-                .orElseThrow(() -> new UserNotFoundException("User with id: " + id + " not found!"));
+                .orElseThrow(() -> new UserNotFoundException("User with id: " + id + " is not found!"));
 
         if(userDTO.getName() != null) {
             existingUser.setName(userDTO.getName());
@@ -92,7 +92,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public List<UserDTO> findAll() {
+    public List<UserDTO> findAllUser() {
         List<User> users = userRepository.findAllUser();
         List<UserDTO> userDTOs = new ArrayList<>();
 

@@ -8,8 +8,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CompanyDTO {
+    private Long id;
     private String companyName;
     private String companyLocation;
     private String companyType;
     private String workingMode;
+    private boolean isDeleted = false;
 }

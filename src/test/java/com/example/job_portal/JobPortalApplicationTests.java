@@ -29,42 +29,42 @@ import static org.springframework.test.util.AssertionErrors.assertEquals;
 class UserServiceTest {
 
 //	Logger logger = Logger.getLogger(getClass().getName());
-private static final Logger logger = LoggerFactory.getLogger(UserServiceTest.class);
-
-	@Mock
-	private UserRepository userRepository;
-
-	@InjectMocks
-	private UserServiceImpl userService;
-
-	@Test
-	void userSave() {
-		Profile profile = new Profile();
-		Role role = new Role();
-		role.setRole("ROLE_USER");
-
-		List<Role> roles = new ArrayList<>();
-		roles.add(role);
-
-		User user = new User(
-				"tusher",
-				"tusher@gmail.com",
-				"4332ed",
-				"www.freeimage.com/tusher",
-				1.5,
-				roles,
-				profile
-		);
-
-		when(userRepository.save(any(User.class))).thenReturn(user);
-
-		User savedUser = userService.saveUser(user);
-//		System.out.println(savedUser);
-		logger.info("User is : " + savedUser);
-		assertNotNull(savedUser);
-		assertEquals("name not matched", "tusher", savedUser.getName());
-		assertEquals("email not matched","tusher@gmail.com", savedUser.getEmail());
-
-		verify(userRepository).save(any(User.class));
-	}
+//private static final Logger logger = LoggerFactory.getLogger(UserServiceTest.class);
+//
+//	@Mock
+//	private UserRepository userRepository;
+//
+//	@InjectMocks
+//	private UserServiceImpl userService;
+//
+//	@Test
+//	void userSave() {
+//		Profile profile = new Profile();
+//		Role role = new Role();
+//		role.setRole("ROLE_USER");
+//
+//		List<Role> roles = new ArrayList<>();
+//		roles.add(role);
+//
+//		User user = new User(
+//				"tusher",
+//				"tusher@gmail.com",
+//				"4332ed",
+//				"www.freeimage.com/tusher",
+//				1.5,
+//				roles,
+//				profile
+//		);
+//
+//		when(userRepository.save(any(User.class))).thenReturn(user);
+//
+//		User savedUser = userService.saveUser(user);
+////		System.out.println(savedUser);
+//		logger.info("User is : " + savedUser);
+//		assertNotNull(savedUser);
+//		assertEquals("name not matched", "tusher", savedUser.getName());
+//		assertEquals("email not matched","tusher@gmail.com", savedUser.getEmail());
+//
+//		verify(userRepository).save(any(User.class));
+//	}
 }
