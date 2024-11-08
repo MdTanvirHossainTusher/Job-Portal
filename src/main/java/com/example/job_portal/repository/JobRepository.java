@@ -42,4 +42,8 @@ public interface JobRepository extends JpaRepository<Job, Long> {
 //    void softDeleteJobById(
 //            @Param("companyId") Long companyId,
 //            @Param("jobId") Long jobId);
+
+//    List<Job> findByCompanyIdAndIsDeletedFalse(Long companyId);
+
+    Optional<Job> findByIdAndCompanyIdAndIsDeletedFalse(Long jobId, Long companyId);
 }

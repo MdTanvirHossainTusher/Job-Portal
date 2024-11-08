@@ -69,13 +69,22 @@ public class JobServiceImpl implements JobService {
 //        return jobRepository.save(job);
 //    }
 //
-//    @Override
-//    public JobDTO findJobById(Long companyId, Long jobId) {
+    @Override
+    public JobDTO findJobById(Long companyId, Long jobId) {
 //        Optional<Job> jobOptional = jobRepository.findJobById(companyId, jobId);
-//        Job job = jobOptional.orElse(null);
-//        return job != null ? EntityToEntityDTOConverter.convertJobToJobDTO(job) : null;
-//    }
-//
+        Optional<Job> jobOptional = jobRepository.findByIdAndCompanyIdAndIsDeletedFalse(companyId, jobId);
+        Job job = jobOptional.orElse(null);
+        System.out.println(job.getJobTitle() + " ---- " + job.getId());
+        return job != null ? EntityToEntityDTOConverter.convertJobToJobDTO(job) : null;
+
+//        Job job = jobRepository.findByIdAndCompanyIdAndIsDeletedFalse(jobId, companyId)
+//                .orElseThrow(() -> new ResourceNotFoundException(
+//                        String.format("Job not found with id %d for company %d", jobId, companyId)
+//                ));
+
+//        return modelMapper.map(job, JobDTO.class);
+    }
+
 //    @Override
 //    @Transactional
 //    public JobDTO updateJob(Long companyId, Long jobId, JobDTO jobDTO) {

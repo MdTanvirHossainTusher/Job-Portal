@@ -14,7 +14,7 @@ public interface JobService {
 
 //    Job saveJob(Job job);
 //
-//    JobDTO findJobById(Long companyId, Long id);
+    JobDTO findJobById(Long companyId, Long id);
 //
 //    JobDTO updateJob(Long companyId, Long id, JobDTO companyDTO);
 //

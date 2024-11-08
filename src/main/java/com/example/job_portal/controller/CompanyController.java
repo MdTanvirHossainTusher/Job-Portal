@@ -78,13 +78,13 @@ public class CompanyController {
 
 
 
-//    @GetMapping("/{companyId}/jobs/{jobId}")
-//    public ResponseEntity<JobDTO> getJobById(
-//            @PathVariable Long companyId,
-//            @PathVariable Long jobId) {
-//        JobDTO jobDTO = jobService.findJobById(companyId, jobId);
-//        return new ResponseEntity<>(jobDTO, HttpStatus.OK);
-//    }
+    @GetMapping("/{companyId}/jobs/{jobId}")
+    public ResponseEntity<JobDTO> getJobById(
+            @PathVariable Long companyId,
+            @PathVariable Long jobId) {
+        JobDTO jobDTO = jobService.findJobById(companyId, jobId);
+        return new ResponseEntity<>(jobDTO, HttpStatus.OK);
+    }
 
     @PostMapping("/{companyId}/jobs")
     public ResponseEntity<JobDTO> createJob(
