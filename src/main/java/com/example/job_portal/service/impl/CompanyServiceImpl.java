@@ -98,7 +98,14 @@ public class CompanyServiceImpl implements CompanyService {
     public void deleteCompanyById(Long id) {
         CompanyDTO company = findCompanyById(id);
         try {
-            if(company != null) companyRepository.softDeleteCompanyById(id);
+//            if(company != null)companyRepository.softDeleteJobsByCompanyId(id);
+//            if(company != null) companyRepository.softDeleteCompanyById(id);
+
+            if (company != null) {
+                companyRepository.softDeleteJobsByCompanyId(id);
+                companyRepository.softDeleteCompanyById(id);
+            }
+
         } catch (Exception ex) {
             throw new CompanyNotFoundException("Company : " + company.getCompanyName() + " not found!");
         }

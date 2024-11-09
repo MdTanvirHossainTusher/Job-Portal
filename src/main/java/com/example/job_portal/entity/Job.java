@@ -14,13 +14,14 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(
-        name = DbJob.TABLE_NAME,
-        uniqueConstraints = {
-                @UniqueConstraint(
-                        name = "unique_job_location",
-                        columnNames = {DbJob.JOB_LOCATION}
-                )
-        })
+        name = DbJob.TABLE_NAME
+//        uniqueConstraints = {
+//                @UniqueConstraint(
+//                        name = "unique_job_location",
+//                        columnNames = {DbJob.JOB_LOCATION}
+//                )
+//        }
+        )
 public class Job extends AuditInfo {
 
     @Column(name = DbJob.JOB_TITLE)
@@ -35,10 +36,10 @@ public class Job extends AuditInfo {
     @Column(name = DbJob.JOB_POSITION)
     private String jobPosition;
 
-    @Column(name = DbJob.JOB_LOCATION)
+    @Column(name = DbJob.JOB_LOCATION, unique = false)
     private String jobLocation;
 
-    @Column(name = DbConstant.DbUser.IS_USER_DELETED)
+    @Column(name = DbJob.IS_JOB_DELETED)
     private boolean isDeleted = false;
 
 //    @Column(name = DbJob.IS_FRAUDULENT)

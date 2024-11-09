@@ -42,6 +42,7 @@ public class DbConstant {
         public static final String IS_FRAUDULENT = "is_fraudulent";
         public static final String JOB_POSITION = "job_position";
         public static final String JOB_LOCATION= "job_location";
+        public static final String IS_JOB_DELETED= "is_job_deleted";
     }
 
     public static class DbCompany extends DbCommon {

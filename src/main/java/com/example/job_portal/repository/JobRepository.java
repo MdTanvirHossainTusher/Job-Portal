@@ -45,5 +45,13 @@ public interface JobRepository extends JpaRepository<Job, Long> {
 
 //    List<Job> findByCompanyIdAndIsDeletedFalse(Long companyId);
 
-    Optional<Job> findByIdAndCompanyIdAndIsDeletedFalse(Long jobId, Long companyId);
+//    Optional<Job> findByIdAndCompanyIdAndIsDeletedFalse(Long jobId, Long companyId);
+
+    @Query("SELECT j FROM Job j WHERE j.company.id = :companyId AND j.id = :jobId AND j.isDeleted = false")
+    Optional<Job> findJobByIdAndCompanyId(
+            @Param("jobId") Long jobId,
+            @Param("companyId") Long companyId);
+
+    // Or without @Query, using method name convention:
+//    Optional<Job> findByIdAndCompanyIdAndIsDeletedFalse(Long jobId, Long companyId);
 }

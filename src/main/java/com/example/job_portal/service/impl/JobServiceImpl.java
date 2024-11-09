@@ -13,6 +13,7 @@ import com.example.job_portal.utils.EntityToEntityDTOConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -34,17 +35,18 @@ public class JobServiceImpl implements JobService {
         try {
             Company company = companyRepository.findCompanyById(companyId)
                     .orElseThrow(() -> new CompanyNotFoundException("Company not found with ID: " + companyId));
+//
+//            if (jobRepository.existsSimilarJob(
+//                    jobDTO.getJobTitle(),
+//                    jobDTO.getJobDescription(),
+//                    jobDTO.getSalary(),
+//                    jobDTO.getJobPosition(),
+//                    jobDTO.getJobLocation())
+//            ) {
+//                throw new JobAlreadyExistsException("Job with title: " + jobDTO.getJobTitle() + " already exists!");
+//            }
 
-            if (jobRepository.existsSimilarJob(
-                    jobDTO.getJobTitle(),
-                    jobDTO.getJobDescription(),
-                    jobDTO.getSalary(),
-                    jobDTO.getJobPosition(),
-                    jobDTO.getJobLocation())
-            ) {
-                throw new JobAlreadyExistsException("Job with title: " + jobDTO.getJobTitle() + " already exists!");
-            }
-
+//            if(company != null) {
             Job newJob = new Job();
             newJob.setId(jobDTO.getId());
             newJob.setJobTitle(jobDTO.getJobTitle());
@@ -54,7 +56,9 @@ public class JobServiceImpl implements JobService {
             newJob.setJobLocation(jobDTO.getJobLocation());
             newJob.setCompany(company);
 
+//            }
             return EntityToEntityDTOConverter.convertJobToJobDTO(jobRepository.save(newJob));
+
         } catch (CompanyNotFoundException | JobAlreadyExistsException e) {
             throw e;
         } catch (Exception e) {
@@ -71,11 +75,40 @@ public class JobServiceImpl implements JobService {
 //
     @Override
     public JobDTO findJobById(Long companyId, Long jobId) {
-//        Optional<Job> jobOptional = jobRepository.findJobById(companyId, jobId);
-        Optional<Job> jobOptional = jobRepository.findByIdAndCompanyIdAndIsDeletedFalse(companyId, jobId);
+
+//        Optional<Job> jobOptional = jobRepository.findJobByIdAndCompanyId(companyId, jobId);
+//        Job job = jobOptional.orElse(null);
+//        System.out.println(job.getJobTitle() + " ---- " + job.getId());
+//        return job != null ? EntityToEntityDTOConverter.convertJobToJobDTO(job) : null;
+
+
+        Optional<Job> jobOptional = jobRepository.findById(jobId);
         Job job = jobOptional.orElse(null);
-        System.out.println(job.getJobTitle() + " ---- " + job.getId());
-        return job != null ? EntityToEntityDTOConverter.convertJobToJobDTO(job) : null;
+
+
+        if(job != null) {
+
+
+            Optional<Company> companyOptional = companyRepository.findById(companyId);
+            Company company = companyOptional.orElse(null);
+
+            System.out.println(job.getCompany().getCompanyName() + " " + company.getCompanyName().trim().toLowerCase() + " nnnn");
+            if(job.getCompany().getCompanyName().equals(company.getCompanyName().trim().toLowerCase())) {
+                return EntityToEntityDTOConverter.convertJobToJobDTO(job);
+            }
+            else {
+                throw new CompanyNotFoundException(String.format("Company with id: %d is not found", companyId));
+            }
+
+//            List<Job> allJobs = job.getCompany().getJobs();
+//            for(Job jobs: allJobs) {
+//                System.out.println(jobs + " ..... ");
+//            }
+
+//            return EntityToEntityDTOConverter.convertJobsToJobsDTO(allJobs);
+        }
+//        return job != null ? EntityToEntityDTOConverter.convertJobToJobDTO(job) : null;
+
 
 //        Job job = jobRepository.findByIdAndCompanyIdAndIsDeletedFalse(jobId, companyId)
 //                .orElseThrow(() -> new ResourceNotFoundException(
@@ -83,6 +116,7 @@ public class JobServiceImpl implements JobService {
 //                ));
 
 //        return modelMapper.map(job, JobDTO.class);
+        return null;
     }
 
 //    @Override
