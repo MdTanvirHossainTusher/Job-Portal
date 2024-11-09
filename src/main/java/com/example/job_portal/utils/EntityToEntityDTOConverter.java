@@ -1,13 +1,7 @@
 package com.example.job_portal.utils;
 
-import com.example.job_portal.dto.CompanyDTO;
-import com.example.job_portal.dto.JobDTO;
-import com.example.job_portal.dto.RoleDTO;
-import com.example.job_portal.dto.UserDTO;
-import com.example.job_portal.entity.Company;
-import com.example.job_portal.entity.Job;
-import com.example.job_portal.entity.Role;
-import com.example.job_portal.entity.User;
+import com.example.job_portal.dto.*;
+import com.example.job_portal.entity.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,5 +85,24 @@ public class EntityToEntityDTOConverter {
             jobDTOs.add(EntityToEntityDTOConverter.convertJobToJobDTO(job));
         }
         return jobDTOs;
+    }
+
+    public static CVDTO convertCVToCVDTO(CV cv) {
+        return new CVDTO(
+                cv.getId(),
+                cv.getCvFormat(),
+                cv.getCvSize(),
+                cv.getCvUrl()
+//                cv.getProfile()
+        );
+    }
+
+    public static List<CVDTO> convertCVsToCVsDTO(List<CV> cvList) {
+        List<CVDTO> cvDTOs = new ArrayList<>();
+
+        for (CV cv : cvList) {
+            cvDTOs.add(EntityToEntityDTOConverter.convertCVToCVDTO(cv));
+        }
+        return cvDTOs;
     }
 }

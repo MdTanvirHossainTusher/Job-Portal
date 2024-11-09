@@ -19,7 +19,7 @@ public interface JobService {
     JobDTO updateJob(Long companyId, Long id, JobDTO companyDTO);
 
     void deleteJobById(Long companyId, Long jobId);
-//
-//    void applyToJobByUser(Long companyId, Long jobId, Long userId);
+
+    void applyToJobByUser(Long jobId, Long userId);
 
 }

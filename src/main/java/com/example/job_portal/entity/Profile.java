@@ -15,6 +15,7 @@ import java.util.List;
 @Table(name = DbProfile.TABLE_NAME)
 public class Profile extends AuditInfo {
 
+//    @OneToOne(cascade = CascadeType.ALL)
     @OneToOne
     @JoinColumn(name = "cv_id")
     private CV cv;

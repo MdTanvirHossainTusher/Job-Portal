@@ -54,20 +54,6 @@ public class CompanyController {
                 HttpStatus.OK);
     }
 
-//    @GetMapping("/filter")
-//    public ResponseEntity<List<CompanyDTO>> filterFromCompanys(@RequestParam(required = false) String email,
-//                                                       @RequestParam(required = false) Double experience,
-//                                                       @RequestParam(required = false) String universityName) {
-//        try {
-//            List<CompanyDTO> companys = companyDAO.filterCompanys(email, experience, universityName);
-//            return new ResponseEntity<>(companys, HttpStatus.OK);
-//        } catch (Exception e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
-
-    /////////////////////////////////////////////////
-
     @GetMapping("/{companyId}/jobs")
     public ResponseEntity<List<JobDTO>> getAllJobsUnderOneCompany(
             @PathVariable Long companyId
@@ -110,8 +96,18 @@ public class CompanyController {
         return new ResponseEntity<>(updatedJob, HttpStatus.OK);
     }
 
-//
-//    @GetMapping("/{companyId}/{jobId}/apply")
+    @DeleteMapping("/{companyId}/jobs/{jobId}")
+    public ResponseEntity<?> deleteJob(
+            @PathVariable Long companyId,
+            @PathVariable Long jobId
+    ) {
+        jobService.deleteJobById(companyId, jobId);
+        return new ResponseEntity<>(
+                new ApiResponse("Job deleted successfully", true),
+                HttpStatus.OK);
+    }
+
+//    @GetMapping("/{companyId}/jobs/{jobId}/apply")
 //    public ResponseEntity<Void> applyToJob(
 //            @PathVariable Long companyId,
 //            @PathVariable Long jobId,
@@ -124,45 +120,17 @@ public class CompanyController {
 //            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 //        }
 //    }
-//
-    @DeleteMapping("/{companyId}/jobs/{jobId}")
-    public ResponseEntity<?> deleteJob(
-            @PathVariable Long companyId,
-            @PathVariable Long jobId
-    ) {
-        System.out.println(" sssssssssssssssss ");
-
-        jobService.deleteJobById(companyId, jobId);
-        return new ResponseEntity<>(
-                new ApiResponse("Job deleted successfully", true),
-                HttpStatus.OK);
-    }
 
 
-
-//    @PostMapping("/{companyId}/add-role")
-//    public ResponseEntity<Void> addNewRoleToCompany(
-//            @PathVariable("companyId") Long companyId,
-//            @RequestParam(required = true) String roleName
-//    ) {
+//    @GetMapping("/filter")
+//    public ResponseEntity<List<CompanyDTO>> filterFromCompanys(@RequestParam(required = false) String email,
+//                                                       @RequestParam(required = false) Double experience,
+//                                                       @RequestParam(required = false) String universityName) {
 //        try {
-//            roleService.addRoleToCompany(companyId, roleName);
-//            return ResponseEntity.noContent().build();
+//            List<CompanyDTO> companys = companyDAO.filterCompanys(email, experience, universityName);
+//            return new ResponseEntity<>(companys, HttpStatus.OK);
 //        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-//        }
-//    }
-//
-//    @DeleteMapping("/{companyId}/delete-role")
-//    public ResponseEntity<Void> deleteCompanyRole(
-//            @PathVariable("companyId") Long companyId,
-//            @RequestParam(required = true) String roleName
-//    ) {
-//        try {
-//            companyService.deleteCompanyRole(companyId, roleName);
-//            return ResponseEntity.noContent().build();
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+//            throw new RuntimeException(e);
 //        }
 //    }
 }

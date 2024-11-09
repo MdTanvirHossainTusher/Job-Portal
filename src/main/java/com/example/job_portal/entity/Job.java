@@ -49,6 +49,7 @@ public class Job extends AuditInfo {
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY
     )
+//    @ManyToMany
     @JoinTable(
             name = "job_cv",
             joinColumns = @JoinColumn(name = "job_id"),
