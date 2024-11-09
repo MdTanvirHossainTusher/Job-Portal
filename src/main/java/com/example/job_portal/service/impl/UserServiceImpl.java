@@ -111,7 +111,11 @@ public class UserServiceImpl implements UserService {
         User user = userOptional.orElse(null);
 
         if (user != null) {
+            if(!user.getProfile().isDeleted()) {
+                user.getProfile().setDeleted(true);
+            }
             userRepository.softDeleteUserById(id);
+
         } else {
             throw new UserNotFoundException("User with the id: " + id + " is not found!");
         }

@@ -66,6 +66,7 @@ public class DbConstant {
     public static class DbProfile extends DbCommon {
         public static final String TABLE_NAME = "profiles";
         public static final String CV = "my_cv";
+        public static final String IS_PROFILE_DELETED = "is_profile_deleted";
     }
 
     public static class DbUser extends DbCommon {

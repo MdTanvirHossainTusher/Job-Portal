@@ -1,5 +1,6 @@
 package com.example.job_portal.entity;
 
+import com.example.job_portal.constant.db.DbConstant;
 import com.example.job_portal.constant.db.DbConstant.DbProfile;
 import jakarta.persistence.*;
 import lombok.*;
@@ -14,6 +15,9 @@ import java.util.List;
 @Entity
 @Table(name = DbProfile.TABLE_NAME)
 public class Profile extends AuditInfo {
+
+    @Column(name = DbProfile.IS_PROFILE_DELETED)
+    private boolean isDeleted = false;
 
 //    @OneToOne(cascade = CascadeType.ALL)
     @OneToOne
