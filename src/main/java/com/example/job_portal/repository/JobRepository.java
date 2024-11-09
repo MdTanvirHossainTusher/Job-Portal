@@ -52,6 +52,9 @@ public interface JobRepository extends JpaRepository<Job, Long> {
             @Param("jobId") Long jobId,
             @Param("companyId") Long companyId);
 
-    // Or without @Query, using method name convention:
-//    Optional<Job> findByIdAndCompanyIdAndIsDeletedFalse(Long jobId, Long companyId);
+    @Modifying
+    @Query("UPDATE Job j SET j.isDeleted = true WHERE j.id = :jobId AND j.company.id = :companyId AND j.isDeleted = false")
+    void softDeleteJob(
+            @Param("companyId") Long companyId,
+            @Param("jobId") Long jobId);
 }

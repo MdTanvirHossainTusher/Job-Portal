@@ -101,14 +101,15 @@ public class CompanyController {
 
     }
 
-//    @PutMapping("/{companyId}/jobs/{jobId}")
-//    public ResponseEntity<JobDTO> updateJob(
-//            @RequestBody JobDTO jobDTO,
-//            @PathVariable Long companyId,
-//            @PathVariable Long jobId) {
-//        JobDTO updatedJob = jobService.updateJob(companyId, jobId, jobDTO);
-//        return new ResponseEntity<>(updatedJob, HttpStatus.OK);
-//    }
+    @PutMapping("/{companyId}/jobs/{jobId}")
+    public ResponseEntity<JobDTO> updateJob(
+            @RequestBody JobDTO jobDTO,
+            @PathVariable Long companyId,
+            @PathVariable Long jobId) {
+        JobDTO updatedJob = jobService.updateJob(companyId, jobId, jobDTO);
+        return new ResponseEntity<>(updatedJob, HttpStatus.OK);
+    }
+
 //
 //    @GetMapping("/{companyId}/{jobId}/apply")
 //    public ResponseEntity<Void> applyToJob(
@@ -124,16 +125,18 @@ public class CompanyController {
 //        }
 //    }
 //
-//    @DeleteMapping("/{companyId}/{jobId}")
-//    public ResponseEntity<?> deleteJob(
-//            @PathVariable Long companyId,
-//            @PathVariable Long jobId
-//    ) {
-//        jobService.deleteJobById(companyId, jobId);
-//        return new ResponseEntity<>(
-//                new ApiResponse("Job deleted successfully", true),
-//                HttpStatus.OK);
-//    }
+    @DeleteMapping("/{companyId}/jobs/{jobId}")
+    public ResponseEntity<?> deleteJob(
+            @PathVariable Long companyId,
+            @PathVariable Long jobId
+    ) {
+        System.out.println(" sssssssssssssssss ");
+
+        jobService.deleteJobById(companyId, jobId);
+        return new ResponseEntity<>(
+                new ApiResponse("Job deleted successfully", true),
+                HttpStatus.OK);
+    }
 
 
 

@@ -12,15 +12,13 @@ public interface JobService {
 
     JobDTO createJob(Long companyId, JobDTO jobDTO);
 
-//    Job saveJob(Job job);
-//
+    Job saveJob(Job job);
+
     JobDTO findJobById(Long companyId, Long id);
-//
-//    JobDTO updateJob(Long companyId, Long id, JobDTO companyDTO);
-//
-////    List<JobDTO> getAllJobsUnderOneCompany(Long companyId);
-//
-//    void deleteJobById(Long companyId, Long jobId);
+
+    JobDTO updateJob(Long companyId, Long id, JobDTO companyDTO);
+
+    void deleteJobById(Long companyId, Long jobId);
 //
 //    void applyToJobByUser(Long companyId, Long jobId, Long userId);
 

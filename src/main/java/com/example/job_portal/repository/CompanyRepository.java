@@ -32,4 +32,5 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
     @Modifying
     @Query("UPDATE Job j SET j.isDeleted = true WHERE j.company.id = :companyId")
     void softDeleteJobsByCompanyId(@Param("companyId") Long companyId);
+
 }

@@ -12,6 +12,7 @@ import com.example.job_portal.utils.EntityToEntityDTOConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -98,9 +99,6 @@ public class CompanyServiceImpl implements CompanyService {
     public void deleteCompanyById(Long id) {
         CompanyDTO company = findCompanyById(id);
         try {
-//            if(company != null)companyRepository.softDeleteJobsByCompanyId(id);
-//            if(company != null) companyRepository.softDeleteCompanyById(id);
-
             if (company != null) {
                 companyRepository.softDeleteJobsByCompanyId(id);
                 companyRepository.softDeleteCompanyById(id);
@@ -121,7 +119,13 @@ public class CompanyServiceImpl implements CompanyService {
 
         if(company != null) {
 //            List<Job> jobs = jobRepository.findAllJobsUnderCompanyByCompanyId(companyId);
-            List<Job> jobs = company.getJobs();
+            List<Job> jobs = new ArrayList<>();
+
+            for (Job job : company.getJobs()) {
+                if (!job.isDeleted()) {
+                    jobs.add(job);
+                }
+            }
             return EntityToEntityDTOConverter.convertJobsToJobsDTO(jobs);
         }
         else throw new CompanyNotFoundException("Company is not found!");

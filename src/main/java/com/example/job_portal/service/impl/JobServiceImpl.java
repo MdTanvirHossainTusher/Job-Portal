@@ -13,6 +13,7 @@ import com.example.job_portal.utils.EntityToEntityDTOConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,18 +36,7 @@ public class JobServiceImpl implements JobService {
         try {
             Company company = companyRepository.findCompanyById(companyId)
                     .orElseThrow(() -> new CompanyNotFoundException("Company not found with ID: " + companyId));
-//
-//            if (jobRepository.existsSimilarJob(
-//                    jobDTO.getJobTitle(),
-//                    jobDTO.getJobDescription(),
-//                    jobDTO.getSalary(),
-//                    jobDTO.getJobPosition(),
-//                    jobDTO.getJobLocation())
-//            ) {
-//                throw new JobAlreadyExistsException("Job with title: " + jobDTO.getJobTitle() + " already exists!");
-//            }
 
-//            if(company != null) {
             Job newJob = new Job();
             newJob.setId(jobDTO.getId());
             newJob.setJobTitle(jobDTO.getJobTitle());
@@ -56,7 +46,6 @@ public class JobServiceImpl implements JobService {
             newJob.setJobLocation(jobDTO.getJobLocation());
             newJob.setCompany(company);
 
-//            }
             return EntityToEntityDTOConverter.convertJobToJobDTO(jobRepository.save(newJob));
 
         } catch (CompanyNotFoundException | JobAlreadyExistsException e) {
@@ -67,112 +56,82 @@ public class JobServiceImpl implements JobService {
     }
 
 
-//    @Override
-//    @Transactional
-//    public Job saveJob(Job job) {
-//        return jobRepository.save(job);
-//    }
-//
+    @Override
+    @Transactional
+    public Job saveJob(Job job) {
+        return jobRepository.save(job);
+    }
+
     @Override
     public JobDTO findJobById(Long companyId, Long jobId) {
 
-//        Optional<Job> jobOptional = jobRepository.findJobByIdAndCompanyId(companyId, jobId);
-//        Job job = jobOptional.orElse(null);
-//        System.out.println(job.getJobTitle() + " ---- " + job.getId());
-//        return job != null ? EntityToEntityDTOConverter.convertJobToJobDTO(job) : null;
+        try {
+            Company company = companyRepository.findById(companyId)
+                    .orElseThrow(() -> new CompanyNotFoundException("Company not found with id: " + companyId));
 
-
-        Optional<Job> jobOptional = jobRepository.findById(jobId);
-        Job job = jobOptional.orElse(null);
-
-
-        if(job != null) {
-
-
-            Optional<Company> companyOptional = companyRepository.findById(companyId);
-            Company company = companyOptional.orElse(null);
-
-            System.out.println(job.getCompany().getCompanyName() + " " + company.getCompanyName().trim().toLowerCase() + " nnnn");
-            if(job.getCompany().getCompanyName().equals(company.getCompanyName().trim().toLowerCase())) {
-                return EntityToEntityDTOConverter.convertJobToJobDTO(job);
+            for (Job job : company.getJobs()) {
+                if (!job.isDeleted() && job.getId().equals(jobId)) {
+                    return EntityToEntityDTOConverter.convertJobToJobDTO(job);
+                }
             }
-            else {
-                throw new CompanyNotFoundException(String.format("Company with id: %d is not found", companyId));
-            }
+            throw new JobNotFoundException("Job not found with id: " + jobId + " in company: " + company.getCompanyName());
 
-//            List<Job> allJobs = job.getCompany().getJobs();
-//            for(Job jobs: allJobs) {
-//                System.out.println(jobs + " ..... ");
-//            }
-
-//            return EntityToEntityDTOConverter.convertJobsToJobsDTO(allJobs);
+        } catch (CompanyNotFoundException ex) {
+            throw ex;
+        } catch (Exception ex) {
+            throw new RuntimeException("Error occurred while finding job: " + ex.getMessage());
         }
-//        return job != null ? EntityToEntityDTOConverter.convertJobToJobDTO(job) : null;
-
-
-//        Job job = jobRepository.findByIdAndCompanyIdAndIsDeletedFalse(jobId, companyId)
-//                .orElseThrow(() -> new ResourceNotFoundException(
-//                        String.format("Job not found with id %d for company %d", jobId, companyId)
-//                ));
-
-//        return modelMapper.map(job, JobDTO.class);
-        return null;
     }
 
-//    @Override
-//    @Transactional
-//    public JobDTO updateJob(Long companyId, Long jobId, JobDTO jobDTO) {
-//        Job existingJob = jobRepository.findJobById(companyId, jobId)
-//                .orElseThrow(() -> new JobNotFoundException("Job with id: " + jobId + " is not found!"));
-//
-//        if(existingJob != null) {
-//            if(jobDTO.getJobTitle() != null) existingJob.setJobTitle(jobDTO.getJobTitle());
-//            if(jobDTO.getJobDescription() != null) existingJob.setJobDescription(jobDTO.getJobDescription());
-//            if(jobDTO.getSalary() != null) existingJob.setSalary(jobDTO.getSalary());
-//            if(jobDTO.getJobPosition() != null) existingJob.setJobPosition(jobDTO.getJobPosition());
-//
-//            Job job = jobRepository.save(existingJob);
-//
-//            return EntityToEntityDTOConverter.convertJobToJobDTO(job);
-//
-//        }
-//        else {
-//            throw new JobNotFoundException("Job with id: " + jobId + " is not found!");
-//        }
-//    }
-//
-////    @Override
-////    public List<JobDTO> findAllJobs() {
-////        return EntityToEntityDTOConverter.convertJobsToJobsDTO(jobRepository.findAllJobs());
-////    }
-//
-//    @Override
-//    @Transactional
-//    public void deleteJobById(Long companyId, Long jobId) {
-//        JobDTO job = findJobById(companyId, jobId);
-//
-//        try {
-//            if(job != null) jobRepository.softDeleteJobById(companyId, jobId);
-////            if(job != null) ;
-//        } catch (Exception ex) {
-//            throw new JobNotFoundException("Job is not found!");
-//        }
-//    }
-//
-//    @Override
-//    public void applyToJobByUser(Long companyId, Long jobId, Long userId) {
-//
-//    }
 
-//    @Override
-//    public List<JobDTO> getAllJobsUnderOneCompany(Long companyId) {
-//        CompanyDTO company = findCompanyById(companyId);
-//
-//        if(company != null) {
-//            List<Job> jobs = jobRepository.findAllJobsUnderCompanyByCompanyId(companyId);
-//            return EntityToEntityDTOConverter.convertJobsToJobsDTO(jobs);
-//        }
-//        else throw new CompanyNotFoundException("Company is not found!");
-//    }
+    @Override
+    @Transactional
+    public JobDTO updateJob(Long companyId, Long jobId, JobDTO jobDTO) {
+
+        try {
+            Company company = companyRepository.findById(companyId)
+                    .orElseThrow(() -> new CompanyNotFoundException("Company not found with id: " + companyId));
+
+            for (Job existingJob : company.getJobs()) {
+                if (!existingJob.isDeleted() && existingJob.getId().equals(jobId)) {
+
+                    if(jobDTO.getJobTitle() != null) existingJob.setJobTitle(jobDTO.getJobTitle());
+                    if(jobDTO.getJobDescription() != null) existingJob.setJobDescription(jobDTO.getJobDescription());
+                    if(jobDTO.getSalary() != null) existingJob.setSalary(jobDTO.getSalary());
+                    if(jobDTO.getJobPosition() != null) existingJob.setJobPosition(jobDTO.getJobPosition());
+
+                    Job job = saveJob(existingJob);
+
+                    return EntityToEntityDTOConverter.convertJobToJobDTO(job);
+                }
+            }
+            throw new JobNotFoundException("Job not found with id: " + jobId + " in company: " + company.getCompanyName());
+
+        } catch (CompanyNotFoundException ex) {
+            throw ex;
+        } catch (Exception ex) {
+            throw new RuntimeException("Error occurred while finding job: " + ex.getMessage());
+        }
+    }
+
+    @Override
+    @Transactional
+    public void deleteJobById(Long companyId, Long jobId) {
+
+        Company company = companyRepository.findById(companyId)
+                .orElseThrow(() -> new CompanyNotFoundException("Company not found with id: " + companyId));
+
+        Iterator<Job> iterator = company.getJobs().iterator();
+        while (iterator.hasNext()) {
+            Job existingJob = iterator.next();
+            if (!existingJob.isDeleted() && existingJob.getId().equals(jobId)) {
+                existingJob.setDeleted(true);
+                jobRepository.save(existingJob);
+                return;
+            }
+        }
+
+        throw new JobNotFoundException("Job not found with id: " + jobId);
+    }
 
 }
