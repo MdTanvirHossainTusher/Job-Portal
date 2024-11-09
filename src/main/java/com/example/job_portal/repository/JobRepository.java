@@ -57,4 +57,7 @@ public interface JobRepository extends JpaRepository<Job, Long> {
     void softDeleteJob(
             @Param("companyId") Long companyId,
             @Param("jobId") Long jobId);
+
+    @Query("SELECT j FROM Job j WHERE j.id = :jobId AND j.isDeleted = false")
+    Optional<Job> findJobById(@Param("jobId") Long jobId);
 }

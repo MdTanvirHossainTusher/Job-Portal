@@ -135,7 +135,7 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public void applyToJobByUser(Long jobId, Long userId) {
-        Job job = jobRepository.findById(jobId).orElseThrow(
+        Job job = jobRepository.findJobById(jobId).orElseThrow(
                 () -> new JobNotFoundException(String.format("Job with id: %d is not found", jobId)));
 
         User user = userRepository.findUserById(userId).orElseThrow(
