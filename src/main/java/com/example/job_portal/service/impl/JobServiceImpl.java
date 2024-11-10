@@ -150,7 +150,7 @@ public class JobServiceImpl implements JobService {
 
         for(Profile profile: job.getProfiles()) {
             if(profile.getUser().getId().equals(userId)) {
-                System.out.println(" aaaaaaaaaaaaaaaaa ");
+//                System.out.println(" aaaaaaaaaaaaaaaaa ");
                 throw new AlreadyAppliedException("You have already applied to this job");
             }
         }
@@ -158,7 +158,7 @@ public class JobServiceImpl implements JobService {
         Profile profile = user.getProfile();
 
         if(profile.getJobs() == null) {
-            System.out.println(" jjjjjjjjjjjjjjjjjjjjjjjjj ");
+//            System.out.println(" jjjjjjjjjjjjjjjjjjjjjjjjj ");
 
             profile.setJobs(new ArrayList<>());
         }
@@ -171,11 +171,11 @@ public class JobServiceImpl implements JobService {
 //        job.getProfiles().add(profile);
 
         if(profile.getCv() != null) {
-            System.out.println(" ccccccc ");
+//            System.out.println(" ccccccc ");
 
             if(job.getCvs() == null) {
                 job.setCvs(new ArrayList<>());
-                System.out.println(" vvvvvvvvvvvvv ");
+//                System.out.println(" vvvvvvvvvvvvv ");
 
             }
             job.getCvs().add(profile.getCv());

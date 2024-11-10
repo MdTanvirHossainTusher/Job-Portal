@@ -5,6 +5,8 @@ import com.example.job_portal.service.CVService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/cvs")
 public class CVController {
@@ -14,12 +16,28 @@ public class CVController {
         this.cvService = cvService;
     }
 
-    @PostMapping("/upload")
-    public ResponseEntity<CVDTO> uploadCV(
-            @RequestBody CVDTO cvDTO,
-            @RequestParam Long profileId
-    ) {
-        CVDTO cvdto =  cvService.createCV(profileId, cvDTO);
-        return ResponseEntity.ok(cvdto);
+    @GetMapping
+    public ResponseEntity<List<CVDTO>> getAllCVs() {
+        List<CVDTO> cvDTOs =  cvService.getAllCVs();
+        return ResponseEntity.ok(cvDTOs);
     }
+
+//    @PostMapping("/upload")
+//    public ResponseEntity<CVDTO> uploadCV(
+//            @RequestBody CVDTO cvDTO,
+//            @RequestParam Long profileId
+//    ) {
+//        CVDTO cvdto =  cvService.createCV(profileId, cvDTO);
+//        return ResponseEntity.ok(cvdto);
+//    }
+//
+//    @PutMapping("/update")
+//    public ResponseEntity<CVDTO> updateCV(
+//            @RequestBody CVDTO cvDTO,
+//            @RequestParam Long profileId
+//    ) {
+//        CVDTO cvdto =  cvService.updateCV(profileId, cvDTO);
+//        return ResponseEntity.ok(cvdto);
+//    }
+
 }
