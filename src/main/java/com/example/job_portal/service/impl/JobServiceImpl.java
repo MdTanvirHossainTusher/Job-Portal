@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 @Service
 public class JobServiceImpl implements JobService {
@@ -59,6 +60,11 @@ public class JobServiceImpl implements JobService {
     @Transactional
     public Job saveJob(Job job) {
         return jobRepository.save(job);
+    }
+
+    @Override
+    public List<JobDTO> findAllJobs() {
+        return EntityToEntityDTOConverter.convertJobsToJobsDTO(jobRepository.findAllJobs());
     }
 
     @Override

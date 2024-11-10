@@ -1,5 +1,6 @@
 package com.example.job_portal.repository;
 
+import com.example.job_portal.dto.JobDTO;
 import com.example.job_portal.entity.Company;
 import com.example.job_portal.entity.Job;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -60,4 +61,7 @@ public interface JobRepository extends JpaRepository<Job, Long> {
 
     @Query("SELECT j FROM Job j WHERE j.id = :jobId AND j.isDeleted = false")
     Optional<Job> findJobById(@Param("jobId") Long jobId);
+
+    @Query("SELECT j FROM Job j WHERE j.isDeleted = false")
+    List<Job> findAllJobs();
 }

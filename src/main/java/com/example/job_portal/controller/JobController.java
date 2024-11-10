@@ -21,6 +21,12 @@ public class JobController {
         this.jobService = jobService;
     }
 
+    @GetMapping
+    public ResponseEntity<List<JobDTO>> getAllJobs() {
+        List<JobDTO> jobs = jobService.findAllJobs();
+        return new ResponseEntity<>(jobs, HttpStatus.OK);
+    }
+
     @PostMapping("/{jobId}/apply")
     public ResponseEntity<?> applyToJob(
             @PathVariable Long jobId,
