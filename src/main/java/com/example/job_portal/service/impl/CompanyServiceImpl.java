@@ -1,10 +1,13 @@
 package com.example.job_portal.service.impl;
 
+import com.example.job_portal.dto.ApplicantsDTO;
 import com.example.job_portal.dto.CompanyDTO;
 import com.example.job_portal.dto.JobDTO;
 import com.example.job_portal.entity.*;
 import com.example.job_portal.exception.CompanyAlreadyExistsException;
 import com.example.job_portal.exception.CompanyNotFoundException;
+import com.example.job_portal.exception.JobNotFoundException;
+import com.example.job_portal.exception.UserNotFoundException;
 import com.example.job_portal.repository.CompanyRepository;
 import com.example.job_portal.repository.JobRepository;
 import com.example.job_portal.service.CompanyService;
@@ -129,6 +132,30 @@ public class CompanyServiceImpl implements CompanyService {
             return EntityToEntityDTOConverter.convertJobsToJobsDTO(jobs);
         }
         else throw new CompanyNotFoundException("Company is not found!");
+    }
+
+    @Override
+    public List<ApplicantsDTO> getAllApplicantsUnderAJobPost(Long companyId, Long jobId) {
+        Company company = companyRepository.findCompanyById(companyId)
+                .orElseThrow(() -> new CompanyNotFoundException("Company with id: " + companyId + " is not found!"));
+
+        Job job = jobRepository.findJobById(jobId).orElseThrow(
+                () -> new JobNotFoundException(String.format("Job with id: %d is not found", jobId)));
+
+        List<ApplicantsDTO> applicantsDTOList = new ArrayList<>();
+
+        for(Profile profile: job.getProfiles()) {
+            if((profile.getCv() != null) && !profile.isDeleted()) {
+
+                ApplicantsDTO applicantsDTO = new ApplicantsDTO();
+
+                applicantsDTO.setProfileDTO(EntityToEntityDTOConverter.convertProfileToProfileDTO(profile));
+//                applicantsDTO.setCompanyDTO(EntityToEntityDTOConverter.convertCompanyToCompanyDTO(job.getCompany()));
+
+                applicantsDTOList.add(applicantsDTO);
+            }
+        }
+        return applicantsDTOList;
     }
 
 

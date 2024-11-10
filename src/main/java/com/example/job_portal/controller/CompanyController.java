@@ -1,5 +1,6 @@
 package com.example.job_portal.controller;
 
+import com.example.job_portal.dto.ApplicantsDTO;
 import com.example.job_portal.dto.CompanyDTO;
 import com.example.job_portal.dto.JobDTO;
 import com.example.job_portal.entity.api_response.ApiResponse;
@@ -106,6 +107,16 @@ public class CompanyController {
                 new ApiResponse("Job deleted successfully", true),
                 HttpStatus.OK);
     }
+
+    @GetMapping("/{companyId}/jobs/{jobId}/applicants")
+    public ResponseEntity<List<ApplicantsDTO>> getAllApplicantsUnderAJobPost(
+            @PathVariable Long companyId,
+            @PathVariable Long jobId
+    ) {
+        List<ApplicantsDTO> applicantsDTOList =  companyService.getAllApplicantsUnderAJobPost(companyId, jobId);
+        return new ResponseEntity<>(applicantsDTOList, HttpStatus.OK);
+    }
+
 
 //    @GetMapping("/{companyId}/jobs/{jobId}/apply")
 //    public ResponseEntity<Void> applyToJob(

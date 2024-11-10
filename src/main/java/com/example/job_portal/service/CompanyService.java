@@ -1,5 +1,6 @@
 package com.example.job_portal.service;
 
+import com.example.job_portal.dto.ApplicantsDTO;
 import com.example.job_portal.dto.CompanyDTO;
 import com.example.job_portal.dto.JobDTO;
 import com.example.job_portal.entity.Company;
@@ -22,5 +23,7 @@ public interface CompanyService {
     void deleteCompanyById(Long companyId);
 
     List<JobDTO> getAllJobsUnderOneCompany(Long companyId);
+
+    List<ApplicantsDTO> getAllApplicantsUnderAJobPost(Long companyId, Long jobId);
 
 }

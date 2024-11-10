@@ -93,7 +93,6 @@ public class EntityToEntityDTOConverter {
                 cv.getCvFormat(),
                 cv.getCvSize(),
                 cv.getCvUrl()
-//                cv.getProfile()
         );
     }
 
@@ -104,5 +103,67 @@ public class EntityToEntityDTOConverter {
             cvDTOs.add(EntityToEntityDTOConverter.convertCVToCVDTO(cv));
         }
         return cvDTOs;
+    }
+
+    public static SkillDTO convertSkillToSkillDTO(Skill skill) {
+        return new SkillDTO(
+                skill.getSkillName()
+        );
+    }
+
+    public static List<SkillDTO> convertSkillsToSkillsDTO(List<Skill> skills) {
+        List<SkillDTO> skillDTOS = new ArrayList<>();
+
+        for (Skill skill : skills) {
+            skillDTOS.add(EntityToEntityDTOConverter.convertSkillToSkillDTO(skill));
+        }
+        return skillDTOS;
+    }
+
+    public static UniversityDTO convertUniversityToUniversityDTO(University university) {
+        return new UniversityDTO(
+                university.getName(),
+                university.getDegree(),
+                university.getPassingYear()
+        );
+    }
+
+    public static List<UniversityDTO> convertUniversitiesToUniversitiesDTO(List<University> universities) {
+        List<UniversityDTO> universityDTOList = new ArrayList<>();
+
+        for (University university : universities) {
+            universityDTOList.add(EntityToEntityDTOConverter.convertUniversityToUniversityDTO(university));
+        }
+        return universityDTOList;
+    }
+
+
+//    convertProfileToProfileDTO
+
+//    private CVDTO cvdto;
+//    private UserDTO userDTO;
+//    private List<SkillDTO> skillDTOS;
+//    private List<UniversityDTO> universityDTOS;
+//    private List<JobDTO> jobDTOS;
+//    private List<CompanyDTO> companyDTOS;
+
+    public static ProfileDTO convertProfileToProfileDTO(Profile profile) {
+        return new ProfileDTO(
+                EntityToEntityDTOConverter.convertCVToCVDTO(profile.getCv()),
+                EntityToEntityDTOConverter.convertUserToUserDTO(profile.getUser()),
+                EntityToEntityDTOConverter.convertSkillsToSkillsDTO(profile.getSkills()),
+                EntityToEntityDTOConverter.convertUniversitiesToUniversitiesDTO(profile.getUniversities()),
+                EntityToEntityDTOConverter.convertJobsToJobsDTO(profile.getJobs())
+//                EntityToEntityDTOConverter.convertMyCompaniesToMyCompaniesDTO(profile.getMyCompanies())
+        );
+    }
+
+    public static List<ProfileDTO> convertProfilesToProfilesDTO(List<Profile> profiles) {
+        List<ProfileDTO> profileDTOList = new ArrayList<>();
+
+        for (Profile profile : profiles) {
+            profileDTOList.add(EntityToEntityDTOConverter.convertProfileToProfileDTO(profile));
+        }
+        return profileDTOList;
     }
 }
