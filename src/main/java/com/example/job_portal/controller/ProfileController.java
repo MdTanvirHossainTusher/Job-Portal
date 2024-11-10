@@ -1,6 +1,7 @@
 package com.example.job_portal.controller;
 
 import com.example.job_portal.dto.CVDTO;
+import com.example.job_portal.dto.JobApplicationDTO;
 import com.example.job_portal.dto.JobDTO;
 import com.example.job_portal.service.CVService;
 import com.example.job_portal.service.ProfileService;
@@ -47,10 +48,10 @@ public class ProfileController {
     }
 
     @GetMapping("/{profileId}/jobs/applied-on")
-    public ResponseEntity<List<JobDTO>> getAllJobsUserAppliedOn(
+    public ResponseEntity<List<JobApplicationDTO>> getAllJobsUserAppliedOn(
             @PathVariable Long profileId
     ) {
-        List<JobDTO> jobs = profileService.getAllJobsUserAppliedOn(profileId);
+        List<JobApplicationDTO> jobs = profileService.getAllJobsUserAppliedOn(profileId);
         return new ResponseEntity<>(jobs, HttpStatus.OK);
     }
 

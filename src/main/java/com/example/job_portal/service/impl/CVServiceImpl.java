@@ -39,24 +39,28 @@ public class CVServiceImpl implements CVService {
 
     @Override
     public CVDTO createCV(Long profileId, CVDTO cvDTO) {
-        Profile profile = profileRepository.findById(profileId)
+        Profile profile = profileRepository.findProfileById(profileId)
                 .orElseThrow(() -> new ProfileNotFoundException(
                         String.format("Profile with id: %d not found", profileId)));
 
         CV newCV = new CV();
-        newCV.setCvFormat(cvDTO.getCvFormat());
-        newCV.setCvSize(cvDTO.getCvSize());
-        newCV.setCvUrl(cvDTO.getCvUrl());
-        newCV.setJobs(new ArrayList<>());
-        newCV.setProfile(profile);
+        if(profile.getCv() == null) {
+            newCV.setCvFormat(cvDTO.getCvFormat());
+            newCV.setCvSize(cvDTO.getCvSize());
+            newCV.setCvUrl(cvDTO.getCvUrl());
+            newCV.setJobs(new ArrayList<>());
+            newCV.setProfile(profile);
 
-        CV savedCV = cvRepository.save(newCV);
+            CV savedCV = cvRepository.save(newCV);
 
-        profile.setCv(savedCV);
-        profileRepository.save(profile);
+            profile.setCv(savedCV);
+            profileRepository.save(profile);
 
-        return EntityToEntityDTOConverter.convertCVToCVDTO(newCV);
-
+            return EntityToEntityDTOConverter.convertCVToCVDTO(newCV);
+        }
+        else {
+            throw new CVAlreadyExistsException(String.format("CV has already exists in the profile id: %d", profileId));
+        }
     }
 
     @Override

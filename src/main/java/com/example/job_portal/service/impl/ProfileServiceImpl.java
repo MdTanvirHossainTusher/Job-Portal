@@ -1,9 +1,11 @@
 package com.example.job_portal.service.impl;
 
+import com.example.job_portal.dto.JobApplicationDTO;
 import com.example.job_portal.dto.JobDTO;
 import com.example.job_portal.entity.Job;
 import com.example.job_portal.entity.Profile;
 import com.example.job_portal.exception.CVNotFoundException;
+import com.example.job_portal.exception.JobNotFoundException;
 import com.example.job_portal.exception.UserNotFoundException;
 import com.example.job_portal.repository.ProfileRepository;
 import com.example.job_portal.service.ProfileService;
@@ -11,6 +13,7 @@ import com.example.job_portal.utils.EntityToEntityDTOConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -29,15 +32,33 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public List<JobDTO> getAllJobsUserAppliedOn(Long profileId) {
+    public List<JobApplicationDTO> getAllJobsUserAppliedOn(Long profileId) {
         Profile profile = profileRepository.findProfileById(profileId).orElseThrow(
                 () -> new UserNotFoundException(String.format("Profile with id: %d is not found", profileId)));
 
-//        if(profile != null) {
-            return EntityToEntityDTOConverter.convertJobsToJobsDTO(profile.getJobs());
-//        }
-//        else {
-//            throw new CVNotFoundException("CV is not attached to this profile!");
-//        }
+        Long activeJobsCount = profile.getJobs().stream()
+                .filter(job -> !job.isDeleted() && !job.getCompany().isDeleted())
+                .count();
+
+        List<JobApplicationDTO> jobApplicationDTOList = new ArrayList<>();
+
+        for(Job job: profile.getJobs()) {
+            if(!job.getCompany().isDeleted() && !job.isDeleted()) {
+
+                JobApplicationDTO jobApplicationDTO = new JobApplicationDTO();
+
+                jobApplicationDTO.setJobId(job.getId());
+                jobApplicationDTO.setJobTitle(job.getJobTitle());
+                jobApplicationDTO.setJobDescription(job.getJobDescription());
+                jobApplicationDTO.setSalary(job.getSalary());
+                jobApplicationDTO.setJobPosition(job.getJobPosition());
+                jobApplicationDTO.setJobLocation(job.getJobLocation());
+                jobApplicationDTO.setCompany(EntityToEntityDTOConverter.convertCompanyToCompanyDTO(job.getCompany()));
+                jobApplicationDTO.setTotalApplications(activeJobsCount);
+
+                jobApplicationDTOList.add(jobApplicationDTO);
+            }
+        }
+        return jobApplicationDTOList;
     }
 }
