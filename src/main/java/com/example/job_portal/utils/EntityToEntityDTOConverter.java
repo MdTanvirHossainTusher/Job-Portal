@@ -2,11 +2,18 @@ package com.example.job_portal.utils;
 
 import com.example.job_portal.dto.*;
 import com.example.job_portal.entity.*;
+import com.example.job_portal.repository.ProfileRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class EntityToEntityDTOConverter {
+
+//    private static ProfileRepository profileRepository;
+//
+//    public EntityToEntityDTOConverter(ProfileRepository profileRepository) {
+//        this.profileRepository = profileRepository;
+//    }
 
     public static UserDTO convertUserToUserDTO(User user) {
         return new UserDTO(
@@ -148,15 +155,24 @@ public class EntityToEntityDTOConverter {
 //    private List<CompanyDTO> companyDTOS;
 
     public static ProfileDTO convertProfileToProfileDTO(Profile profile) {
+
+        List<Job> jobs = new ArrayList<>();
+        for(Job job: profile.getJobs()) {
+            if(!job.isDeleted()) {
+                jobs.add(job);
+            }
+        }
         return new ProfileDTO(
                 EntityToEntityDTOConverter.convertCVToCVDTO(profile.getCv()),
                 EntityToEntityDTOConverter.convertUserToUserDTO(profile.getUser()),
                 EntityToEntityDTOConverter.convertSkillsToSkillsDTO(profile.getSkills()),
                 EntityToEntityDTOConverter.convertUniversitiesToUniversitiesDTO(profile.getUniversities()),
-                EntityToEntityDTOConverter.convertJobsToJobsDTO(profile.getJobs())
+                EntityToEntityDTOConverter.convertJobsToJobsDTO(jobs)
 //                EntityToEntityDTOConverter.convertMyCompaniesToMyCompaniesDTO(profile.getMyCompanies())
         );
     }
+
+
 
     public static List<ProfileDTO> convertProfilesToProfilesDTO(List<Profile> profiles) {
         List<ProfileDTO> profileDTOList = new ArrayList<>();

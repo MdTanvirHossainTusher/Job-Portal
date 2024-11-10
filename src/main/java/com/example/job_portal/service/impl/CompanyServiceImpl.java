@@ -135,7 +135,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public List<ApplicantsDTO> getAllApplicantsUnderAJobPost(Long companyId, Long jobId) {
+    public List<ApplicantsDTO> getAllApplicantsInfoUnderAJobPost(Long companyId, Long jobId) {
         Company company = companyRepository.findCompanyById(companyId)
                 .orElseThrow(() -> new CompanyNotFoundException("Company with id: " + companyId + " is not found!"));
 
@@ -145,7 +145,7 @@ public class CompanyServiceImpl implements CompanyService {
         List<ApplicantsDTO> applicantsDTOList = new ArrayList<>();
 
         for(Profile profile: job.getProfiles()) {
-            if((profile.getCv() != null) && !profile.isDeleted()) {
+            if((profile.getCv() != null) && !profile.isDeleted() && !profile.getUser().isDeleted()) {
 
                 ApplicantsDTO applicantsDTO = new ApplicantsDTO();
 

@@ -109,11 +109,11 @@ public class CompanyController {
     }
 
     @GetMapping("/{companyId}/jobs/{jobId}/applicants")
-    public ResponseEntity<List<ApplicantsDTO>> getAllApplicantsUnderAJobPost(
+    public ResponseEntity<List<ApplicantsDTO>> getAllApplicantsInfoUnderAJobPost(
             @PathVariable Long companyId,
             @PathVariable Long jobId
     ) {
-        List<ApplicantsDTO> applicantsDTOList =  companyService.getAllApplicantsUnderAJobPost(companyId, jobId);
+        List<ApplicantsDTO> applicantsDTOList =  companyService.getAllApplicantsInfoUnderAJobPost(companyId, jobId);
         return new ResponseEntity<>(applicantsDTOList, HttpStatus.OK);
     }
 

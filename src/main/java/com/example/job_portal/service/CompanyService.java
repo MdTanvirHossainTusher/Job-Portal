@@ -24,6 +24,6 @@ public interface CompanyService {
 
     List<JobDTO> getAllJobsUnderOneCompany(Long companyId);
 
-    List<ApplicantsDTO> getAllApplicantsUnderAJobPost(Long companyId, Long jobId);
+    List<ApplicantsDTO> getAllApplicantsInfoUnderAJobPost(Long companyId, Long jobId);
 
 }
