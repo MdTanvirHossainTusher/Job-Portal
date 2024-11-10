@@ -14,10 +14,10 @@ public class CVController {
         this.cvService = cvService;
     }
 
-    @PostMapping("/upload/{profileId}")
+    @PostMapping("/upload")
     public ResponseEntity<CVDTO> uploadCV(
-            @PathVariable Long profileId,
-            @RequestBody CVDTO cvDTO
+            @RequestBody CVDTO cvDTO,
+            @RequestParam Long profileId
     ) {
         CVDTO cvdto =  cvService.createCV(profileId, cvDTO);
         return ResponseEntity.ok(cvdto);
