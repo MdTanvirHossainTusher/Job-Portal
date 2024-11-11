@@ -46,8 +46,8 @@ public class ProfileServiceImpl implements ProfileService {
 
         List<JobApplicationDTO> jobApplicationDTOList = new ArrayList<>();
 
-        for(Job job: profile.getJobs()) {
-            if(!job.getCompany().isDeleted() && !job.isDeleted()) {
+        for (Job job : profile.getJobs()) {
+            if (!job.getCompany().isDeleted() && !job.isDeleted()) {
 
                 JobApplicationDTO jobApplicationDTO = new JobApplicationDTO();
 
@@ -71,17 +71,16 @@ public class ProfileServiceImpl implements ProfileService {
         Profile profile = profileRepository.findProfileById(profileId).orElseThrow(
                 () -> new UserNotFoundException(String.format("Profile with id: %d is not found", profileId)));
 
-        if(!profile.isDeleted()) {
+        if (!profile.isDeleted()) {
             List<Skill> skills = new ArrayList<>();
 
-            for (Skill skill: profile.getSkills()) {
-                if(!skill.isDeleted()) {
+            for (Skill skill : profile.getSkills()) {
+                if (!skill.isDeleted()) {
                     skills.add(skill);
                 }
             }
             return EntityToEntityDTOConverter.convertSkillsToSkillsDTO(skills);
-        }
-        else {
+        } else {
             throw new RuntimeException("User didn't add any skill yet!");
         }
     }
@@ -95,23 +94,45 @@ public class ProfileServiceImpl implements ProfileService {
         Skill skill = skillRepository.findSkillById(skillId).orElseThrow(
                 () -> new UserNotFoundException(String.format("Skill with id: %d is not found", skillId)));
 
-        if(!profile.isDeleted() && !skill.isDeleted()) {
+        if (!profile.isDeleted() && !skill.isDeleted()) {
             boolean skillExists = false;
-            for(Skill existingSkill : profile.getSkills()) {
-                if(existingSkill.getId().equals(skillId)) {
+            for (Skill existingSkill : profile.getSkills()) {
+                if (existingSkill.getId().equals(skillId)) {
                     skillExists = true;
                     break;
                 }
             }
-            if(!skillExists) {
+            if (!skillExists) {
                 profile.getSkills().add(skill);
                 profileRepository.save(profile);
-            }
-            else {
+            } else {
                 throw new SkillAlreadyExistsException("Skill already exists!");
             }
         }
-
     }
+
+    @Override
+    @Transactional
+    public void removeSkillToUserProfile(Long profileId, Long skillId) {
+        Profile profile = profileRepository.findProfileById(profileId).orElseThrow(
+                () -> new UserNotFoundException(String.format("Profile with id: %d is not found", profileId)));
+
+        if (!profile.isDeleted()) {
+            boolean skillExists = false;
+            for (Skill existingSkill : profile.getSkills()) {
+                if (existingSkill.getId().equals(skillId)) {
+                    skillExists = true;
+                    profile.getSkills().remove(existingSkill);
+                    profileRepository.save(profile);
+                    break;
+                }
+            }
+            if (!skillExists) {
+                throw new SkillAlreadyExistsException("Skill not found!");
+            }
+        }
+    }
+
+
 
 }

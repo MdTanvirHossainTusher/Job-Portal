@@ -75,6 +75,16 @@ public class ProfileController {
                 new ApiResponse("Skill added successfully!", true), HttpStatus.OK);
     }
 
+    @PutMapping("/{profileId}/skills/{skillId}")
+    public ResponseEntity<?> removeSkillToUserProfile(
+            @PathVariable Long profileId,
+            @PathVariable Long skillId
+    ) {
+        profileService.removeSkillToUserProfile(profileId, skillId);
+        return new ResponseEntity<>(
+                new ApiResponse("Skill removed successfully!", true), HttpStatus.OK);
+    }
+
 
 
 //    @GetMapping("/{profileId}/skills/{skillId}")

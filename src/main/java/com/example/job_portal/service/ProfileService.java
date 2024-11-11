@@ -15,4 +15,6 @@ public interface ProfileService {
     List<SkillDTO> getAllSkillsUnderProfile(Long profileId);
 
     void addSkillToUserProfile(Long profileId, Long skillId);
+
+    void removeSkillToUserProfile(Long profileId, Long skillId);
 }

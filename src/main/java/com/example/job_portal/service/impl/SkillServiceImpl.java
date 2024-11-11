@@ -1,10 +1,12 @@
 package com.example.job_portal.service.impl;
 
 import com.example.job_portal.dto.SkillDTO;
+import com.example.job_portal.entity.Profile;
 import com.example.job_portal.entity.Skill;
 import com.example.job_portal.exception.SkillAlreadyExistsException;
 import com.example.job_portal.exception.SkillNotFoundException;
 import com.example.job_portal.exception.UserNotFoundException;
+import com.example.job_portal.repository.ProfileRepository;
 import com.example.job_portal.repository.SkillRepository;
 import com.example.job_portal.service.SkillService;
 import com.example.job_portal.utils.EntityToEntityDTOConverter;
@@ -18,9 +20,11 @@ import java.util.Optional;
 public class SkillServiceImpl implements SkillService {
 
     private final SkillRepository skillRepository;
+    private final ProfileRepository profileRepository;
 
-    public SkillServiceImpl(SkillRepository skillRepository) {
+    public SkillServiceImpl(SkillRepository skillRepository, ProfileRepository profileRepository) {
         this.skillRepository = skillRepository;
+        this.profileRepository = profileRepository;
     }
 
     @Override
@@ -57,6 +61,18 @@ public class SkillServiceImpl implements SkillService {
     public void deleteSkill(Long skillId) {
         Skill skill = skillRepository.findSkillById(skillId).orElseThrow(
                 () -> new SkillNotFoundException(String.format("Skill with id: %d is not found!", skillId)));
+
+        for(Profile profile: skill.getProfiles()) {
+            if(!profile.isDeleted()) {
+                for(Skill userSkill: profile.getSkills()) {
+                    if(!userSkill.isDeleted() && userSkill.getId().equals(skillId)) {
+//                        userSkill.setDeleted(true);
+                        profile.getSkills().remove(userSkill);
+                        profileRepository.save(profile);
+                    }
+                }
+            }
+        }
 
         if(!skill.isDeleted()) {
             skillRepository.softDeleteSkillById(skillId);
