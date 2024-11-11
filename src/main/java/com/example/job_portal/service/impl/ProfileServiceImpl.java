@@ -1,9 +1,6 @@
 package com.example.job_portal.service.impl;
 
-import com.example.job_portal.dto.JobApplicationDTO;
-import com.example.job_portal.dto.JobDTO;
-import com.example.job_portal.dto.SkillDTO;
-import com.example.job_portal.dto.UniversityDTO;
+import com.example.job_portal.dto.*;
 import com.example.job_portal.entity.*;
 import com.example.job_portal.exception.*;
 import com.example.job_portal.repository.ProfileRepository;
@@ -203,6 +200,11 @@ public class ProfileServiceImpl implements ProfileService {
                 throw new UniversityAlreadyExistsException("University not found!");
             }
         }
+    }
+
+    @Override
+    public CompanyDTO addCompanyToProfileAsMyCompany(Long profileId) {
+        return null;
     }
 
 

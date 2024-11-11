@@ -112,6 +112,14 @@ public class ProfileController {
     }
 
 
+    @PostMapping("/{profileId}/my-companies")
+    public ResponseEntity<CompanyDTO> addCompanyToProfileAsMyCompany(
+            @PathVariable Long profileId
+    ) {
+        CompanyDTO companyDTO = profileService.addCompanyToProfileAsMyCompany(profileId);
+        return new ResponseEntity<>(companyDTO, HttpStatus.CREATED);
+    }
+
 
 
 }
