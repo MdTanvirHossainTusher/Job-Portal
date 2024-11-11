@@ -1,21 +1,101 @@
 package com.example.job_portal.service.impl;
 
+import com.example.job_portal.dto.UniversityDTO;
+import com.example.job_portal.entity.Profile;
 import com.example.job_portal.entity.University;
+import com.example.job_portal.entity.University;
+import com.example.job_portal.exception.UniversityAlreadyExistsException;
+import com.example.job_portal.exception.UniversityNotFoundException;
+import com.example.job_portal.repository.ProfileRepository;
+import com.example.job_portal.repository.UniversityRepository;
 import com.example.job_portal.repository.UniversityRepository;
 import com.example.job_portal.service.UniversityService;
+import com.example.job_portal.utils.EntityToEntityDTOConverter;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Iterator;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UniversityServiceImpl implements UniversityService {
 
     private final UniversityRepository universityRepository;
+    private final ProfileRepository profileRepository;
 
-    public UniversityServiceImpl(UniversityRepository universityRepository) {
+    public UniversityServiceImpl(UniversityRepository universityRepository, ProfileRepository profileRepository) {
         this.universityRepository = universityRepository;
+        this.profileRepository = profileRepository;
     }
 
     @Override
+    @Transactional
     public void save(University university) {
         universityRepository.save(university);
+    }
+
+    @Override
+    public List<UniversityDTO> getAllUniversitiesUnderApp() {
+        return EntityToEntityDTOConverter.convertUniversitiesToUniversitiesDTO(universityRepository.findAllUniversity());
+    }
+
+    @Override
+    @Transactional
+    public UniversityDTO createUniversity(UniversityDTO universityDTO) {
+
+        Optional<University> university = universityRepository.findUniversityById(universityDTO.getId());
+
+        if(university.isEmpty()) {
+            University newUniversity = new University();
+
+            newUniversity.setName(universityDTO.getName());
+            newUniversity.setDegree(universityDTO.getDegree());
+            newUniversity.setPassingYear(universityDTO.getPassingYear());
+
+            return EntityToEntityDTOConverter.convertUniversityToUniversityDTO(universityRepository.save(newUniversity));
+        }
+        else {
+            throw new UniversityAlreadyExistsException("University already exists!");
+        }
+    }
+
+    @Override
+    @Transactional
+    public void deleteUniversity(Long universityId) {
+        University university = universityRepository.findUniversityById(universityId).orElseThrow(
+                () -> new UniversityNotFoundException(String.format("University with id: %d is not found!", universityId)));
+
+        for(Profile profile: university.getProfiles()) {
+//            if(!profile.isDeleted()) {
+//                for(University userUniversity: profile.getUniversities()) {
+//                    if(!userUniversity.isDeleted() && userUniversity.getId().equals(universityId)) {
+//                        profile.getUniversities().remove(userUniversity);
+//                        profileRepository.save(profile);
+//                    }
+//                }
+//            }
+
+            if(!profile.isDeleted()) {
+                Iterator<University> iterator = profile.getUniversities().iterator();
+                boolean modified = false;
+
+                while(iterator.hasNext()) {
+                    University userUniversity = iterator.next();
+                    if(!userUniversity.isDeleted() && userUniversity.getId().equals(universityId)) {
+                        iterator.remove();
+                        modified = true;
+                    }
+                }
+
+                if(modified) {
+                    profileRepository.save(profile);
+                }
+            }
+        }
+
+        if(!university.isDeleted()) {
+            universityRepository.softDeleteUniversityById(universityId);
+        }
     }
 }

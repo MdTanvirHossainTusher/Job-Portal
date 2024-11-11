@@ -3,6 +3,7 @@ package com.example.job_portal.service;
 import com.example.job_portal.dto.JobApplicationDTO;
 import com.example.job_portal.dto.JobDTO;
 import com.example.job_portal.dto.SkillDTO;
+import com.example.job_portal.dto.UniversityDTO;
 import com.example.job_portal.entity.Profile;
 
 import java.util.List;
@@ -17,4 +18,12 @@ public interface ProfileService {
     void addSkillToUserProfile(Long profileId, Long skillId);
 
     void removeSkillToUserProfile(Long profileId, Long skillId);
+
+
+
+    List<UniversityDTO> getAllUniversitiesUnderProfile(Long profileId);
+
+    void addUniversityToUserProfile(Long profileId, Long skillId);
+
+    void removeUniversityToUserProfile(Long profileId, Long skillId);
 }

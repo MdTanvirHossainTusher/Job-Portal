@@ -1,9 +1,6 @@
 package com.example.job_portal.controller;
 
-import com.example.job_portal.dto.CVDTO;
-import com.example.job_portal.dto.JobApplicationDTO;
-import com.example.job_portal.dto.JobDTO;
-import com.example.job_portal.dto.SkillDTO;
+import com.example.job_portal.dto.*;
 import com.example.job_portal.entity.api_response.ApiResponse;
 import com.example.job_portal.service.CVService;
 import com.example.job_portal.service.ProfileService;
@@ -86,14 +83,35 @@ public class ProfileController {
     }
 
 
+    @GetMapping("/{profileId}/universities")
+    public ResponseEntity<List<UniversityDTO>> getAllUniversitiesOfUser(
+            @PathVariable Long profileId
+    ) {
+        List<UniversityDTO> universities = profileService.getAllUniversitiesUnderProfile(profileId);
+        return new ResponseEntity<>(universities, HttpStatus.OK);
+    }
 
-//    @GetMapping("/{profileId}/skills/{skillId}")
-//    public ResponseEntity<SkillDTO> getAllSkillsOfUser(
-//            @PathVariable Long profileId,
-//            @PathVariable Long skillId
-//    ) {
-//        List<SkillDTO> skills = profileService.getSki(profileId);
-//        return new ResponseEntity<>(skills, HttpStatus.OK);
-//    }
+    @PostMapping("/{profileId}/universities/{universityId}")
+    public ResponseEntity<?> addUniversityToUserProfile(
+            @PathVariable Long profileId,
+            @PathVariable Long universityId
+    ) {
+        profileService.addUniversityToUserProfile(profileId, universityId);
+        return new ResponseEntity<>(
+                new ApiResponse("University added successfully!", true), HttpStatus.OK);
+    }
+
+    @PutMapping("/{profileId}/universities/{universityId}")
+    public ResponseEntity<?> removeUniversityToUserProfile(
+            @PathVariable Long profileId,
+            @PathVariable Long universityId
+    ) {
+        profileService.removeUniversityToUserProfile(profileId, universityId);
+        return new ResponseEntity<>(
+                new ApiResponse("University removed successfully!", true), HttpStatus.OK);
+    }
+
+
+
 
 }

@@ -3,13 +3,12 @@ package com.example.job_portal.service.impl;
 import com.example.job_portal.dto.JobApplicationDTO;
 import com.example.job_portal.dto.JobDTO;
 import com.example.job_portal.dto.SkillDTO;
-import com.example.job_portal.entity.CV;
-import com.example.job_portal.entity.Job;
-import com.example.job_portal.entity.Profile;
-import com.example.job_portal.entity.Skill;
+import com.example.job_portal.dto.UniversityDTO;
+import com.example.job_portal.entity.*;
 import com.example.job_portal.exception.*;
 import com.example.job_portal.repository.ProfileRepository;
 import com.example.job_portal.repository.SkillRepository;
+import com.example.job_portal.repository.UniversityRepository;
 import com.example.job_portal.service.ProfileService;
 import com.example.job_portal.utils.EntityToEntityDTOConverter;
 import org.springframework.stereotype.Service;
@@ -23,10 +22,12 @@ public class ProfileServiceImpl implements ProfileService {
 
     private final ProfileRepository profileRepository;
     private final SkillRepository skillRepository;
+    private final UniversityRepository universityRepository;
 
-    public ProfileServiceImpl(ProfileRepository profileRepository, SkillRepository skillRepository) {
+    public ProfileServiceImpl(ProfileRepository profileRepository, SkillRepository skillRepository, UniversityRepository universityRepository) {
         this.profileRepository = profileRepository;
         this.skillRepository = skillRepository;
+        this.universityRepository = universityRepository;
     }
 
     @Override
@@ -133,6 +134,76 @@ public class ProfileServiceImpl implements ProfileService {
         }
     }
 
+
+
+
+    @Override
+    public List<UniversityDTO> getAllUniversitiesUnderProfile(Long profileId) {
+        Profile profile = profileRepository.findProfileById(profileId).orElseThrow(
+                () -> new UserNotFoundException(String.format("Profile with id: %d is not found", profileId)));
+
+        if (!profile.isDeleted()) {
+            List<University> universityList = new ArrayList<>();
+
+            for (University university : profile.getUniversities()) {
+                if (!university.isDeleted()) {
+                    universityList.add(university);
+                }
+            }
+            return EntityToEntityDTOConverter.convertUniversitiesToUniversitiesDTO(universityList);
+        } else {
+            throw new RuntimeException("User didn't add any university yet!");
+        }
+    }
+
+    @Override
+    @Transactional
+    public void addUniversityToUserProfile(Long profileId, Long universityId) {
+        Profile profile = profileRepository.findProfileById(profileId).orElseThrow(
+                () -> new UserNotFoundException(String.format("Profile with id: %d is not found", profileId)));
+
+        University university = universityRepository.findUniversityById(universityId).orElseThrow(
+                () -> new UserNotFoundException(String.format("University with id: %d is not found", universityId)));
+
+        if (!profile.isDeleted() && !university.isDeleted()) {
+            boolean universityExists = false;
+
+            for (University existingUniversity : profile.getUniversities()) {
+                if (existingUniversity.getId().equals(universityId)) {
+                    universityExists = true;
+                    break;
+                }
+            }
+            if (!universityExists) {
+                profile.getUniversities().add(university);
+                profileRepository.save(profile);
+            } else {
+                throw new UniversityAlreadyExistsException("University already exists!");
+            }
+        }
+    }
+
+    @Override
+    @Transactional
+    public void removeUniversityToUserProfile(Long profileId, Long universityId) {
+        Profile profile = profileRepository.findProfileById(profileId).orElseThrow(
+                () -> new UserNotFoundException(String.format("Profile with id: %d is not found", profileId)));
+
+        if (!profile.isDeleted()) {
+            boolean universityExists = false;
+            for (University existingUniversity : profile.getUniversities()) {
+                if (existingUniversity.getId().equals(universityId)) {
+                    universityExists = true;
+                    profile.getUniversities().remove(existingUniversity);
+                    profileRepository.save(profile);
+                    break;
+                }
+            }
+            if (!universityExists) {
+                throw new UniversityAlreadyExistsException("University not found!");
+            }
+        }
+    }
 
 
 }

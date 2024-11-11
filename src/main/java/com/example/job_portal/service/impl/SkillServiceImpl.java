@@ -66,7 +66,6 @@ public class SkillServiceImpl implements SkillService {
             if(!profile.isDeleted()) {
                 for(Skill userSkill: profile.getSkills()) {
                     if(!userSkill.isDeleted() && userSkill.getId().equals(skillId)) {
-//                        userSkill.setDeleted(true);
                         profile.getSkills().remove(userSkill);
                         profileRepository.save(profile);
                     }

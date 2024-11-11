@@ -130,6 +130,7 @@ public class EntityToEntityDTOConverter {
 
     public static UniversityDTO convertUniversityToUniversityDTO(University university) {
         return new UniversityDTO(
+                university.getId(),
                 university.getName(),
                 university.getDegree(),
                 university.getPassingYear()
