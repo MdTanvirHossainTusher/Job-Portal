@@ -16,7 +16,7 @@ public class ProfileDTO {
     private UserDTO userDTO;
     private List<SkillDTO> skillDTOS;
     private List<UniversityDTO> universityDTOS;
-//    private List<JobApplicationDTO> applicationDTOS;
     private List<JobDTO> jobDTOS;
+//    private List<JobApplicationDTO> applicationDTOS;
 //    private List<CompanyDTO> companyDTOS;
 }

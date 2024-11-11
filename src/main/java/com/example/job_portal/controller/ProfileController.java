@@ -3,6 +3,8 @@ package com.example.job_portal.controller;
 import com.example.job_portal.dto.CVDTO;
 import com.example.job_portal.dto.JobApplicationDTO;
 import com.example.job_portal.dto.JobDTO;
+import com.example.job_portal.dto.SkillDTO;
+import com.example.job_portal.entity.api_response.ApiResponse;
 import com.example.job_portal.service.CVService;
 import com.example.job_portal.service.ProfileService;
 import org.springframework.http.HttpStatus;
@@ -54,5 +56,34 @@ public class ProfileController {
         List<JobApplicationDTO> jobs = profileService.getAllJobsUserAppliedOn(profileId);
         return new ResponseEntity<>(jobs, HttpStatus.OK);
     }
+
+    @GetMapping("/{profileId}/skills")
+    public ResponseEntity<List<SkillDTO>> getAllSkillsOfUser(
+            @PathVariable Long profileId
+    ) {
+        List<SkillDTO> skills = profileService.getAllSkillsUnderProfile(profileId);
+        return new ResponseEntity<>(skills, HttpStatus.OK);
+    }
+
+    @PostMapping("/{profileId}/skills/{skillId}")
+    public ResponseEntity<?> addSkillToUserProfile(
+            @PathVariable Long profileId,
+            @PathVariable Long skillId
+    ) {
+        profileService.addSkillToUserProfile(profileId, skillId);
+        return new ResponseEntity<>(
+                new ApiResponse("Skill added successfully!", true), HttpStatus.OK);
+    }
+
+
+
+//    @GetMapping("/{profileId}/skills/{skillId}")
+//    public ResponseEntity<SkillDTO> getAllSkillsOfUser(
+//            @PathVariable Long profileId,
+//            @PathVariable Long skillId
+//    ) {
+//        List<SkillDTO> skills = profileService.getSki(profileId);
+//        return new ResponseEntity<>(skills, HttpStatus.OK);
+//    }
 
 }

@@ -114,6 +114,7 @@ public class EntityToEntityDTOConverter {
 
     public static SkillDTO convertSkillToSkillDTO(Skill skill) {
         return new SkillDTO(
+                skill.getId(),
                 skill.getSkillName()
         );
     }

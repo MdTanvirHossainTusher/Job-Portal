@@ -20,11 +20,13 @@ public class DbConstant {
         public static final String UNIVERSITY_NAME = "university_name";
         public static final String DEGREE = "degree";
         public static final String PASSING_YEAR = "passing_year";
+        public static final String IS_UNIVERSITY_DELETED = "is_university_deleted";
     }
 
     public static class DbSkill extends DbCommon {
         public static final String TABLE_NAME = "skills";
         public static final String SKILL_NAME = "skill_name";
+        public static final String IS_Skill_DELETED = "is_skill_deleted";
     }
 
     public static class DbCV extends DbCommon {

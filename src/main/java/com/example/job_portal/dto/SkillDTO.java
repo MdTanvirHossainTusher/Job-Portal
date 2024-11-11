@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SkillDTO {
-
+    private Long id;
     private String skillName;
 
 }
