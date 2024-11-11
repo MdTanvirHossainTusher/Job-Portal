@@ -149,7 +149,13 @@ public class CompanyServiceImpl implements CompanyService {
 
                 ApplicantsDTO applicantsDTO = new ApplicantsDTO();
 
-                applicantsDTO.setProfileDTO(EntityToEntityDTOConverter.convertProfileToProfileDTO(profile));
+                User user = profile.getUser();
+                CV cv = profile.getCv();
+
+                applicantsDTO.setUserDTO(EntityToEntityDTOConverter.convertUserToUserDTO(user));
+                applicantsDTO.setCvdto(EntityToEntityDTOConverter.convertCVToCVDTO(cv));
+
+//                applicantsDTO.setProfileDTO(EntityToEntityDTOConverter.convertProfileToProfileDTO(profile));
 //                applicantsDTO.setCompanyDTO(EntityToEntityDTOConverter.convertCompanyToCompanyDTO(job.getCompany()));
 
                 applicantsDTOList.add(applicantsDTO);
