@@ -1,6 +1,7 @@
 package com.example.job_portal.controller;
 
 import com.example.job_portal.dao.UserDAO;
+import com.example.job_portal.dto.ProfileDTO;
 import com.example.job_portal.dto.UserDTO;
 import com.example.job_portal.entity.api_response.ApiResponse;
 import com.example.job_portal.service.RoleService;
@@ -98,5 +99,13 @@ public class UserController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+    }
+
+    @GetMapping("/{userId}/profiles")
+    public ResponseEntity<ProfileDTO> getUserProfile(
+            @PathVariable("userId") Long userId
+    ) {
+        ProfileDTO profileDTO = userService.getUserProfile(userId);
+        return new ResponseEntity<>(profileDTO, HttpStatus.OK);
     }
 }

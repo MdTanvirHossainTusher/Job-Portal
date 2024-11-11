@@ -168,8 +168,8 @@ public class EntityToEntityDTOConverter {
                 EntityToEntityDTOConverter.convertCVToCVDTO(profile.getCv()),
                 EntityToEntityDTOConverter.convertUserToUserDTO(profile.getUser()),
                 EntityToEntityDTOConverter.convertSkillsToSkillsDTO(profile.getSkills()),
-                EntityToEntityDTOConverter.convertUniversitiesToUniversitiesDTO(profile.getUniversities()),
-                EntityToEntityDTOConverter.convertJobsToJobsDTO(jobs)
+                EntityToEntityDTOConverter.convertUniversitiesToUniversitiesDTO(profile.getUniversities())
+//                EntityToEntityDTOConverter.convertJobsToJobsDTO(jobs)
 //                EntityToEntityDTOConverter.convertMyCompaniesToMyCompaniesDTO(profile.getMyCompanies())
         );
     }

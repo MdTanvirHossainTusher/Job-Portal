@@ -1,6 +1,7 @@
 package com.example.job_portal.service;
 
 
+import com.example.job_portal.dto.ProfileDTO;
 import com.example.job_portal.dto.UserDTO;
 import com.example.job_portal.entity.User;
 
@@ -22,5 +23,7 @@ public interface UserService {
     List<String> getUserRoles(Long id);
 
     void deleteUserRole(Long userId, String roleName);
+
+    ProfileDTO getUserProfile(Long userId);
 
 }

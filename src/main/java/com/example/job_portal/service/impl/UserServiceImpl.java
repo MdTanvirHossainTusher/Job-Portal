@@ -1,9 +1,11 @@
 package com.example.job_portal.service.impl;
 
+import com.example.job_portal.dto.ApplicantsDTO;
+import com.example.job_portal.dto.ProfileDTO;
 import com.example.job_portal.dto.UserDTO;
-import com.example.job_portal.entity.Profile;
-import com.example.job_portal.entity.Role;
-import com.example.job_portal.entity.User;
+import com.example.job_portal.entity.*;
+import com.example.job_portal.exception.CompanyNotFoundException;
+import com.example.job_portal.exception.JobNotFoundException;
 import com.example.job_portal.exception.UserAlreadyExistsException;
 import com.example.job_portal.exception.UserNotFoundException;
 import com.example.job_portal.repository.RoleRepository;
@@ -153,6 +155,18 @@ public class UserServiceImpl implements UserService {
                 }
             }
         }
+    }
+
+    @Override
+//    public ProfileDTO getUserProfile(Long userId, Long profileId) {
+    public ProfileDTO getUserProfile(Long userId) {
+        User user = userRepository.findUserById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User with id: " + userId + " is not found!"));
+
+
+        Profile profile = user.getProfile();
+        return EntityToEntityDTOConverter.convertProfileToProfileDTO(profile);
+
     }
 
 }

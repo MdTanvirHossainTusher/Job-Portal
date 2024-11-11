@@ -1,6 +1,7 @@
 package com.example.job_portal.service.impl;
 
 import com.example.job_portal.dto.ApplicantsDTO;
+import com.example.job_portal.dto.ProfileDTO;
 import com.example.job_portal.dto.CompanyDTO;
 import com.example.job_portal.dto.JobDTO;
 import com.example.job_portal.entity.*;
@@ -154,9 +155,6 @@ public class CompanyServiceImpl implements CompanyService {
 
                 applicantsDTO.setUserDTO(EntityToEntityDTOConverter.convertUserToUserDTO(user));
                 applicantsDTO.setCvdto(EntityToEntityDTOConverter.convertCVToCVDTO(cv));
-
-//                applicantsDTO.setProfileDTO(EntityToEntityDTOConverter.convertProfileToProfileDTO(profile));
-//                applicantsDTO.setCompanyDTO(EntityToEntityDTOConverter.convertCompanyToCompanyDTO(job.getCompany()));
 
                 applicantsDTOList.add(applicantsDTO);
             }

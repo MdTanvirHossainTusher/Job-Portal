@@ -3,6 +3,7 @@ package com.example.job_portal.controller;
 import com.example.job_portal.dto.ApplicantsDTO;
 import com.example.job_portal.dto.CompanyDTO;
 import com.example.job_portal.dto.JobDTO;
+import com.example.job_portal.dto.ProfileDTO;
 import com.example.job_portal.entity.api_response.ApiResponse;
 import com.example.job_portal.service.CompanyService;
 import com.example.job_portal.service.JobService;
@@ -108,6 +109,7 @@ public class CompanyController {
                 HttpStatus.OK);
     }
 
+
     @GetMapping("/{companyId}/jobs/{jobId}/applicants")
     public ResponseEntity<List<ApplicantsDTO>> getAllApplicantsInfoUnderAJobPost(
             @PathVariable Long companyId,
@@ -116,6 +118,24 @@ public class CompanyController {
         List<ApplicantsDTO> applicantsDTOList =  companyService.getAllApplicantsInfoUnderAJobPost(companyId, jobId);
         return new ResponseEntity<>(applicantsDTOList, HttpStatus.OK);
     }
+
+//    @GetMapping("/{companyId}/jobs/{jobId}/applicants")
+//    public ResponseEntity<List<ProfileDTO>> getAllApplicantsInfoUnderAJobPost(
+//            @PathVariable Long companyId,
+//            @PathVariable Long jobId
+//    ) {
+//        List<ProfileDTO> profileDTOList =  companyService.getAllApplicantsInfoUnderAJobPost(companyId, jobId);
+//        return new ResponseEntity<>(profileDTOList, HttpStatus.OK);
+//    }
+
+
+
+
+
+
+
+
+
 
 
 //    @GetMapping("/{companyId}/jobs/{jobId}/apply")
