@@ -111,15 +111,12 @@ public class ProfileController {
                 new ApiResponse("University removed successfully!", true), HttpStatus.OK);
     }
 
-
-    @PostMapping("/{profileId}/my-companies")
-    public ResponseEntity<CompanyDTO> addCompanyToProfileAsMyCompany(
-            @PathVariable Long profileId
-    ) {
-        CompanyDTO companyDTO = profileService.addCompanyToProfileAsMyCompany(profileId);
-        return new ResponseEntity<>(companyDTO, HttpStatus.CREATED);
-    }
-
-
+//    @PostMapping("/{profileId}/my-companies")
+//    public ResponseEntity<CompanyDTO> addCompanyToProfileAsMyCompany(
+//            @PathVariable Long profileId
+//    ) {
+//        CompanyDTO companyDTO = profileService.addCompanyToProfileAsMyCompany(profileId);
+//        return new ResponseEntity<>(companyDTO, HttpStatus.CREATED);
+//    }
 
 }

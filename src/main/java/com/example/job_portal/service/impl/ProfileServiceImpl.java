@@ -131,9 +131,6 @@ public class ProfileServiceImpl implements ProfileService {
         }
     }
 
-
-
-
     @Override
     public List<UniversityDTO> getAllUniversitiesUnderProfile(Long profileId) {
         Profile profile = profileRepository.findProfileById(profileId).orElseThrow(
@@ -201,11 +198,5 @@ public class ProfileServiceImpl implements ProfileService {
             }
         }
     }
-
-    @Override
-    public CompanyDTO addCompanyToProfileAsMyCompany(Long profileId) {
-        return null;
-    }
-
 
 }
