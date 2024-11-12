@@ -60,12 +60,15 @@ public class UserController {
     }
 
     @GetMapping("/filter")
-    public ResponseEntity<List<UserDTO>> filterFromUsers(@RequestParam(required = false) String email,
+    public ResponseEntity<?> filterFromUsers(@RequestParam(required = false) String email,
                                                        @RequestParam(required = false) Double experience,
                                                        @RequestParam(required = false) String universityName) {
         try {
             List<UserDTO> users = userDAO.filterUsers(email, experience, universityName);
-            return new ResponseEntity<>(users, HttpStatus.OK);
+            return new ResponseEntity<>(
+                    !users.isEmpty() ?
+                            users :
+                            new ApiResponse("No user found!", false), HttpStatus.OK);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -90,14 +93,8 @@ public class UserController {
             @PathVariable("userId") Long userId,
             @RequestParam(required = true) String roleName
     ) {
-//        try {
         userService.deleteUserRole(userId, roleName);
-//            return ResponseEntity.noContent().build();
         return new ResponseEntity<>(new ApiResponse("Role deleted successfully!", true), HttpStatus.OK);
-
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-//        }
     }
 
     @GetMapping("/{userId}/profiles")

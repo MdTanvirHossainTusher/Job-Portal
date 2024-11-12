@@ -75,8 +75,6 @@ public class RoleServiceImpl implements RoleService {
                 user.getRoles().removeIf(userRole -> userRole.getId().equals(roleId));
             }
         }
-
-//        roleRepository.delete(role);
     }
 
     @Override
