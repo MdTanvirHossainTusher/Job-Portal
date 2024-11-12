@@ -3,6 +3,8 @@ package com.example.job_portal.entity;
 import com.example.job_portal.constant.db.DbConstant;
 import com.example.job_portal.constant.db.DbConstant.DbUniversity;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.util.List;
@@ -13,10 +15,19 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = DbUniversity.TABLE_NAME)
+@Table(
+        name = DbUniversity.TABLE_NAME,
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "unique_skill",
+                        columnNames = {DbUniversity.UNIVERSITY_NAME}
+                )
+        })
 public class University extends AuditInfo {
 
-    @Column(name = DbUniversity.UNIVERSITY_NAME, unique = true)
+    @NotEmpty
+    @NotNull
+    @Column(name = DbUniversity.UNIVERSITY_NAME)
     private String name;
 
     @Column(name = DbUniversity.DEGREE)

@@ -46,12 +46,16 @@ public class UniversityServiceImpl implements UniversityService {
 
         Optional<University> university = universityRepository.findUniversityById(universityDTO.getId());
 
+        if (universityDTO.getName() == null || universityDTO.getName().trim().isEmpty()) {
+            throw new IllegalArgumentException("University name cannot be empty or whitespace-only");
+        }
+
         if(university.isEmpty()) {
             University newUniversity = new University();
 
-            newUniversity.setName(universityDTO.getName());
-            newUniversity.setDegree(universityDTO.getDegree());
-            newUniversity.setPassingYear(universityDTO.getPassingYear());
+            if(universityDTO.getName() != null) newUniversity.setName(universityDTO.getName());
+            if(universityDTO.getDegree() != null) newUniversity.setDegree(universityDTO.getDegree());
+            if(universityDTO.getPassingYear() != null) newUniversity.setPassingYear(universityDTO.getPassingYear());
 
             return EntityToEntityDTOConverter.convertUniversityToUniversityDTO(universityRepository.save(newUniversity));
         }
