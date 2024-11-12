@@ -70,6 +70,10 @@ public class RoleServiceImpl implements RoleService {
         if(!role.isDeleted()) {
             role.setDeleted(true);
             roleRepository.save(role);
+
+            for(User user: role.getUsers()) {
+                user.getRoles().removeIf(userRole -> userRole.getId().equals(roleId));
+            }
         }
 
 //        roleRepository.delete(role);
