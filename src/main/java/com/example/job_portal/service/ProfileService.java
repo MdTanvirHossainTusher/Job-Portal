@@ -16,10 +16,16 @@ public interface ProfileService {
 
     void removeSkillToUserProfile(Long profileId, Long skillId);
 
-    List<UniversityDTO> getAllUniversitiesUnderProfile(Long profileId);
+    List<UniversityDTO> getAllUniversitiesUnderProfile(Long universityId);
 
-    void addUniversityToUserProfile(Long profileId, Long skillId);
+    void addUniversityToUserProfile(Long profileId, Long universityId);
 
-    void removeUniversityToUserProfile(Long profileId, Long skillId);
+    void removeUniversityToUserProfile(Long profileId, Long universityId);
+
+    List<CompanyDTO> getAllCompaniesUnderProfile(Long profileId);
+
+    void addCompanyToUserProfile(Long profileId, Long companyId);
+
+    void removeCompanyToUserProfile(Long profileId, Long companyId);
 
 }

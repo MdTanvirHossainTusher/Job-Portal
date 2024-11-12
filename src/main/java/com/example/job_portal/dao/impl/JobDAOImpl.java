@@ -60,6 +60,7 @@ public class JobDAOImpl implements JobDAO {
 
             List<Job> jobs = query.getResultList();
 
+
             if (jobs.isEmpty()) {
                 return new ArrayList<>();
             }

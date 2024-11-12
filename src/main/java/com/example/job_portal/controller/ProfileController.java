@@ -110,4 +110,33 @@ public class ProfileController {
                 new ApiResponse("University removed successfully!", true), HttpStatus.OK);
     }
 
+    @GetMapping("/{profileId}/companies")
+    public ResponseEntity<List<CompanyDTO>> getAllCompaniesOfUser(
+            @PathVariable Long profileId
+    ) {
+        List<CompanyDTO> companies = profileService.getAllCompaniesUnderProfile(profileId);
+        return new ResponseEntity<>(companies, HttpStatus.OK);
+    }
+
+    @PostMapping("/{profileId}/companies/{companyId}")
+    public ResponseEntity<?> addCompanyToUserProfile(
+            @PathVariable Long profileId,
+            @PathVariable Long companyId
+    ) {
+        profileService.addCompanyToUserProfile(profileId, companyId);
+        return new ResponseEntity<>(
+                new ApiResponse("Company added successfully!", true), HttpStatus.OK);
+    }
+
+    @PutMapping("/{profileId}/companies/{companyId}")
+    public ResponseEntity<?> removeCompanyToUserProfile(
+            @PathVariable Long profileId,
+            @PathVariable Long companyId
+    ) {
+        profileService.removeCompanyToUserProfile(profileId, companyId);
+        return new ResponseEntity<>(
+                new ApiResponse("Company removed successfully!", true), HttpStatus.OK);
+    }
+
+
 }

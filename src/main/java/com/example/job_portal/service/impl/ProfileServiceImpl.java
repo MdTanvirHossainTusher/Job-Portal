@@ -3,6 +3,7 @@ package com.example.job_portal.service.impl;
 import com.example.job_portal.dto.*;
 import com.example.job_portal.entity.*;
 import com.example.job_portal.exception.*;
+import com.example.job_portal.repository.CompanyRepository;
 import com.example.job_portal.repository.ProfileRepository;
 import com.example.job_portal.repository.SkillRepository;
 import com.example.job_portal.repository.UniversityRepository;
@@ -20,11 +21,13 @@ public class ProfileServiceImpl implements ProfileService {
     private final ProfileRepository profileRepository;
     private final SkillRepository skillRepository;
     private final UniversityRepository universityRepository;
+    private final CompanyRepository companyRepository;
 
-    public ProfileServiceImpl(ProfileRepository profileRepository, SkillRepository skillRepository, UniversityRepository universityRepository) {
+    public ProfileServiceImpl(ProfileRepository profileRepository, SkillRepository skillRepository, UniversityRepository universityRepository, CompanyRepository companyRepository) {
         this.profileRepository = profileRepository;
         this.skillRepository = skillRepository;
         this.universityRepository = universityRepository;
+        this.companyRepository = companyRepository;
     }
 
     @Override
@@ -126,7 +129,7 @@ public class ProfileServiceImpl implements ProfileService {
                 }
             }
             if (!skillExists) {
-                throw new SkillAlreadyExistsException("Skill not found!");
+                throw new SkillNotFoundException("Skill not found!");
             }
         }
     }
@@ -194,7 +197,73 @@ public class ProfileServiceImpl implements ProfileService {
                 }
             }
             if (!universityExists) {
-                throw new UniversityAlreadyExistsException("University not found!");
+                throw new UniversityNotFoundException("University not found!");
+            }
+        }
+    }
+
+    @Override
+    public List<CompanyDTO> getAllCompaniesUnderProfile(Long profileId) {
+        Profile profile = profileRepository.findProfileById(profileId).orElseThrow(
+                () -> new UserNotFoundException(String.format("Profile with id: %d is not found", profileId)));
+
+        if (!profile.isDeleted()) {
+            List<Company> companyList = new ArrayList<>();
+
+            for (Company company : profile.getCompanies()) {
+                if (!company.isDeleted()) {
+                    companyList.add(company);
+                }
+            }
+            return EntityToEntityDTOConverter.convertCompaniesToCompaniesDTO(companyList);
+        } else {
+            throw new RuntimeException("User didn't add any company yet!");
+        }
+    }
+
+    @Override
+    public void addCompanyToUserProfile(Long profileId, Long companyId) {
+        Profile profile = profileRepository.findProfileById(profileId).orElseThrow(
+                () -> new UserNotFoundException(String.format("Profile with id: %d is not found", profileId)));
+
+        Company company = companyRepository.findCompanyById(companyId).orElseThrow(
+                () -> new CompanyNotFoundException(String.format("Company with id: %d is not found", companyId)));
+
+        if (!profile.isDeleted() && !company.isDeleted()) {
+            boolean companyExists = false;
+
+            for (Company existingCompany : profile.getCompanies()) {
+                if (existingCompany.getId().equals(companyId)) {
+                    companyExists = true;
+                    break;
+                }
+            }
+            if (!companyExists) {
+                profile.getCompanies().add(company);
+                profileRepository.save(profile);
+            } else {
+                throw new CompanyAlreadyExistsException("Company already exists!");
+            }
+        }
+    }
+
+    @Override
+    public void removeCompanyToUserProfile(Long profileId, Long companyId) {
+        Profile profile = profileRepository.findProfileById(profileId).orElseThrow(
+                () -> new UserNotFoundException(String.format("Profile with id: %d is not found", profileId)));
+
+        if (!profile.isDeleted()) {
+            boolean companyExists = false;
+            for (Company existingCompany : profile.getCompanies()) {
+                if (existingCompany.getId().equals(companyId)) {
+                    companyExists = true;
+                    profile.getCompanies().remove(existingCompany);
+                    profileRepository.save(profile);
+                    break;
+                }
+            }
+            if (!companyExists) {
+                throw new CompanyNotFoundException("Company not found!");
             }
         }
     }

@@ -161,18 +161,19 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findUserById(userId)
                 .orElseThrow(() -> new UserNotFoundException("User with id: " + userId + " is not found!"));
 
-        Profile profile = user.getProfile();
+//        Profile profile = user.getProfile();
 
-        List<Company> companies = new ArrayList<>();
+//        List<Company> companies = new ArrayList<>();
+//
+//        for(Job job: profile.getJobs()) {
+//            companies.add(job.getCompany());
+//        }
+//        profile.setCompanies(companies);
 
-        for(Job job: profile.getJobs()) {
-            companies.add(job.getCompany());
-        }
-        profile.setCompanies(companies);
+//        profileRepository.save(profile);
 
-        profileRepository.save(profile);
-
-        return EntityToEntityDTOConverter.convertProfileToProfileDTO(profile);
+//        return EntityToEntityDTOConverter.convertProfileToProfileDTO(profile);
+        return EntityToEntityDTOConverter.convertProfileToProfileDTO(user.getProfile());
     }
 
 }
