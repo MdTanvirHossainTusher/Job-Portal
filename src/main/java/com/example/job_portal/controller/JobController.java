@@ -36,20 +36,21 @@ public class JobController {
             @PathVariable Long jobId,
             @RequestParam(required = true) Long userId
             ) {
-        try {
-            jobService.applyToJobByUser(jobId, userId);
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        jobService.applyToJobByUser(jobId, userId);
+        return new ResponseEntity<>(
+                new ApiResponse("You have applied to the job successfully!", true),
+                HttpStatus.OK);
     }
 
     @GetMapping("/filter")
-    public ResponseEntity<List<JobDTO>> filterJobs(@RequestParam(required = false) String jobPosition,
+    public ResponseEntity<?> filterJobs(@RequestParam(required = false) String jobPosition,
                                                          @RequestParam(required = false) String jobLocation) {
         try {
             List<JobDTO> jobs = jobDAO.filterJobs(jobPosition, jobLocation);
-            return new ResponseEntity<>(jobs, HttpStatus.OK);
+            return new ResponseEntity<>(
+                    !jobs.isEmpty() ?
+                            jobs :
+                            new ApiResponse("No jobs found!", false), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

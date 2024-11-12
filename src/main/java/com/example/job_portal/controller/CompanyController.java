@@ -96,15 +96,8 @@ public class CompanyController {
     public ResponseEntity<JobDTO> createJob(
             @PathVariable Long companyId,
             @RequestBody JobDTO jobDTO) {
-
-
-        try {
-            JobDTO createdJob = jobService.createJob(companyId, jobDTO);
-            return new ResponseEntity<>(createdJob, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-
+        JobDTO createdJob = jobService.createJob(companyId, jobDTO);
+        return new ResponseEntity<>(createdJob, HttpStatus.CREATED);
     }
 
     @PutMapping("/{companyId}/jobs/{jobId}")
@@ -148,7 +141,7 @@ public class CompanyController {
             return new ResponseEntity<>(
                     !companies.isEmpty() ?
                             companies :
-                            new ApiResponse("No company found!", false), HttpStatus.OK);
+                            new ApiResponse("No company found!", false), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

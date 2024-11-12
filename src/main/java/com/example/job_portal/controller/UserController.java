@@ -68,7 +68,7 @@ public class UserController {
             return new ResponseEntity<>(
                     !users.isEmpty() ?
                             users :
-                            new ApiResponse("No user found!", false), HttpStatus.OK);
+                            new ApiResponse("No user found!", false), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
