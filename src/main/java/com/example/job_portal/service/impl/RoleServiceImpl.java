@@ -3,6 +3,7 @@ package com.example.job_portal.service.impl;
 import com.example.job_portal.dto.RoleDTO;
 import com.example.job_portal.entity.Role;
 import com.example.job_portal.entity.User;
+import com.example.job_portal.exception.UserNotFoundException;
 import com.example.job_portal.repository.RoleRepository;
 import com.example.job_portal.repository.UserRepository;
 import com.example.job_portal.service.RoleService;
@@ -51,13 +52,22 @@ public class RoleServiceImpl implements RoleService {
             String newRoleName = "ROLE_" + roleDTO.getRoleName().toUpperCase();
             newRole.setRole(newRoleName);
         }
+        else {
+            throw new RuntimeException(String.format("Role: %s has already exists!", roleDTO.getRoleName()));
+        }
         return EntityToEntityDTOConverter.convertRoleToRoleDTO(roleRepository.save(newRole));
     }
 
     @Override
     @Transactional
     public void deleteRoleById(Long roleId) {
-        roleRepository.deleteById(roleId);
+
+        Role role = roleRepository.findById(roleId)
+                .orElseThrow(() -> new RuntimeException(
+                        String.format("Role with id: %d is not found!", roleId)
+                ));
+
+        roleRepository.delete(role);
     }
 
     @Override
@@ -76,6 +86,12 @@ public class RoleServiceImpl implements RoleService {
                     userRepository.save(user);
                 }
             }
+            else {
+                throw new UserNotFoundException(String.format("User with id: %d is not found!", userId));
+            }
+        }
+        else {
+            throw new RuntimeException(String.format("Role: %s is not exists!", role));
         }
     }
 

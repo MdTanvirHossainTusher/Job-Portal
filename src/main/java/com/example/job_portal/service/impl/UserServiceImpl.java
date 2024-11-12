@@ -79,7 +79,7 @@ public class UserServiceImpl implements UserService {
     public UserDTO updateUser(Long id, UserDTO userDTO) {
 
         User existingUser = userRepository.findUserById(id)
-                .orElseThrow(() -> new UserNotFoundException("User with id: " + id + " is not found!"));
+                .orElseThrow(() -> new UserNotFoundException(String.format("User with id: %d is not found!", id)));
 
         if(userDTO.getName() != null) {
             existingUser.setName(userDTO.getName());
@@ -118,7 +118,7 @@ public class UserServiceImpl implements UserService {
             userRepository.softDeleteUserById(id);
 
         } else {
-            throw new UserNotFoundException("User with the id: " + id + " is not found!");
+            throw new UserNotFoundException(String.format("User with id: %d is not found!", id));
         }
     }
 
@@ -135,6 +135,9 @@ public class UserServiceImpl implements UserService {
                 roles.add(role.getRole());
             }
         }
+        else {
+            throw new UserNotFoundException(String.format("User with id: %d is not found!", userId));
+        }
         return roles;
     }
 
@@ -143,36 +146,33 @@ public class UserServiceImpl implements UserService {
     public void deleteUserRole(Long userId, String roleName) {
         Optional<User> userOptional = userRepository.findUserById(userId);
         User user = userOptional.orElse(null);
+        boolean roleExists = false;
 
         if(user != null) {
             for(Role role: user.getRoles()) {
                 String newRoleName = "ROLE_" + roleName.toUpperCase();
 
                 if(role.getRole().equals(newRoleName)) {
+                    roleExists = true;
                     user.getRoles().remove(role);
                     userRepository.save(user);
                 }
             }
+            if(!roleExists) {
+                throw new RuntimeException(String.format("User with id: %d doesn't have role: %s", userId, roleName));
+            }
+        }
+        else {
+            throw new UserNotFoundException(String.format("User with id: %d is not found!", userId));
         }
     }
 
     @Override
     public ProfileDTO getUserProfile(Long userId) {
         User user = userRepository.findUserById(userId)
-                .orElseThrow(() -> new UserNotFoundException("User with id: " + userId + " is not found!"));
+                .orElseThrow(() -> new UserNotFoundException(
+                        String.format("User with id: %d is not found!", userId)));
 
-//        Profile profile = user.getProfile();
-
-//        List<Company> companies = new ArrayList<>();
-//
-//        for(Job job: profile.getJobs()) {
-//            companies.add(job.getCompany());
-//        }
-//        profile.setCompanies(companies);
-
-//        profileRepository.save(profile);
-
-//        return EntityToEntityDTOConverter.convertProfileToProfileDTO(profile);
         return EntityToEntityDTOConverter.convertProfileToProfileDTO(user.getProfile());
     }
 

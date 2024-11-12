@@ -3,6 +3,7 @@ package com.example.job_portal.controller;
 import com.example.job_portal.dao.UserDAO;
 import com.example.job_portal.dto.ProfileDTO;
 import com.example.job_portal.dto.UserDTO;
+import com.example.job_portal.entity.Role;
 import com.example.job_portal.entity.api_response.ApiResponse;
 import com.example.job_portal.service.RoleService;
 import com.example.job_portal.service.UserService;
@@ -76,29 +77,27 @@ public class UserController {
     }
 
     @PostMapping("/{userId}/add-role")
-    public ResponseEntity<Void> addNewRoleToUser(
+    public ResponseEntity<?> addNewRoleToUser(
             @PathVariable("userId") Long userId,
             @RequestParam(required = true) String roleName
     ) {
-        try {
-            roleService.addRoleToUser(userId, roleName);
-            return ResponseEntity.noContent().build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        roleService.addRoleToUser(userId, roleName);
+        return new ResponseEntity<>(new ApiResponse("Role added successfully!", true), HttpStatus.OK);
     }
 
     @DeleteMapping("/{userId}/delete-role")
-    public ResponseEntity<Void> deleteUserRole(
+    public ResponseEntity<?> deleteUserRole(
             @PathVariable("userId") Long userId,
             @RequestParam(required = true) String roleName
     ) {
-        try {
-            userService.deleteUserRole(userId, roleName);
-            return ResponseEntity.noContent().build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+//        try {
+        userService.deleteUserRole(userId, roleName);
+//            return ResponseEntity.noContent().build();
+        return new ResponseEntity<>(new ApiResponse("Role deleted successfully!", true), HttpStatus.OK);
+
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+//        }
     }
 
     @GetMapping("/{userId}/profiles")
