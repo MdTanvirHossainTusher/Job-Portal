@@ -1,27 +1,17 @@
 package com.example.job_portal.entity;
 
-import com.example.job_portal.constant.db.DbConstant;
 import com.example.job_portal.constant.db.DbConstant.DbJob;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
 
-//@ToString
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(
-        name = DbJob.TABLE_NAME
-//        uniqueConstraints = {
-//                @UniqueConstraint(
-//                        name = "unique_job_location",
-//                        columnNames = {DbJob.JOB_LOCATION}
-//                )
-//        }
-        )
+@Table(name = DbJob.TABLE_NAME)
 public class Job extends AuditInfo {
 
     @Column(name = DbJob.JOB_TITLE)
@@ -42,14 +32,10 @@ public class Job extends AuditInfo {
     @Column(name = DbJob.IS_JOB_DELETED)
     private boolean isDeleted = false;
 
-//    @Column(name = DbJob.IS_FRAUDULENT)
-//    private boolean isJobFraudulent;
-
     @ManyToMany(
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY
     )
-//    @ManyToMany
     @JoinTable(
             name = "job_cv",
             joinColumns = @JoinColumn(name = "job_id"),

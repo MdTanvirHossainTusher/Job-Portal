@@ -1,6 +1,5 @@
 package com.example.job_portal.entity;
 
-import com.example.job_portal.constant.db.DbConstant;
 import com.example.job_portal.constant.db.DbConstant.DbProfile;
 import jakarta.persistence.*;
 import lombok.*;
@@ -19,7 +18,6 @@ public class Profile extends AuditInfo {
     @Column(name = DbProfile.IS_PROFILE_DELETED)
     private boolean isDeleted = false;
 
-//    @OneToOne(cascade = CascadeType.ALL)
     @OneToOne
     @JoinColumn(name = "cv_id")
     private CV cv;
@@ -64,13 +62,10 @@ public class Profile extends AuditInfo {
             fetch = FetchType.LAZY
     )
     @JoinTable(
-//            name = "profile_my_company",
             name = "profile_company",
             joinColumns = @JoinColumn(name = "profile_id"),
-//            inverseJoinColumns = @JoinColumn(name = "my_company_id")
             inverseJoinColumns = @JoinColumn(name = "company_id")
     )
-//    private List<MyCompany> myCompanies;
     private List<Company> companies;
 
 }

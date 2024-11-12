@@ -59,4 +59,5 @@ public class User extends AuditInfo {
     @JoinColumn(name = "profile_id")
     @ToString.Exclude
     private Profile profile;
+
 }
