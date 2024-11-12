@@ -39,7 +39,9 @@ public class RoleServiceImpl implements RoleService {
         List<RoleDTO> roleDTOS = new ArrayList<>();
 
         for (Role role : roles) {
-            roleDTOS.add(EntityToEntityDTOConverter.convertRoleToRoleDTO(role));
+            if(!role.isDeleted()) {
+                roleDTOS.add(EntityToEntityDTOConverter.convertRoleToRoleDTO(role));
+            }
         }
         return roleDTOS;
     }
@@ -91,6 +93,9 @@ public class RoleServiceImpl implements RoleService {
                 if (!user.getRoles().contains(existingRole)) {
                     user.getRoles().add(existingRole);
                     userRepository.save(user);
+                }
+                else {
+                    throw new UserNotFoundException(String.format("Role: %s already exists!", existingRole.getRole()));
                 }
             }
             else {

@@ -42,18 +42,29 @@ public class SkillServiceImpl implements SkillService {
     @Transactional
     public SkillDTO createSkill(SkillDTO skillDTO) {
 
-        Optional<Skill> skill = skillRepository.findSkillById(skillDTO.getId());
-
-        if(skill.isEmpty()) {
-            Skill newSkill = new Skill();
-
-            newSkill.setSkillName(skillDTO.getSkillName());
-
-            return EntityToEntityDTOConverter.convertSkillToSkillDTO(skillRepository.save(newSkill));
+        if (skillDTO.getSkillName() == null || skillDTO.getSkillName().trim().isEmpty()) {
+            throw new IllegalArgumentException("Skill name cannot be empty or whitespace-only");
         }
-        else {
+
+        List<Skill> skills = skillRepository.findAllSkill();
+        boolean isSkillExists = false;
+
+        for (Skill existingSkill : skills) {
+            if (existingSkill != null &&
+                    existingSkill.getSkillName().equalsIgnoreCase(skillDTO.getSkillName().trim())) {
+                isSkillExists = true;
+                break;
+            }
+        }
+
+        if (!isSkillExists) {
+            Skill newSkill = new Skill();
+            if(skillDTO.getSkillName() != null) newSkill.setSkillName(skillDTO.getSkillName());
+            return EntityToEntityDTOConverter.convertSkillToSkillDTO(skillRepository.save(newSkill));
+        } else {
             throw new SkillAlreadyExistsException("Skill already exists!");
         }
+
     }
 
     @Override

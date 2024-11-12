@@ -13,10 +13,17 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = DbSkill.TABLE_NAME)
+@Table(
+        name = DbSkill.TABLE_NAME,
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "unique_skill",
+                        columnNames = {DbSkill.SKILL_NAME}
+                )
+        })
 public class Skill extends AuditInfo {
 
-    @Column(name = DbSkill.SKILL_NAME, unique = true)
+    @Column(name = DbSkill.SKILL_NAME)
     private String skillName;
 
     @Column(name = DbSkill.IS_Skill_DELETED)
