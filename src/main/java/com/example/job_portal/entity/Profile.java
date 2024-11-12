@@ -64,10 +64,13 @@ public class Profile extends AuditInfo {
             fetch = FetchType.LAZY
     )
     @JoinTable(
-            name = "profile_my_company",
+//            name = "profile_my_company",
+            name = "profile_company",
             joinColumns = @JoinColumn(name = "profile_id"),
-            inverseJoinColumns = @JoinColumn(name = "my_company_id")
+//            inverseJoinColumns = @JoinColumn(name = "my_company_id")
+            inverseJoinColumns = @JoinColumn(name = "company_id")
     )
-    private List<MyCompany> myCompanies;
+//    private List<MyCompany> myCompanies;
+    private List<Company> companies;
 
 }

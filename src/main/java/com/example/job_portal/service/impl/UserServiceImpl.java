@@ -8,6 +8,7 @@ import com.example.job_portal.exception.CompanyNotFoundException;
 import com.example.job_portal.exception.JobNotFoundException;
 import com.example.job_portal.exception.UserAlreadyExistsException;
 import com.example.job_portal.exception.UserNotFoundException;
+import com.example.job_portal.repository.ProfileRepository;
 import com.example.job_portal.repository.RoleRepository;
 import com.example.job_portal.repository.UserRepository;
 import com.example.job_portal.service.UserService;
@@ -26,14 +27,16 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
+    private final ProfileRepository profileRepository;
 
     public UserServiceImpl(UserRepository userRepository,
                            PasswordEncoder passwordEncoder,
-                           RoleRepository roleRepository
+                           RoleRepository roleRepository, ProfileRepository profileRepository
     ) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
+        this.profileRepository = profileRepository;
     }
 
     @Override
@@ -158,13 +161,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-//    public ProfileDTO getUserProfile(Long userId, Long profileId) {
     public ProfileDTO getUserProfile(Long userId) {
         User user = userRepository.findUserById(userId)
                 .orElseThrow(() -> new UserNotFoundException("User with id: " + userId + " is not found!"));
 
 
         Profile profile = user.getProfile();
+
+        List<Company> companies = new ArrayList<>();
+
+        for(Job job: profile.getJobs()) {
+            companies.add(job.getCompany());
+        }
+        profile.setCompanies(companies);
+
+        profileRepository.save(profile);
+
         return EntityToEntityDTOConverter.convertProfileToProfileDTO(profile);
 
     }

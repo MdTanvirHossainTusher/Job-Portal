@@ -165,13 +165,15 @@ public class EntityToEntityDTOConverter {
                 jobs.add(job);
             }
         }
+
+
         return new ProfileDTO(
                 EntityToEntityDTOConverter.convertCVToCVDTO(profile.getCv()),
                 EntityToEntityDTOConverter.convertUserToUserDTO(profile.getUser()),
                 EntityToEntityDTOConverter.convertSkillsToSkillsDTO(profile.getSkills()),
-                EntityToEntityDTOConverter.convertUniversitiesToUniversitiesDTO(profile.getUniversities())
+                EntityToEntityDTOConverter.convertUniversitiesToUniversitiesDTO(profile.getUniversities()),
 //                EntityToEntityDTOConverter.convertJobsToJobsDTO(jobs)
-//                EntityToEntityDTOConverter.convertMyCompaniesToMyCompaniesDTO(profile.getMyCompanies())
+                EntityToEntityDTOConverter.convertCompaniesToCompaniesDTO(profile.getCompanies())
         );
     }
 

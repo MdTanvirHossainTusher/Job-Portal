@@ -147,10 +147,8 @@ public class JobServiceImpl implements JobService {
         User user = userRepository.findUserById(userId).orElseThrow(
                 () -> new UserNotFoundException(String.format("User with id: %d is not found", userId)));
 
-
         for(Profile profile: job.getProfiles()) {
             if(profile.getUser().getId().equals(userId)) {
-//                System.out.println(" aaaaaaaaaaaaaaaaa ");
                 throw new AlreadyAppliedException("You have already applied to this job");
             }
         }
@@ -158,8 +156,6 @@ public class JobServiceImpl implements JobService {
         Profile profile = user.getProfile();
 
         if(profile.getJobs() == null) {
-//            System.out.println(" jjjjjjjjjjjjjjjjjjjjjjjjj ");
-
             profile.setJobs(new ArrayList<>());
         }
         profile.getJobs().add(job);
@@ -171,18 +167,12 @@ public class JobServiceImpl implements JobService {
 //        job.getProfiles().add(profile);
 
         if(profile.getCv() != null) {
-//            System.out.println(" ccccccc ");
-
             if(job.getCvs() == null) {
                 job.setCvs(new ArrayList<>());
-//                System.out.println(" vvvvvvvvvvvvv ");
-
             }
             job.getCvs().add(profile.getCv());
         }
-
         jobRepository.save(job);
-
     }
 
 }

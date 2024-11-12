@@ -56,10 +56,13 @@ public class Company extends AuditInfo {
 //            fetch = FetchType.EAGER
     )
     @JoinTable(
-            name = "my_company_from_company",
+//            name = "my_company_from_company",
+            name = "profile_company",
             joinColumns = @JoinColumn(name = "company_id"),
-            inverseJoinColumns = @JoinColumn(name = "my_company_id")
+//            inverseJoinColumns = @JoinColumn(name = "my_company_id")
+            inverseJoinColumns = @JoinColumn(name = "profile_id")
     )
-    private List<MyCompany> myCompanies;
+//    private List<Company> companies;
+    private List<Profile> profiles;
 
 }
