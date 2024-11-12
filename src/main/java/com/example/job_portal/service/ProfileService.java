@@ -22,5 +22,4 @@ public interface ProfileService {
 
     void removeUniversityToUserProfile(Long profileId, Long skillId);
 
-//    CompanyDTO addCompanyToProfileAsMyCompany(Long profileId);
 }
