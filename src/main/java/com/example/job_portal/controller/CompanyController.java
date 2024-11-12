@@ -1,5 +1,6 @@
 package com.example.job_portal.controller;
 
+import com.example.job_portal.dao.CompanyDAO;
 import com.example.job_portal.dto.ApplicantsDTO;
 import com.example.job_portal.dto.CompanyDTO;
 import com.example.job_portal.dto.JobDTO;
@@ -18,10 +19,12 @@ import java.util.List;
 public class CompanyController {
     private final CompanyService companyService;
     private final JobService jobService;
+    private final CompanyDAO companyDAO;
 
-    public CompanyController(CompanyService companyService, JobService jobService) {
+    public CompanyController(CompanyService companyService, JobService jobService, CompanyDAO companyDAO) {
         this.companyService = companyService;
         this.jobService = jobService;
+        this.companyDAO = companyDAO;
     }
 
     @GetMapping
@@ -62,9 +65,6 @@ public class CompanyController {
     ) {
         return new ResponseEntity<>(companyService.getAllJobsUnderOneCompany(companyId), HttpStatus.OK);
     }
-
-
-
 
     @GetMapping("/{companyId}/jobs/{jobId}")
     public ResponseEntity<JobDTO> getJobById(
@@ -119,49 +119,19 @@ public class CompanyController {
         return new ResponseEntity<>(applicantsDTOList, HttpStatus.OK);
     }
 
-//    @GetMapping("/{companyId}/jobs/{jobId}/applicants")
-//    public ResponseEntity<List<ProfileDTO>> getAllApplicantsInfoUnderAJobPost(
-//            @PathVariable Long companyId,
-//            @PathVariable Long jobId
-//    ) {
-//        List<ProfileDTO> profileDTOList =  companyService.getAllApplicantsInfoUnderAJobPost(companyId, jobId);
-//        return new ResponseEntity<>(profileDTOList, HttpStatus.OK);
-//    }
+    @GetMapping("/filter")
+    public ResponseEntity<List<CompanyDTO>> filterCompanies(
+            @RequestParam(required = false) String companyName,
+            @RequestParam(required = false) String companyLocation,
+            @RequestParam(required = false) String workingMode
+    ) {
+        try {
+            List<CompanyDTO> companies = companyDAO.filterCompanies(companyName, companyLocation, workingMode);
+            return new ResponseEntity<>(companies, HttpStatus.OK);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 
-
-
-
-
-
-
-
-
-
-//    @GetMapping("/{companyId}/jobs/{jobId}/apply")
-//    public ResponseEntity<Void> applyToJob(
-//            @PathVariable Long companyId,
-//            @PathVariable Long jobId,
-//            @RequestBody Long userId
-//    ) {
-//        try {
-//            jobService.applyToJobByUser(companyId, jobId, userId);
-//            return ResponseEntity.noContent().build();
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-//        }
-//    }
-
-
-//    @GetMapping("/filter")
-//    public ResponseEntity<List<CompanyDTO>> filterFromCompanys(@RequestParam(required = false) String email,
-//                                                       @RequestParam(required = false) Double experience,
-//                                                       @RequestParam(required = false) String universityName) {
-//        try {
-//            List<CompanyDTO> companys = companyDAO.filterCompanys(email, experience, universityName);
-//            return new ResponseEntity<>(companys, HttpStatus.OK);
-//        } catch (Exception e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
 }

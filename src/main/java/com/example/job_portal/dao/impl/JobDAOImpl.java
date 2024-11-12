@@ -48,6 +48,9 @@ public class JobDAOImpl implements JobDAO {
             hasFilters = true;
         }
 
+        queryBuilder.append(hasFilters ? " AND" : " WHERE");
+        queryBuilder.append(" j.isDeleted = false");
+
         try {
             TypedQuery<Job> query = entityManager.createQuery(queryBuilder.toString(), Job.class);
 
