@@ -48,19 +48,26 @@ public class ProfileController {
     }
 
     @GetMapping("/{profileId}/jobs/applied-on")
-    public ResponseEntity<List<JobApplicationDTO>> getAllJobsUserAppliedOn(
+    public ResponseEntity<?> getAllJobsUserAppliedOn(
             @PathVariable Long profileId
     ) {
         List<JobApplicationDTO> jobs = profileService.getAllJobsUserAppliedOn(profileId);
-        return new ResponseEntity<>(jobs, HttpStatus.OK);
+        HttpStatus status = !jobs.isEmpty() ? HttpStatus.OK : HttpStatus.NOT_FOUND;
+        return new ResponseEntity<>(!jobs.isEmpty() ?
+                jobs :
+                new ApiResponse("Not applied to any job yet!", false), status);
     }
 
     @GetMapping("/{profileId}/skills")
-    public ResponseEntity<List<SkillDTO>> getAllSkillsOfUser(
+    public ResponseEntity<?> getAllSkillsOfUser(
             @PathVariable Long profileId
     ) {
         List<SkillDTO> skills = profileService.getAllSkillsUnderProfile(profileId);
-        return new ResponseEntity<>(skills, HttpStatus.OK);
+        HttpStatus status = !skills.isEmpty() ? HttpStatus.OK : HttpStatus.NOT_FOUND;
+        return new ResponseEntity<>(
+                !skills.isEmpty() ?
+                        skills :
+                        new ApiResponse("User not added any skill yet!", false), status);
     }
 
     @PostMapping("/{profileId}/skills/{skillId}")
@@ -84,11 +91,15 @@ public class ProfileController {
     }
 
     @GetMapping("/{profileId}/universities")
-    public ResponseEntity<List<UniversityDTO>> getAllUniversitiesOfUser(
+    public ResponseEntity<?> getAllUniversitiesOfUser(
             @PathVariable Long profileId
     ) {
         List<UniversityDTO> universities = profileService.getAllUniversitiesUnderProfile(profileId);
-        return new ResponseEntity<>(universities, HttpStatus.OK);
+        HttpStatus status = !universities.isEmpty() ? HttpStatus.OK : HttpStatus.NOT_FOUND;
+        return new ResponseEntity<>(
+                !universities.isEmpty() ?
+                        universities :
+                        new ApiResponse("User not added any university yet!", false), status);
     }
 
     @PostMapping("/{profileId}/universities/{universityId}")
@@ -112,11 +123,15 @@ public class ProfileController {
     }
 
     @GetMapping("/{profileId}/companies")
-    public ResponseEntity<List<CompanyDTO>> getAllCompaniesOfUser(
+    public ResponseEntity<?> getAllCompaniesOfUser(
             @PathVariable Long profileId
     ) {
         List<CompanyDTO> companies = profileService.getAllCompaniesUnderProfile(profileId);
-        return new ResponseEntity<>(companies, HttpStatus.OK);
+        HttpStatus status = !companies.isEmpty() ? HttpStatus.OK : HttpStatus.NOT_FOUND;
+        return new ResponseEntity<>(
+                !companies.isEmpty() ?
+                        companies :
+                        new ApiResponse("User not added any company yet!", false), status);
     }
 
     @PostMapping("/{profileId}/companies/{companyId}")

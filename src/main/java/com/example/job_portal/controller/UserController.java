@@ -65,10 +65,11 @@ public class UserController {
                                                        @RequestParam(required = false) String universityName) {
         try {
             List<UserDTO> users = userDAO.filterUsers(email, experience, universityName);
+            HttpStatus status = !users.isEmpty() ? HttpStatus.OK : HttpStatus.NOT_FOUND;
             return new ResponseEntity<>(
                     !users.isEmpty() ?
                             users :
-                            new ApiResponse("No user found!", false), HttpStatus.NOT_FOUND);
+                            new ApiResponse("No user found!", false), status);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

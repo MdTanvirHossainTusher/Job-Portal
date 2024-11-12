@@ -138,10 +138,11 @@ public class CompanyController {
     ) {
         try {
             List<CompanyDTO> companies = companyDAO.filterCompanies(companyName, companyLocation, workingMode);
+            HttpStatus status = !companies.isEmpty() ? HttpStatus.OK : HttpStatus.NOT_FOUND;
             return new ResponseEntity<>(
                     !companies.isEmpty() ?
                             companies :
-                            new ApiResponse("No company found!", false), HttpStatus.NOT_FOUND);
+                            new ApiResponse("No company found!", false), status);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

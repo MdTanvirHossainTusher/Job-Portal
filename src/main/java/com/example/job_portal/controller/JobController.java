@@ -47,10 +47,11 @@ public class JobController {
                                                          @RequestParam(required = false) String jobLocation) {
         try {
             List<JobDTO> jobs = jobDAO.filterJobs(jobPosition, jobLocation);
+            HttpStatus status = !jobs.isEmpty() ? HttpStatus.OK : HttpStatus.NOT_FOUND;
             return new ResponseEntity<>(
                     !jobs.isEmpty() ?
                             jobs :
-                            new ApiResponse("No jobs found!", false), HttpStatus.NOT_FOUND);
+                            new ApiResponse("No jobs found!", false), status);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
