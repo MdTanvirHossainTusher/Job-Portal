@@ -1,10 +1,7 @@
 package com.example.job_portal.controller;
 
 import com.example.job_portal.dao.CompanyDAO;
-import com.example.job_portal.dto.ApplicantsDTO;
-import com.example.job_portal.dto.CompanyDTO;
-import com.example.job_portal.dto.JobDTO;
-import com.example.job_portal.dto.ProfileDTO;
+import com.example.job_portal.dto.*;
 import com.example.job_portal.entity.api_response.ApiResponse;
 import com.example.job_portal.service.CompanyService;
 import com.example.job_portal.service.JobService;
@@ -33,11 +30,31 @@ public class CompanyController {
         return new ResponseEntity<>(companyDTOs, HttpStatus.OK);
     }
 
+
+//    @GetMapping("/filter")
+//    public ResponseEntity<?> filterFromUsers(@RequestParam(required = false) String email,
+//                                             @RequestParam(required = false) Double experience,
+//                                             @RequestParam(required = false) String universityName) {
+//        try {
+//            List<UserDTO> users = userDAO.filterUsers(email, experience, universityName);
+//            return new ResponseEntity<>(
+//                    !users.isEmpty() ?
+//                            users :
+//                            new ApiResponse("No user found!", false), HttpStatus.OK);
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
+
+
     @GetMapping("/{companyId}")
     public ResponseEntity<?> getCompanyById(@PathVariable Long companyId) {
         CompanyDTO companyDTO = companyService.findCompanyById(companyId);
-//        companyDTO = companyDTO != null  ? companyDTO : ApiResponse("Company not exists!", false);
-        return new ResponseEntity<>(companyDTO, HttpStatus.OK);
+//        companyDTO = companyDTO != null  ? companyDTO : new ApiResponse("Company not exists!", false);
+//        return new ResponseEntity<>(companyDTO, HttpStatus.OK);
+        return new ResponseEntity<>(
+                companyDTO != null  ? companyDTO : new ApiResponse("Company doesn't exists!", false),
+                HttpStatus.OK);
     }
 
     @PostMapping
@@ -121,14 +138,17 @@ public class CompanyController {
     }
 
     @GetMapping("/filter")
-    public ResponseEntity<List<CompanyDTO>> filterCompanies(
+    public ResponseEntity<?> filterCompanies(
             @RequestParam(required = false) String companyName,
             @RequestParam(required = false) String companyLocation,
             @RequestParam(required = false) String workingMode
     ) {
         try {
             List<CompanyDTO> companies = companyDAO.filterCompanies(companyName, companyLocation, workingMode);
-            return new ResponseEntity<>(companies, HttpStatus.OK);
+            return new ResponseEntity<>(
+                    !companies.isEmpty() ?
+                            companies :
+                            new ApiResponse("No company found!", false), HttpStatus.OK);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

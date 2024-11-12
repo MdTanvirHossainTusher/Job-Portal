@@ -6,13 +6,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class MyCompanyDTO {
-    private Long id;
-    private String companyName;
-    private String companyLocation;
-    private String companyType;
-    private String workingMode;
-}
+//@Data
+//@NoArgsConstructor
+//@AllArgsConstructor
+//public class MyCompanyDTO {
+//    private Long id;
+//    private String companyName;
+//    private String companyLocation;
+//    private String companyType;
+//    private String workingMode;
+//}

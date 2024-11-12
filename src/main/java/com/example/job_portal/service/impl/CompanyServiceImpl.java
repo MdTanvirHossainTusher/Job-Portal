@@ -89,16 +89,13 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     @Transactional
     public void deleteCompanyById(Long id) {
-        CompanyDTO company = findCompanyById(id);
-        try {
-            if (company != null) {
-                companyRepository.softDeleteJobsByCompanyId(id);
-                companyRepository.softDeleteCompanyById(id);
-            }
 
-        } catch (Exception ex) {
-            throw new CompanyNotFoundException("Company : " + company.getCompanyName() + " not found!");
-        }
+        Company company = companyRepository.findCompanyById(id)
+                .orElseThrow(() -> new CompanyNotFoundException("Company with id: " + id + " is not found!"));
+
+        companyRepository.softDeleteJobsByCompanyId(id);
+        companyRepository.softDeleteCompanyById(id);
+
     }
 
     @Override
