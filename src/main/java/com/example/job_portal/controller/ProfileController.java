@@ -82,7 +82,6 @@ public class ProfileController {
                 new ApiResponse("Skill removed successfully!", true), HttpStatus.OK);
     }
 
-
     @GetMapping("/{profileId}/universities")
     public ResponseEntity<List<UniversityDTO>> getAllUniversitiesOfUser(
             @PathVariable Long profileId
@@ -110,13 +109,5 @@ public class ProfileController {
         return new ResponseEntity<>(
                 new ApiResponse("University removed successfully!", true), HttpStatus.OK);
     }
-
-//    @PostMapping("/{profileId}/my-companies")
-//    public ResponseEntity<CompanyDTO> addCompanyToProfileAsMyCompany(
-//            @PathVariable Long profileId
-//    ) {
-//        CompanyDTO companyDTO = profileService.addCompanyToProfileAsMyCompany(profileId);
-//        return new ResponseEntity<>(companyDTO, HttpStatus.CREATED);
-//    }
 
 }
