@@ -34,8 +34,9 @@ public class CompanyController {
     }
 
     @GetMapping("/{companyId}")
-    public ResponseEntity<CompanyDTO> getCompanyById(@PathVariable Long companyId) {
+    public ResponseEntity<?> getCompanyById(@PathVariable Long companyId) {
         CompanyDTO companyDTO = companyService.findCompanyById(companyId);
+//        companyDTO = companyDTO != null  ? companyDTO : ApiResponse("Company not exists!", false);
         return new ResponseEntity<>(companyDTO, HttpStatus.OK);
     }
 

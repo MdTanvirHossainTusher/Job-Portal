@@ -57,7 +57,8 @@ public class CompanyServiceImpl implements CompanyService {
     public CompanyDTO findCompanyById(Long id) {
         Optional<Company> companyOptional = companyRepository.findCompanyById(id);
         Company company = companyOptional.orElse(null);
-        return company != null ? EntityToEntityDTOConverter.convertCompanyToCompanyDTO(company) : null;
+        return company != null ?
+                EntityToEntityDTOConverter.convertCompanyToCompanyDTO(company) : null;
     }
 
     @Override
