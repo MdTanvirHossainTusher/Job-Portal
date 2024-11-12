@@ -1,5 +1,6 @@
 package com.example.job_portal.entity;
 
+import com.example.job_portal.constant.db.DbConstant;
 import com.example.job_portal.constant.db.DbConstant.DbRole;
 import jakarta.persistence.*;
 import lombok.*;
@@ -24,6 +25,9 @@ public class Role extends AuditInfo {
 
     @Column(name = DbRole.ROLE)
     private String role;
+
+    @Column(name = DbRole.IS_ROLE_DELETED)
+    private boolean isDeleted = false;
 
     @ManyToMany(
             cascade = {

@@ -63,6 +63,7 @@ public class DbConstant {
     public static class DbRole extends DbCommon {
         public static final String TABLE_NAME = "roles";
         public static final String ROLE = "role";
+        public static final String IS_ROLE_DELETED = "is_role_deleted";
     }
 
     public static class DbProfile extends DbCommon {

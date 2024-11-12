@@ -1,5 +1,6 @@
 package com.example.job_portal.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,5 +14,7 @@ public class CompanyDTO {
     private String companyLocation;
     private String companyType;
     private String workingMode;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private boolean isDeleted = false;
 }

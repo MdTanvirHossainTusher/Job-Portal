@@ -108,17 +108,25 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void deleteUserById(Long id) {
-        Optional<User> userOptional = userRepository.findUserById(id);
-        User user = userOptional.orElse(null);
 
-        if (user != null) {
-            if(!user.getProfile().isDeleted()) {
+        User user = userRepository.findUserById(id)
+                .orElseThrow(() -> new UserNotFoundException(
+                        String.format("User with id: %d is not found!", id)
+                ));
+
+        try {
+            if (user.getProfile() != null && !user.getProfile().isDeleted()) {
                 user.getProfile().setDeleted(true);
             }
-            userRepository.softDeleteUserById(id);
 
-        } else {
-            throw new UserNotFoundException(String.format("User with id: %d is not found!", id));
+            if (user.getRoles() != null && !user.getRoles().isEmpty()) {
+                user.getRoles().clear();
+            }
+            userRepository.softDeleteUserById(id);
+            userRepository.save(user);
+
+        } catch (Exception e) {
+            throw new RuntimeException("Error occurred while deleting user: " + e.getMessage());
         }
     }
 
@@ -132,7 +140,8 @@ public class UserServiceImpl implements UserService {
 
         if(user != null) {
             for(Role role: user.getRoles()) {
-                roles.add(role.getRole());
+                if(!role.isDeleted()) roles.add(role.getRole());
+                else throw new RuntimeException("Role doesn't exists!");
             }
         }
         else {
@@ -153,9 +162,14 @@ public class UserServiceImpl implements UserService {
                 String newRoleName = "ROLE_" + roleName.toUpperCase();
 
                 if(role.getRole().equals(newRoleName)) {
-                    roleExists = true;
-                    user.getRoles().remove(role);
-                    userRepository.save(user);
+                    if(!roleName.contains("user")) {
+                        roleExists = true;
+                        user.getRoles().remove(role);
+                        userRepository.save(user);
+                    }
+                    else {
+                        throw new RuntimeException(String.format("Role: '%s' can't be deleted!", roleName));
+                    }
                 }
             }
             if(!roleExists) {

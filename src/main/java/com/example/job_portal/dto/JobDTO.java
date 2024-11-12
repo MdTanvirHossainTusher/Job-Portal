@@ -2,6 +2,7 @@ package com.example.job_portal.dto;
 
 
 import com.example.job_portal.constant.db.DbConstant;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,6 +19,8 @@ public class JobDTO {
     private String salary;
     private String jobPosition;
     private String jobLocation;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private boolean isDeleted = false;
 
 }

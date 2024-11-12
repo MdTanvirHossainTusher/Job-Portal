@@ -34,7 +34,8 @@ public class EntityToEntityDTOConverter {
     public static RoleDTO convertRoleToRoleDTO(Role role) {
         return new RoleDTO(
                 role.getId(),
-                role.getRole()
+                role.getRole(),
+                role.isDeleted()
         );
     }
 

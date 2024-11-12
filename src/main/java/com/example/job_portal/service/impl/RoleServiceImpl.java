@@ -62,12 +62,17 @@ public class RoleServiceImpl implements RoleService {
     @Transactional
     public void deleteRoleById(Long roleId) {
 
-        Role role = roleRepository.findById(roleId)
+        Role role = roleRepository.findRoleById(roleId)
                 .orElseThrow(() -> new RuntimeException(
                         String.format("Role with id: %d is not found!", roleId)
                 ));
 
-        roleRepository.delete(role);
+        if(!role.isDeleted()) {
+            role.setDeleted(true);
+            roleRepository.save(role);
+        }
+
+//        roleRepository.delete(role);
     }
 
     @Override
@@ -98,4 +103,5 @@ public class RoleServiceImpl implements RoleService {
     public Role findByRole(String roleName) {
         return roleRepository.getByRole(roleName);
     }
+
 }
