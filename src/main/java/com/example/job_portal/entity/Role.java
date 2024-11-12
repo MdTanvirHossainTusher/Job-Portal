@@ -40,4 +40,5 @@ public class Role extends AuditInfo {
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
     private List<User> users;
+
 }

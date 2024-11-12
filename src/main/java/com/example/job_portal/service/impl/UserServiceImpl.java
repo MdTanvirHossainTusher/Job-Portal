@@ -1,11 +1,8 @@
 package com.example.job_portal.service.impl;
 
-import com.example.job_portal.dto.ApplicantsDTO;
 import com.example.job_portal.dto.ProfileDTO;
 import com.example.job_portal.dto.UserDTO;
 import com.example.job_portal.entity.*;
-import com.example.job_portal.exception.CompanyNotFoundException;
-import com.example.job_portal.exception.JobNotFoundException;
 import com.example.job_portal.exception.UserAlreadyExistsException;
 import com.example.job_portal.exception.UserNotFoundException;
 import com.example.job_portal.repository.ProfileRepository;
@@ -88,7 +85,6 @@ public class UserServiceImpl implements UserService {
             existingUser.setName(userDTO.getName());
         }
         if(userDTO.getProfileImageUrl() != null) existingUser.setImageUrl(userDTO.getProfileImageUrl());
-
         if(userDTO.getTotalExperience() != null) existingUser.setTotalExperience(userDTO.getTotalExperience());
 
         User savedUser = userRepository.save(existingUser);
@@ -165,7 +161,6 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findUserById(userId)
                 .orElseThrow(() -> new UserNotFoundException("User with id: " + userId + " is not found!"));
 
-
         Profile profile = user.getProfile();
 
         List<Company> companies = new ArrayList<>();
@@ -178,7 +173,6 @@ public class UserServiceImpl implements UserService {
         profileRepository.save(profile);
 
         return EntityToEntityDTOConverter.convertProfileToProfileDTO(profile);
-
     }
 
 }
