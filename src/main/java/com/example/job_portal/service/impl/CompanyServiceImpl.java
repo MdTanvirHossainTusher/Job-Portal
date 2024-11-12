@@ -1,14 +1,12 @@
 package com.example.job_portal.service.impl;
 
 import com.example.job_portal.dto.ApplicantsDTO;
-import com.example.job_portal.dto.ProfileDTO;
 import com.example.job_portal.dto.CompanyDTO;
 import com.example.job_portal.dto.JobDTO;
 import com.example.job_portal.entity.*;
 import com.example.job_portal.exception.CompanyAlreadyExistsException;
 import com.example.job_portal.exception.CompanyNotFoundException;
 import com.example.job_portal.exception.JobNotFoundException;
-import com.example.job_portal.exception.UserNotFoundException;
 import com.example.job_portal.repository.CompanyRepository;
 import com.example.job_portal.repository.JobRepository;
 import com.example.job_portal.service.CompanyService;
@@ -46,16 +44,6 @@ public class CompanyServiceImpl implements CompanyService {
         newCompany.setCompanyType(companyDTO.getCompanyType());
         newCompany.setWorkingMode(companyDTO.getWorkingMode());
 
-//        Job job = new Job();
-//        List<Job> jobs = new ArrayList<>();
-//        jobs.add(job);
-//
-//        List<MyCompany> myCompanies = new ArrayList<>();
-//        myCompanies.add(new MyCompany());
-//
-//        newCompany.setJobs(jobs);
-//        newCompany.setMyCompanies(myCompanies);
-
         return EntityToEntityDTOConverter.convertCompanyToCompanyDTO(companyRepository.save(newCompany));
     }
 
@@ -86,7 +74,6 @@ public class CompanyServiceImpl implements CompanyService {
             Company company = companyRepository.save(existingCompany);
 
             return EntityToEntityDTOConverter.convertCompanyToCompanyDTO(company);
-
         }
         else {
             throw new CompanyNotFoundException("Company : " + companyDTO.getCompanyName() + " is not found!");
@@ -115,14 +102,12 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public List<JobDTO> getAllJobsUnderOneCompany(Long companyId) {
-//        CompanyDTO company = findCompanyById(companyId);
 
         Company company = companyRepository.findCompanyById(companyId)
                 .orElseThrow(() -> new CompanyNotFoundException("Company with id: " + companyId + " is not found!"));
 
 
         if(company != null) {
-//            List<Job> jobs = jobRepository.findAllJobsUnderCompanyByCompanyId(companyId);
             List<Job> jobs = new ArrayList<>();
 
             for (Job job : company.getJobs()) {
@@ -132,7 +117,9 @@ public class CompanyServiceImpl implements CompanyService {
             }
             return EntityToEntityDTOConverter.convertJobsToJobsDTO(jobs);
         }
-        else throw new CompanyNotFoundException("Company is not found!");
+        else {
+            throw new CompanyNotFoundException("Company is not found!");
+        }
     }
 
     @Override
@@ -161,6 +148,5 @@ public class CompanyServiceImpl implements CompanyService {
         }
         return applicantsDTOList;
     }
-
 
 }
