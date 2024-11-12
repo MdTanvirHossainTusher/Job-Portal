@@ -1,6 +1,5 @@
 package com.example.job_portal.dto;
 
-import com.example.job_portal.entity.University;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,7 +23,8 @@ public class ProfileDTO {
 
     @JsonUnwrapped
     private List<UniversityDTO> universityDTOS;
-//    private List<JobDTO> jobDTOS;
-//    private List<JobApplicationDTO> applicationDTOS;
+
+    @JsonUnwrapped
     private List<CompanyDTO> companyDTOS;
+
 }

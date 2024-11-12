@@ -5,7 +5,6 @@ import com.example.job_portal.entity.*;
 import com.example.job_portal.exception.*;
 import com.example.job_portal.repository.*;
 import com.example.job_portal.repository.JobRepository;
-import com.example.job_portal.service.CompanyService;
 import com.example.job_portal.service.JobService;
 import com.example.job_portal.utils.EntityToEntityDTOConverter;
 import org.springframework.stereotype.Service;
@@ -21,13 +20,11 @@ public class JobServiceImpl implements JobService {
     private final JobRepository jobRepository;
     private final UserRepository userRepository;
     private final CompanyRepository companyRepository;
-    private final CompanyService companyService;
 
-    public JobServiceImpl(JobRepository jobRepository, UserRepository userRepository, CompanyRepository companyRepository, CompanyService companyService) {
+    public JobServiceImpl(JobRepository jobRepository, UserRepository userRepository, CompanyRepository companyRepository) {
         this.jobRepository = jobRepository;
         this.userRepository = userRepository;
         this.companyRepository = companyRepository;
-        this.companyService = companyService;
     }
 
     @Override
@@ -135,7 +132,6 @@ public class JobServiceImpl implements JobService {
                 return;
             }
         }
-
         throw new JobNotFoundException("Job not found with id: " + jobId);
     }
 
@@ -159,12 +155,6 @@ public class JobServiceImpl implements JobService {
             profile.setJobs(new ArrayList<>());
         }
         profile.getJobs().add(job);
-
-
-//        if(job.getProfiles() == null) {
-//            job.setProfiles(new ArrayList<>());
-//        }
-//        job.getProfiles().add(profile);
 
         if(profile.getCv() != null) {
             if(job.getCvs() == null) {
