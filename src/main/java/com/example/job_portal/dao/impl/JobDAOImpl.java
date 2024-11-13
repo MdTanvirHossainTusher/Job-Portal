@@ -2,16 +2,12 @@ package com.example.job_portal.dao.impl;
 
 import com.example.job_portal.dao.JobDAO;
 import com.example.job_portal.dto.JobDTO;
-import com.example.job_portal.dto.UserDTO;
 import com.example.job_portal.entity.Job;
-import com.example.job_portal.entity.User;
 import com.example.job_portal.exception.JobNotFoundException;
-import com.example.job_portal.exception.UserNotFoundException;
 import com.example.job_portal.utils.EntityToEntityDTOConverter;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashMap;

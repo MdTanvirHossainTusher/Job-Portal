@@ -1,6 +1,5 @@
 package com.example.job_portal.dto;
 
-import com.example.job_portal.entity.Profile;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

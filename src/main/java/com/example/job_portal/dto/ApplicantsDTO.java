@@ -10,9 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ApplicantsDTO {
 
-//    private CompanyDTO companyDTO;
-//    private ProfileDTO profileDTO;
-
     @JsonUnwrapped
     private UserDTO userDTO;
 

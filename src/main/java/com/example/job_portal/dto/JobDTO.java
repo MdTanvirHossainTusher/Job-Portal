@@ -1,9 +1,7 @@
 package com.example.job_portal.dto;
 
 
-import com.example.job_portal.constant.db.DbConstant;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
