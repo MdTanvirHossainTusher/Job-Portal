@@ -2,14 +2,10 @@ package com.example.job_portal.controller;
 
 import com.example.job_portal.dao.JobDAO;
 import com.example.job_portal.dto.JobDTO;
-import com.example.job_portal.dto.JobDTO;
-import com.example.job_portal.dto.UserDTO;
 import com.example.job_portal.entity.api_response.ApiResponse;
 import com.example.job_portal.service.JobService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

@@ -25,7 +25,6 @@ public class ProfileController {
     @GetMapping("{profileId}/cv")
     public ResponseEntity<?> getUserCV(@PathVariable Long profileId) {
         CVDTO cvDTO =  cvService.getUserCV(profileId);
-//        return ResponseEntity.ok(cvDTO);
         return new ResponseEntity<>(cvDTO, HttpStatus.OK);
     }
 

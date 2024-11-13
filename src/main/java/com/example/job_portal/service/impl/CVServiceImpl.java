@@ -2,16 +2,13 @@ package com.example.job_portal.service.impl;
 
 import com.example.job_portal.dto.CVDTO;
 import com.example.job_portal.entity.CV;
-import com.example.job_portal.entity.Job;
 import com.example.job_portal.entity.Profile;
-import com.example.job_portal.entity.User;
 import com.example.job_portal.exception.*;
 import com.example.job_portal.repository.CVRepository;
 import com.example.job_portal.repository.JobRepository;
 import com.example.job_portal.repository.ProfileRepository;
 import com.example.job_portal.service.CVService;
 import com.example.job_portal.utils.EntityToEntityDTOConverter;
-import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -64,18 +61,14 @@ public class CVServiceImpl implements CVService {
     }
 
     @Override
-//    public CVDTO updateCV(Long cvId, Long profileId, CVDTO cvDTO) {
     public CVDTO updateCV(Long profileId, CVDTO cvDTO) {
 
         Profile profile = profileRepository.findProfileById(profileId).orElseThrow(
                 () -> new UserNotFoundException(String.format("Profile with id: %d is not found", profileId)));
 
-//        CVDTO cvdto = new CVDTO();
-
         if(profile.getCv() != null) {
             CV cv = profile.getCv();
 
-//            cv.setId(cvDTO.getCvId());
             cv.setCvFormat(cvDTO.getCvFormat());
             cv.setCvSize(cvDTO.getCvSize());
             cv.setCvUrl(cvDTO.getCvUrl());
@@ -85,7 +78,7 @@ public class CVServiceImpl implements CVService {
         else {
             throw new CVNotFoundException(String.format("CV not found for the profile id: %d", profileId));
         }
-//        return cvdto;
+
     }
 
     @Override

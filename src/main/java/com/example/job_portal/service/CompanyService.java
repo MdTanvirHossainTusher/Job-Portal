@@ -3,9 +3,7 @@ package com.example.job_portal.service;
 import com.example.job_portal.dto.ApplicantsDTO;
 import com.example.job_portal.dto.CompanyDTO;
 import com.example.job_portal.dto.JobDTO;
-import com.example.job_portal.dto.ProfileDTO;
 import com.example.job_portal.entity.Company;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 

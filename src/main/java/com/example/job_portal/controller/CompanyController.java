@@ -30,28 +30,9 @@ public class CompanyController {
         return new ResponseEntity<>(companyDTOs, HttpStatus.OK);
     }
 
-
-//    @GetMapping("/filter")
-//    public ResponseEntity<?> filterFromUsers(@RequestParam(required = false) String email,
-//                                             @RequestParam(required = false) Double experience,
-//                                             @RequestParam(required = false) String universityName) {
-//        try {
-//            List<UserDTO> users = userDAO.filterUsers(email, experience, universityName);
-//            return new ResponseEntity<>(
-//                    !users.isEmpty() ?
-//                            users :
-//                            new ApiResponse("No user found!", false), HttpStatus.OK);
-//        } catch (Exception e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
-
-
     @GetMapping("/{companyId}")
     public ResponseEntity<?> getCompanyById(@PathVariable Long companyId) {
         CompanyDTO companyDTO = companyService.findCompanyById(companyId);
-//        companyDTO = companyDTO != null  ? companyDTO : new ApiResponse("Company not exists!", false);
-//        return new ResponseEntity<>(companyDTO, HttpStatus.OK);
         return new ResponseEntity<>(
                 companyDTO != null  ? companyDTO : new ApiResponse("Company doesn't exists!", false),
                 HttpStatus.OK);

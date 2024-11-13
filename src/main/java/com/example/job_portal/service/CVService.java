@@ -12,7 +12,6 @@ CVService {
 
     CVDTO createCV(Long profileId, CVDTO cvDTO);
 
-//    CVDTO updateCV(Long cvId, Long profileId, CVDTO cvDTO);
     CVDTO updateCV(Long profileId, CVDTO cvDTO);
 
     List<CVDTO> getAllCVs();

@@ -22,22 +22,4 @@ public class CVController {
         return ResponseEntity.ok(cvDTOs);
     }
 
-//    @PostMapping("/upload")
-//    public ResponseEntity<CVDTO> uploadCV(
-//            @RequestBody CVDTO cvDTO,
-//            @RequestParam Long profileId
-//    ) {
-//        CVDTO cvdto =  cvService.createCV(profileId, cvDTO);
-//        return ResponseEntity.ok(cvdto);
-//    }
-//
-//    @PutMapping("/update")
-//    public ResponseEntity<CVDTO> updateCV(
-//            @RequestBody CVDTO cvDTO,
-//            @RequestParam Long profileId
-//    ) {
-//        CVDTO cvdto =  cvService.updateCV(profileId, cvDTO);
-//        return ResponseEntity.ok(cvdto);
-//    }
-
 }

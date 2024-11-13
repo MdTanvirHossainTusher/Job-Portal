@@ -3,7 +3,6 @@ package com.example.job_portal.controller;
 import com.example.job_portal.dao.UserDAO;
 import com.example.job_portal.dto.ProfileDTO;
 import com.example.job_portal.dto.UserDTO;
-import com.example.job_portal.entity.Role;
 import com.example.job_portal.entity.api_response.ApiResponse;
 import com.example.job_portal.service.RoleService;
 import com.example.job_portal.service.UserService;
