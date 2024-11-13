@@ -151,6 +151,10 @@ public class JobServiceImpl implements JobService {
 
         Profile profile = user.getProfile();
 
+        if(!profile.isDeleted() && profile.getCv() == null) {
+            throw new RuntimeException("Please upload a cv first to apply for a job.");
+        }
+
         if(profile.getJobs() == null) {
             profile.setJobs(new ArrayList<>());
         }

@@ -103,12 +103,17 @@ public class CompanyController {
 
 
     @GetMapping("/{companyId}/jobs/{jobId}/applicants")
-    public ResponseEntity<List<ApplicantsDTO>> getAllApplicantsInfoUnderAJobPost(
+    public ResponseEntity<?> getAllApplicantsInfoUnderAJobPost(
             @PathVariable Long companyId,
             @PathVariable Long jobId
     ) {
         List<ApplicantsDTO> applicantsDTOList =  companyService.getAllApplicantsInfoUnderAJobPost(companyId, jobId);
-        return new ResponseEntity<>(applicantsDTOList, HttpStatus.OK);
+//        return new ResponseEntity<>(applicantsDTOList, HttpStatus.OK);
+        HttpStatus status = !applicantsDTOList.isEmpty() ? HttpStatus.OK : HttpStatus.NOT_FOUND;
+        return new ResponseEntity<>(
+                !applicantsDTOList.isEmpty() ?
+                        applicantsDTOList :
+                        new ApiResponse("No one applied to this job yet!", false), status);
     }
 
     @GetMapping("/filter")
