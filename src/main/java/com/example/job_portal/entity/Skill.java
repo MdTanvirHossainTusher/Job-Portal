@@ -1,6 +1,5 @@
 package com.example.job_portal.entity;
 
-import com.example.job_portal.constant.db.DbConstant;
 import com.example.job_portal.constant.db.DbConstant.DbSkill;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;

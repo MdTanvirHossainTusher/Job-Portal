@@ -1,6 +1,5 @@
 package com.example.job_portal.entity;
 
-import com.example.job_portal.constant.db.DbConstant;
 import com.example.job_portal.constant.db.DbConstant.DbRole;
 import jakarta.persistence.*;
 import lombok.*;
