@@ -1,7 +1,5 @@
 package com.example.job_portal.repository;
 
-import com.example.job_portal.dto.JobDTO;
-import com.example.job_portal.entity.Company;
 import com.example.job_portal.entity.Job;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -27,26 +25,6 @@ public interface JobRepository extends JpaRepository<Job, Long> {
                              @Param("jobPosition") String jobPosition,
                              @Param("jobLocation") String jobLocation);
 
-//    @Query("SELECT j FROM Job j WHERE j.companyId = :companyId AND j.isDeleted = false")
-//    List<Job> findAllJobsUnderCompanyByCompanyId(@Param("companyId") Long companyId);
-
-//    @Query("SELECT j FROM Job j WHERE j.isDeleted = false")
-//    List<Job> findAllJobs();
-//
-//    @Query("SELECT j FROM Job j WHERE j.isDeleted = false AND j.companyId = :companyId AND j.id = :jobId")
-//    Optional<Job> findJobById(
-//            @Param("companyId") Long companyId,
-//            @Param("jobId") Long id);
-//
-//    @Modifying
-//    @Query("UPDATE Job j SET j.isDeleted = true WHERE j.companyId = :companyId AND j.id = :jobId")
-//    void softDeleteJobById(
-//            @Param("companyId") Long companyId,
-//            @Param("jobId") Long jobId);
-
-//    List<Job> findByCompanyIdAndIsDeletedFalse(Long companyId);
-
-//    Optional<Job> findByIdAndCompanyIdAndIsDeletedFalse(Long jobId, Long companyId);
 
     @Query("SELECT j FROM Job j WHERE j.company.id = :companyId AND j.id = :jobId AND j.isDeleted = false")
     Optional<Job> findJobByIdAndCompanyId(

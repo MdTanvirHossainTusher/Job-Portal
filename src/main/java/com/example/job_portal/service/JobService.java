@@ -1,9 +1,6 @@
 package com.example.job_portal.service;
 
 import com.example.job_portal.dto.JobDTO;
-import com.example.job_portal.dto.JobDTO;
-import com.example.job_portal.entity.Job;
-import com.example.job_portal.entity.Job;
 import com.example.job_portal.entity.Job;
 
 import java.util.List;

@@ -1,9 +1,7 @@
 package com.example.job_portal.service;
 
 
-import com.example.job_portal.dto.ProfileDTO;
 import com.example.job_portal.dto.UniversityDTO;
-import com.example.job_portal.entity.University;
 import com.example.job_portal.entity.University;
 
 import java.util.List;

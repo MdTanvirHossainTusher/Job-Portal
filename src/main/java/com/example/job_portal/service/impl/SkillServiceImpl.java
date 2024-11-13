@@ -5,7 +5,6 @@ import com.example.job_portal.entity.Profile;
 import com.example.job_portal.entity.Skill;
 import com.example.job_portal.exception.SkillAlreadyExistsException;
 import com.example.job_portal.exception.SkillNotFoundException;
-import com.example.job_portal.exception.UserNotFoundException;
 import com.example.job_portal.repository.ProfileRepository;
 import com.example.job_portal.repository.SkillRepository;
 import com.example.job_portal.service.SkillService;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class SkillServiceImpl implements SkillService {

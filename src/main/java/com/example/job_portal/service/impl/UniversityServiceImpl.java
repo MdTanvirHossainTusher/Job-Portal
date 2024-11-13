@@ -3,11 +3,9 @@ package com.example.job_portal.service.impl;
 import com.example.job_portal.dto.UniversityDTO;
 import com.example.job_portal.entity.Profile;
 import com.example.job_portal.entity.University;
-import com.example.job_portal.entity.University;
 import com.example.job_portal.exception.UniversityAlreadyExistsException;
 import com.example.job_portal.exception.UniversityNotFoundException;
 import com.example.job_portal.repository.ProfileRepository;
-import com.example.job_portal.repository.UniversityRepository;
 import com.example.job_portal.repository.UniversityRepository;
 import com.example.job_portal.service.UniversityService;
 import com.example.job_portal.utils.EntityToEntityDTOConverter;
@@ -71,14 +69,6 @@ public class UniversityServiceImpl implements UniversityService {
                 () -> new UniversityNotFoundException(String.format("University with id: %d is not found!", universityId)));
 
         for(Profile profile: university.getProfiles()) {
-//            if(!profile.isDeleted()) {
-//                for(University userUniversity: profile.getUniversities()) {
-//                    if(!userUniversity.isDeleted() && userUniversity.getId().equals(universityId)) {
-//                        profile.getUniversities().remove(userUniversity);
-//                        profileRepository.save(profile);
-//                    }
-//                }
-//            }
 
             if(!profile.isDeleted()) {
                 Iterator<University> iterator = profile.getUniversities().iterator();
@@ -102,4 +92,5 @@ public class UniversityServiceImpl implements UniversityService {
             universityRepository.softDeleteUniversityById(universityId);
         }
     }
+
 }
