@@ -56,7 +56,7 @@ public class UserDAOImpl implements UserDAO {
         }
 
         if (universityName != null && !universityName.trim().isEmpty()) {
-            queryBuilder.append(" AND univ.name LIKE :universityName");
+            queryBuilder.append(" AND LOWER(univ.name) LIKE :universityName");
             parameters.put("universityName", "%" + universityName + "%");
         }
 
