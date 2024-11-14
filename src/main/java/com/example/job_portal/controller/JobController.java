@@ -43,7 +43,7 @@ public class JobController {
 
     @GetMapping("/filter")
     public ResponseEntity<?> filterJobs(@RequestParam(required = false) String jobPosition,
-                                                         @RequestParam(required = false) String jobLocation) {
+                                        @RequestParam(required = false) String jobLocation) {
         try {
             List<JobDTO> jobs = jobDAO.filterJobs(jobPosition, jobLocation);
             List<JobDTO> sortedJobList = SortEntityDTO.sortResponseDTO(jobs, Comparator.comparing(JobDTO::getId).reversed());

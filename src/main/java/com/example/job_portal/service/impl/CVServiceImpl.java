@@ -1,6 +1,7 @@
 package com.example.job_portal.service.impl;
 
 import com.example.job_portal.dto.CVDTO;
+import com.example.job_portal.dto.UniversityDTO;
 import com.example.job_portal.entity.CV;
 import com.example.job_portal.entity.Profile;
 import com.example.job_portal.exception.*;
@@ -9,10 +10,12 @@ import com.example.job_portal.repository.JobRepository;
 import com.example.job_portal.repository.ProfileRepository;
 import com.example.job_portal.service.CVService;
 import com.example.job_portal.utils.EntityToEntityDTOConverter;
+import com.example.job_portal.utils.SortEntityDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -83,7 +86,9 @@ public class CVServiceImpl implements CVService {
 
     @Override
     public List<CVDTO> getAllCVs() {
-        return EntityToEntityDTOConverter.convertCVsToCVsDTO(cvRepository.findAll());
+        return SortEntityDTO.sortResponseDTO(
+                EntityToEntityDTOConverter.convertCVsToCVsDTO(cvRepository.findAll()),
+                Comparator.comparing(CVDTO::getCvId).reversed());
     }
 
     @Override

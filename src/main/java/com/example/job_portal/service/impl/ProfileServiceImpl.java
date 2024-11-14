@@ -9,10 +9,12 @@ import com.example.job_portal.repository.SkillRepository;
 import com.example.job_portal.repository.UniversityRepository;
 import com.example.job_portal.service.ProfileService;
 import com.example.job_portal.utils.EntityToEntityDTOConverter;
+import com.example.job_portal.utils.SortEntityDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -23,7 +25,10 @@ public class ProfileServiceImpl implements ProfileService {
     private final UniversityRepository universityRepository;
     private final CompanyRepository companyRepository;
 
-    public ProfileServiceImpl(ProfileRepository profileRepository, SkillRepository skillRepository, UniversityRepository universityRepository, CompanyRepository companyRepository) {
+    public ProfileServiceImpl(ProfileRepository profileRepository,
+                              SkillRepository skillRepository,
+                              UniversityRepository universityRepository,
+                              CompanyRepository companyRepository) {
         this.profileRepository = profileRepository;
         this.skillRepository = skillRepository;
         this.universityRepository = universityRepository;
@@ -80,7 +85,9 @@ public class ProfileServiceImpl implements ProfileService {
                     skills.add(skill);
                 }
             }
-            return EntityToEntityDTOConverter.convertSkillsToSkillsDTO(skills);
+            List<SkillDTO> skillDTOs =  EntityToEntityDTOConverter.convertSkillsToSkillsDTO(skills);
+            return SortEntityDTO.sortResponseDTO(skillDTOs, Comparator.comparing(SkillDTO::getId).reversed());
+
         } else {
             throw new RuntimeException("User didn't add any skill yet!");
         }
@@ -147,7 +154,9 @@ public class ProfileServiceImpl implements ProfileService {
                     universityList.add(university);
                 }
             }
-            return EntityToEntityDTOConverter.convertUniversitiesToUniversitiesDTO(universityList);
+            List<UniversityDTO> universityDTOs = EntityToEntityDTOConverter.convertUniversitiesToUniversitiesDTO(universityList);
+            return SortEntityDTO.sortResponseDTO(universityDTOs, Comparator.comparing(UniversityDTO::getId).reversed());
+
         } else {
             throw new RuntimeException("User didn't add any university yet!");
         }
@@ -215,7 +224,9 @@ public class ProfileServiceImpl implements ProfileService {
                     companyList.add(company);
                 }
             }
-            return EntityToEntityDTOConverter.convertCompaniesToCompaniesDTO(companyList);
+            List<CompanyDTO> companyDTOs = EntityToEntityDTOConverter.convertCompaniesToCompaniesDTO(companyList);
+            return SortEntityDTO.sortResponseDTO(companyDTOs, Comparator.comparing(CompanyDTO::getId).reversed());
+
         } else {
             throw new RuntimeException("User didn't add any company yet!");
         }

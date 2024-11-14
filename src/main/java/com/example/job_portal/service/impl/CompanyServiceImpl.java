@@ -16,10 +16,7 @@ import com.example.job_portal.utils.SortEntityDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class CompanyServiceImpl implements CompanyService {
@@ -117,7 +114,9 @@ public class CompanyServiceImpl implements CompanyService {
                     jobs.add(job);
                 }
             }
-            return EntityToEntityDTOConverter.convertJobsToJobsDTO(jobs);
+            return SortEntityDTO.sortResponseDTO(
+                    EntityToEntityDTOConverter.convertJobsToJobsDTO(jobs),
+                    Comparator.comparing(JobDTO::getId).reversed());
         }
         else {
             throw new CompanyNotFoundException("Company is not found!");
@@ -148,6 +147,7 @@ public class CompanyServiceImpl implements CompanyService {
                 applicantsDTOList.add(applicantsDTO);
             }
         }
+
         return applicantsDTOList;
     }
 
