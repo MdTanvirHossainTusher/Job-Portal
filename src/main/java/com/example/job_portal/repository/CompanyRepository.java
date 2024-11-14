@@ -21,8 +21,9 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
     @Query("SELECT c FROM Company c WHERE c.isDeleted = false")
     List<Company> findAllCompany();
 
-    @Query("SELECT c FROM Company c WHERE c.isDeleted = false AND c.id = :id")
-    Optional<Company> findCompanyById(@Param("id") Long id);
+//    @Query("SELECT c FROM Company c WHERE c.isDeleted = false AND c.id = :id")
+//    Optional<Company> findCompanyById(@Param("id") Long id);
+    Optional<Company> findByIdAndIsDeletedFalse(@Param("id") Long id);
 
     @Modifying
     @Query("UPDATE Company c SET c.isDeleted = true WHERE c.id = :id")

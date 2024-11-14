@@ -39,7 +39,7 @@ public class CVServiceImpl implements CVService {
 
     @Override
     public CVDTO createCV(Long profileId, CVDTO cvDTO) {
-        Profile profile = profileRepository.findProfileById(profileId)
+        Profile profile = profileRepository.findByIdAndIsDeletedFalse(profileId)
                 .orElseThrow(() -> new ProfileNotFoundException(
                         String.format("Profile with id: %d not found", profileId)));
 
@@ -66,7 +66,7 @@ public class CVServiceImpl implements CVService {
     @Override
     public CVDTO updateCV(Long profileId, CVDTO cvDTO) {
 
-        Profile profile = profileRepository.findProfileById(profileId).orElseThrow(
+        Profile profile = profileRepository.findByIdAndIsDeletedFalse(profileId).orElseThrow(
                 () -> new UserNotFoundException(String.format("Profile with id: %d is not found", profileId)));
 
         if(profile.getCv() != null) {
@@ -93,7 +93,7 @@ public class CVServiceImpl implements CVService {
 
     @Override
     public CVDTO getUserCV(Long profileId) {
-        Profile profile = profileRepository.findProfileById(profileId).orElseThrow(
+        Profile profile = profileRepository.findByIdAndIsDeletedFalse(profileId).orElseThrow(
                 () -> new UserNotFoundException(String.format("Profile with id: %d is not found", profileId)));
 
         if(profile.getCv() != null) {

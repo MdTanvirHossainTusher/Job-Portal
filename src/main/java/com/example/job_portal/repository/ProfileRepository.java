@@ -10,8 +10,10 @@ import java.util.Optional;
 
 @Repository
 public interface ProfileRepository extends JpaRepository<Profile, Long> {
+//
+//    @Query("SELECT p FROM Profile p WHERE p.id = :profileId AND p.isDeleted = false")
+//    Optional<Profile> findProfileById(@Param("profileId") Long profileId);
 
-    @Query("SELECT p FROM Profile p WHERE p.id = :profileId AND p.isDeleted = false")
-    Optional<Profile> findProfileById(@Param("profileId") Long profileId);
+    Optional<Profile> findByIdAndIsDeletedFalse(@Param("profileId") Long profileId);
 
 }

@@ -55,7 +55,7 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public CompanyDTO findCompanyById(Long id) {
-        Optional<Company> companyOptional = companyRepository.findCompanyById(id);
+        Optional<Company> companyOptional = companyRepository.findByIdAndIsDeletedFalse(id);
         Company company = companyOptional.orElse(null);
         return company != null ?
                 EntityToEntityDTOConverter.convertCompanyToCompanyDTO(company) : null;
@@ -64,7 +64,7 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     @Transactional
     public CompanyDTO updateCompany(Long id, CompanyDTO companyDTO) {
-        Company existingCompany = companyRepository.findCompanyById(id)
+        Company existingCompany = companyRepository.findByIdAndIsDeletedFalse(id)
                 .orElseThrow(() -> new CompanyNotFoundException("Company with id: " + id + " is not found!"));
 
         if(existingCompany != null) {
@@ -91,7 +91,7 @@ public class CompanyServiceImpl implements CompanyService {
     @Transactional
     public void deleteCompanyById(Long id) {
 
-        Company company = companyRepository.findCompanyById(id)
+        Company company = companyRepository.findByIdAndIsDeletedFalse(id)
                 .orElseThrow(() -> new CompanyNotFoundException("Company with id: " + id + " is not found!"));
 
         companyRepository.softDeleteJobsByCompanyId(id);
@@ -102,7 +102,7 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public List<JobDTO> getAllJobsUnderOneCompany(Long companyId) {
 
-        Company company = companyRepository.findCompanyById(companyId)
+        Company company = companyRepository.findByIdAndIsDeletedFalse(companyId)
                 .orElseThrow(() -> new CompanyNotFoundException("Company with id: " + companyId + " is not found!"));
 
 
@@ -125,7 +125,7 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public List<ApplicantsDTO> getAllApplicantsInfoUnderAJobPost(Long companyId, Long jobId) {
-        Company company = companyRepository.findCompanyById(companyId)
+        Company company = companyRepository.findByIdAndIsDeletedFalse(companyId)
                 .orElseThrow(() -> new CompanyNotFoundException("Company with id: " + companyId + " is not found!"));
 
         Job job = jobRepository.findJobById(jobId).orElseThrow(

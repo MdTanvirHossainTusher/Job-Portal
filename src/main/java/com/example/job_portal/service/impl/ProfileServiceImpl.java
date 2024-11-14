@@ -43,7 +43,7 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     public List<JobApplicationDTO> getAllJobsUserAppliedOn(Long profileId) {
-        Profile profile = profileRepository.findProfileById(profileId).orElseThrow(
+        Profile profile = profileRepository.findByIdAndIsDeletedFalse(profileId).orElseThrow(
                 () -> new UserNotFoundException(String.format("Profile with id: %d is not found", profileId)));
 
         Long activeJobsCount = profile.getJobs().stream()
@@ -74,7 +74,7 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     public List<SkillDTO> getAllSkillsUnderProfile(Long profileId) {
-        Profile profile = profileRepository.findProfileById(profileId).orElseThrow(
+        Profile profile = profileRepository.findByIdAndIsDeletedFalse(profileId).orElseThrow(
                 () -> new UserNotFoundException(String.format("Profile with id: %d is not found", profileId)));
 
         if (!profile.isDeleted()) {
@@ -96,7 +96,7 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     @Transactional
     public void addSkillToUserProfile(Long profileId, Long skillId) {
-        Profile profile = profileRepository.findProfileById(profileId).orElseThrow(
+        Profile profile = profileRepository.findByIdAndIsDeletedFalse(profileId).orElseThrow(
                 () -> new UserNotFoundException(String.format("Profile with id: %d is not found", profileId)));
 
         Skill skill = skillRepository.findSkillById(skillId).orElseThrow(
@@ -122,7 +122,7 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     @Transactional
     public void removeSkillToUserProfile(Long profileId, Long skillId) {
-        Profile profile = profileRepository.findProfileById(profileId).orElseThrow(
+        Profile profile = profileRepository.findByIdAndIsDeletedFalse(profileId).orElseThrow(
                 () -> new UserNotFoundException(String.format("Profile with id: %d is not found", profileId)));
 
         if (!profile.isDeleted()) {
@@ -143,7 +143,7 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     public List<UniversityDTO> getAllUniversitiesUnderProfile(Long profileId) {
-        Profile profile = profileRepository.findProfileById(profileId).orElseThrow(
+        Profile profile = profileRepository.findByIdAndIsDeletedFalse(profileId).orElseThrow(
                 () -> new UserNotFoundException(String.format("Profile with id: %d is not found", profileId)));
 
         if (!profile.isDeleted()) {
@@ -165,7 +165,7 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     @Transactional
     public void addUniversityToUserProfile(Long profileId, Long universityId) {
-        Profile profile = profileRepository.findProfileById(profileId).orElseThrow(
+        Profile profile = profileRepository.findByIdAndIsDeletedFalse(profileId).orElseThrow(
                 () -> new UserNotFoundException(String.format("Profile with id: %d is not found", profileId)));
 
         University university = universityRepository.findUniversityById(universityId).orElseThrow(
@@ -192,7 +192,7 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     @Transactional
     public void removeUniversityToUserProfile(Long profileId, Long universityId) {
-        Profile profile = profileRepository.findProfileById(profileId).orElseThrow(
+        Profile profile = profileRepository.findByIdAndIsDeletedFalse(profileId).orElseThrow(
                 () -> new UserNotFoundException(String.format("Profile with id: %d is not found", profileId)));
 
         if (!profile.isDeleted()) {
@@ -213,7 +213,7 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     public List<CompanyDTO> getAllCompaniesUnderProfile(Long profileId) {
-        Profile profile = profileRepository.findProfileById(profileId).orElseThrow(
+        Profile profile = profileRepository.findByIdAndIsDeletedFalse(profileId).orElseThrow(
                 () -> new UserNotFoundException(String.format("Profile with id: %d is not found", profileId)));
 
         if (!profile.isDeleted()) {
@@ -226,7 +226,6 @@ public class ProfileServiceImpl implements ProfileService {
             }
             List<CompanyDTO> companyDTOs = EntityToEntityDTOConverter.convertCompaniesToCompaniesDTO(companyList);
             return SortEntityDTO.sortResponseDTO(companyDTOs, Comparator.comparing(CompanyDTO::getId).reversed());
-
         } else {
             throw new RuntimeException("User didn't add any company yet!");
         }
@@ -234,10 +233,10 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     public void addCompanyToUserProfile(Long profileId, Long companyId) {
-        Profile profile = profileRepository.findProfileById(profileId).orElseThrow(
+        Profile profile = profileRepository.findByIdAndIsDeletedFalse(profileId).orElseThrow(
                 () -> new UserNotFoundException(String.format("Profile with id: %d is not found", profileId)));
 
-        Company company = companyRepository.findCompanyById(companyId).orElseThrow(
+        Company company = companyRepository.findByIdAndIsDeletedFalse(companyId).orElseThrow(
                 () -> new CompanyNotFoundException(String.format("Company with id: %d is not found", companyId)));
 
         if (!profile.isDeleted() && !company.isDeleted()) {
@@ -260,7 +259,7 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     public void removeCompanyToUserProfile(Long profileId, Long companyId) {
-        Profile profile = profileRepository.findProfileById(profileId).orElseThrow(
+        Profile profile = profileRepository.findByIdAndIsDeletedFalse(profileId).orElseThrow(
                 () -> new UserNotFoundException(String.format("Profile with id: %d is not found", profileId)));
 
         if (!profile.isDeleted()) {

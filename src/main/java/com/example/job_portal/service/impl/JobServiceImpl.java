@@ -34,7 +34,7 @@ public class JobServiceImpl implements JobService {
     @Transactional
     public JobDTO createJob(Long companyId, JobDTO jobDTO) {
         try {
-            Company company = companyRepository.findCompanyById(companyId)
+            Company company = companyRepository.findByIdAndIsDeletedFalse(companyId)
                     .orElseThrow(() -> new CompanyNotFoundException("Company not found with ID: " + companyId));
 
             Job newJob = new Job();
@@ -72,7 +72,7 @@ public class JobServiceImpl implements JobService {
     public JobDTO findJobById(Long companyId, Long jobId) {
 
         try {
-            Company company = companyRepository.findById(companyId)
+            Company company = companyRepository.findByIdAndIsDeletedFalse(companyId)
                     .orElseThrow(() -> new CompanyNotFoundException("Company not found with id: " + companyId));
 
             for (Job job : company.getJobs()) {
@@ -95,7 +95,7 @@ public class JobServiceImpl implements JobService {
     public JobDTO updateJob(Long companyId, Long jobId, JobDTO jobDTO) {
 
         try {
-            Company company = companyRepository.findById(companyId)
+            Company company = companyRepository.findByIdAndIsDeletedFalse(companyId)
                     .orElseThrow(() -> new CompanyNotFoundException("Company not found with id: " + companyId));
 
             for (Job existingJob : company.getJobs()) {
@@ -124,7 +124,7 @@ public class JobServiceImpl implements JobService {
     @Transactional
     public void deleteJobById(Long companyId, Long jobId) {
 
-        Company company = companyRepository.findById(companyId)
+        Company company = companyRepository.findByIdAndIsDeletedFalse(companyId)
                 .orElseThrow(() -> new CompanyNotFoundException("Company not found with id: " + companyId));
 
         Iterator<Job> iterator = company.getJobs().iterator();
