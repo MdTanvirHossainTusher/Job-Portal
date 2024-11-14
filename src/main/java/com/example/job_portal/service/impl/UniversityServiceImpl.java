@@ -1,5 +1,6 @@
 package com.example.job_portal.service.impl;
 
+import com.example.job_portal.dto.CompanyDTO;
 import com.example.job_portal.dto.UniversityDTO;
 import com.example.job_portal.entity.Profile;
 import com.example.job_portal.entity.University;
@@ -9,9 +10,11 @@ import com.example.job_portal.repository.ProfileRepository;
 import com.example.job_portal.repository.UniversityRepository;
 import com.example.job_portal.service.UniversityService;
 import com.example.job_portal.utils.EntityToEntityDTOConverter;
+import com.example.job_portal.utils.SortEntityDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -35,7 +38,10 @@ public class UniversityServiceImpl implements UniversityService {
 
     @Override
     public List<UniversityDTO> getAllUniversitiesUnderApp() {
-        return EntityToEntityDTOConverter.convertUniversitiesToUniversitiesDTO(universityRepository.findAllUniversity());
+
+        List<UniversityDTO> universityDTOs =  EntityToEntityDTOConverter.convertUniversitiesToUniversitiesDTO(universityRepository.findAllUniversity());
+        return SortEntityDTO.sortResponseDTO(universityDTOs, Comparator.comparing(UniversityDTO::getId).reversed());
+
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.example.job_portal.service.impl;
 
 import com.example.job_portal.dto.ProfileDTO;
+import com.example.job_portal.dto.UniversityDTO;
 import com.example.job_portal.dto.UserDTO;
 import com.example.job_portal.entity.*;
 import com.example.job_portal.exception.UserAlreadyExistsException;
@@ -15,10 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -149,6 +147,8 @@ public class UserServiceImpl implements UserService {
         else {
             throw new UserNotFoundException(String.format("User with id: %d is not found!", userId));
         }
+
+        Collections.sort(roles);
         return roles;
     }
 

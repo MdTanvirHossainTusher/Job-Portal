@@ -1,6 +1,7 @@
 package com.example.job_portal.service.impl;
 
 import com.example.job_portal.dto.RoleDTO;
+import com.example.job_portal.dto.SkillDTO;
 import com.example.job_portal.entity.Role;
 import com.example.job_portal.entity.User;
 import com.example.job_portal.exception.UserNotFoundException;
@@ -8,10 +9,12 @@ import com.example.job_portal.repository.RoleRepository;
 import com.example.job_portal.repository.UserRepository;
 import com.example.job_portal.service.RoleService;
 import com.example.job_portal.utils.EntityToEntityDTOConverter;
+import com.example.job_portal.utils.SortEntityDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,7 +46,7 @@ public class RoleServiceImpl implements RoleService {
                 roleDTOS.add(EntityToEntityDTOConverter.convertRoleToRoleDTO(role));
             }
         }
-        return roleDTOS;
+        return SortEntityDTO.sortResponseDTO(roleDTOS, Comparator.comparing(RoleDTO::getId).reversed());
     }
 
     @Override

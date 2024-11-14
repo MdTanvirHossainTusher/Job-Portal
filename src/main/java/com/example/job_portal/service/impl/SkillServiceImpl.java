@@ -1,6 +1,7 @@
 package com.example.job_portal.service.impl;
 
 import com.example.job_portal.dto.SkillDTO;
+import com.example.job_portal.dto.UniversityDTO;
 import com.example.job_portal.entity.Profile;
 import com.example.job_portal.entity.Skill;
 import com.example.job_portal.exception.SkillAlreadyExistsException;
@@ -9,9 +10,11 @@ import com.example.job_portal.repository.ProfileRepository;
 import com.example.job_portal.repository.SkillRepository;
 import com.example.job_portal.service.SkillService;
 import com.example.job_portal.utils.EntityToEntityDTOConverter;
+import com.example.job_portal.utils.SortEntityDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -33,7 +36,10 @@ public class SkillServiceImpl implements SkillService {
 
     @Override
     public List<SkillDTO> getAllSkillsUnderApp() {
-        return EntityToEntityDTOConverter.convertSkillsToSkillsDTO(skillRepository.findAllSkill());
+
+        List<SkillDTO> skillDTOs =  EntityToEntityDTOConverter.convertSkillsToSkillsDTO(skillRepository.findAllSkill());
+        return SortEntityDTO.sortResponseDTO(skillDTOs, Comparator.comparing(SkillDTO::getId).reversed());
+
     }
 
     @Override
