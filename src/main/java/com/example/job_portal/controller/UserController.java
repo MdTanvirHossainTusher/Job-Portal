@@ -66,18 +66,16 @@ public class UserController {
     }
 
     @GetMapping("/filter")
-    public ResponseEntity<?> filterFromUsers(@RequestParam(required = false) String email,
-                                                       @RequestParam(required = false) Double experience,
-                                                       @RequestParam(required = false) String universityName) {
+    public ResponseEntity<List<UserDTO>> filterFromUsers(@RequestParam(required = false) String email,
+                                           @RequestParam(required = false) Double experienceFrom,
+                                           @RequestParam(required = false) Double experienceTo,
+                                           @RequestParam(required = false) String universityName) {
         try {
-            List<UserDTO> users = userDAO.filterUsers(email, experience, universityName);
+            List<UserDTO> users = userDAO.filterUsers(email, experienceFrom, experienceTo, universityName);
             List<UserDTO> sortedUserList = SortEntityDTO.sortResponseDTO(users, Comparator.comparing(UserDTO::getId).reversed());
 
-            HttpStatus status = !sortedUserList.isEmpty() ? HttpStatus.OK : HttpStatus.NOT_FOUND;
-            return new ResponseEntity<>(
-                    !sortedUserList.isEmpty() ?
-                            sortedUserList :
-                            new ApiResponse("No user found!", false), status);
+            return new ResponseEntity<>(sortedUserList, HttpStatus.OK);
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

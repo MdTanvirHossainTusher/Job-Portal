@@ -23,7 +23,7 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public List<UserDTO> filterUsers(String email, Double experience, String universityName) {
+    public List<UserDTO> filterUsers(String email, Double experienceFrom, Double experienceTo, String universityName) {
 
         StringBuilder queryBuilder = new StringBuilder("SELECT DISTINCT u FROM User u JOIN u.profile p");
 
@@ -39,9 +39,20 @@ public class UserDAOImpl implements UserDAO {
             parameters.put("email", "%" + email + "%");
         }
 
-        if (experience != null) {
-            queryBuilder.append(" AND u.totalExperience = :experience");
-            parameters.put("experience", experience);
+        if (experienceFrom != null || experienceTo != null) {
+            if (experienceFrom != null && experienceTo != null) {
+                queryBuilder.append(" AND u.totalExperience BETWEEN :experienceFrom AND :experienceTo");
+                parameters.put("experienceFrom", experienceFrom);
+                parameters.put("experienceTo", experienceTo);
+            }
+            else if (experienceFrom != null) {
+                queryBuilder.append(" AND u.totalExperience >= :experienceFrom");
+                parameters.put("experienceFrom", experienceFrom);
+            }
+            else {
+                queryBuilder.append(" AND u.totalExperience <= :experienceTo");
+                parameters.put("experienceTo", experienceTo);
+            }
         }
 
         if (universityName != null && !universityName.trim().isEmpty()) {

@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface UserDAO {
 
-    List<UserDTO> filterUsers(String email, Double experience, String universityName);
+    List<UserDTO> filterUsers(String email, Double experienceFrom, Double experienceTo, String universityName);
 
 }
