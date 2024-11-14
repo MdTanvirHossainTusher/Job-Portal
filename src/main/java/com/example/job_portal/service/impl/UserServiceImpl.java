@@ -10,11 +10,13 @@ import com.example.job_portal.repository.RoleRepository;
 import com.example.job_portal.repository.UserRepository;
 import com.example.job_portal.service.UserService;
 import com.example.job_portal.utils.EntityToEntityDTOConverter;
+import com.example.job_portal.utils.SortEntityDTO;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -102,7 +104,7 @@ public class UserServiceImpl implements UserService {
                 userDTOs.add(EntityToEntityDTOConverter.convertUserToUserDTO(user));
             }
         }
-        return userDTOs;
+        return SortEntityDTO.sortResponseDTO(userDTOs, Comparator.comparing(UserDTO::getId).reversed());
     }
 
     @Override

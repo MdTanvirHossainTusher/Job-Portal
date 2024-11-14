@@ -3,6 +3,7 @@ package com.example.job_portal.service.impl;
 import com.example.job_portal.dto.ApplicantsDTO;
 import com.example.job_portal.dto.CompanyDTO;
 import com.example.job_portal.dto.JobDTO;
+import com.example.job_portal.dto.UserDTO;
 import com.example.job_portal.entity.*;
 import com.example.job_portal.exception.CompanyAlreadyExistsException;
 import com.example.job_portal.exception.CompanyNotFoundException;
@@ -11,10 +12,12 @@ import com.example.job_portal.repository.CompanyRepository;
 import com.example.job_portal.repository.JobRepository;
 import com.example.job_portal.service.CompanyService;
 import com.example.job_portal.utils.EntityToEntityDTOConverter;
+import com.example.job_portal.utils.SortEntityDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -83,7 +86,8 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public List<CompanyDTO> findAllCompany() {
-        return EntityToEntityDTOConverter.convertCompaniesToCompaniesDTO(companyRepository.findAllCompany());
+        List<CompanyDTO> companyDTOs =  EntityToEntityDTOConverter.convertCompaniesToCompaniesDTO(companyRepository.findAllCompany());
+        return SortEntityDTO.sortResponseDTO(companyDTOs, Comparator.comparing(CompanyDTO::getId).reversed());
     }
 
     @Override

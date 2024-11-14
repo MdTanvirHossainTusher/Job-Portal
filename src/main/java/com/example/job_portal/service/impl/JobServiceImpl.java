@@ -1,5 +1,6 @@
 package com.example.job_portal.service.impl;
 
+import com.example.job_portal.dto.CompanyDTO;
 import com.example.job_portal.dto.JobDTO;
 import com.example.job_portal.entity.*;
 import com.example.job_portal.exception.*;
@@ -7,10 +8,12 @@ import com.example.job_portal.repository.*;
 import com.example.job_portal.repository.JobRepository;
 import com.example.job_portal.service.JobService;
 import com.example.job_portal.utils.EntityToEntityDTOConverter;
+import com.example.job_portal.utils.SortEntityDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -61,7 +64,8 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public List<JobDTO> findAllJobs() {
-        return EntityToEntityDTOConverter.convertJobsToJobsDTO(jobRepository.findAllJobs());
+        List<JobDTO> jobDTOs =  EntityToEntityDTOConverter.convertJobsToJobsDTO(jobRepository.findAllJobs());
+        return SortEntityDTO.sortResponseDTO(jobDTOs, Comparator.comparing(JobDTO::getId).reversed());
     }
 
     @Override

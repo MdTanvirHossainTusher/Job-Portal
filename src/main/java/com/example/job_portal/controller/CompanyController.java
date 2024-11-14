@@ -5,10 +5,13 @@ import com.example.job_portal.dto.*;
 import com.example.job_portal.entity.api_response.ApiResponse;
 import com.example.job_portal.service.CompanyService;
 import com.example.job_portal.service.JobService;
+import com.example.job_portal.utils.EntityToEntityDTOConverter;
+import com.example.job_portal.utils.SortEntityDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Comparator;
 import java.util.List;
 
 @RestController
@@ -124,10 +127,12 @@ public class CompanyController {
     ) {
         try {
             List<CompanyDTO> companies = companyDAO.filterCompanies(companyName, companyLocation, workingMode);
-            HttpStatus status = !companies.isEmpty() ? HttpStatus.OK : HttpStatus.NOT_FOUND;
+            List<CompanyDTO> sortedCompanyList = SortEntityDTO.sortResponseDTO(companies, Comparator.comparing(CompanyDTO::getId).reversed());
+
+            HttpStatus status = !sortedCompanyList.isEmpty() ? HttpStatus.OK : HttpStatus.NOT_FOUND;
             return new ResponseEntity<>(
-                    !companies.isEmpty() ?
-                            companies :
+                    !sortedCompanyList.isEmpty() ?
+                            sortedCompanyList :
                             new ApiResponse("No company found!", false), status);
         } catch (Exception e) {
             throw new RuntimeException(e);
