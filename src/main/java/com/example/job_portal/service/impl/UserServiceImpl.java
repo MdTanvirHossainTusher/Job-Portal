@@ -1,7 +1,6 @@
 package com.example.job_portal.service.impl;
 
 import com.example.job_portal.dto.ProfileDTO;
-import com.example.job_portal.dto.UniversityDTO;
 import com.example.job_portal.dto.UserDTO;
 import com.example.job_portal.dto.response.UserResponse;
 import com.example.job_portal.entity.*;
@@ -12,7 +11,7 @@ import com.example.job_portal.repository.RoleRepository;
 import com.example.job_portal.repository.UserRepository;
 import com.example.job_portal.service.UserService;
 import com.example.job_portal.utils.EntityToEntityDTOConverter;
-import com.example.job_portal.utils.SortEntityDTO;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -31,14 +31,17 @@ public class UserServiceImpl implements UserService {
     private final RoleRepository roleRepository;
     private final ProfileRepository profileRepository;
 
+    private final ModelMapper modelMapper;
+
     public UserServiceImpl(UserRepository userRepository,
                            PasswordEncoder passwordEncoder,
-                           RoleRepository roleRepository, ProfileRepository profileRepository
-    ) {
+                           RoleRepository roleRepository, ProfileRepository profileRepository,
+                           ModelMapper modelMapper) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
         this.profileRepository = profileRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -223,6 +226,19 @@ public class UserServiceImpl implements UserService {
                         String.format("User with id: %d is not found!", userId)));
 
         return EntityToEntityDTOConverter.convertProfileToProfileDTO(user.getProfile());
+    }
+
+    @Override
+    public List<UserDTO> searchUsers(String keyword) {
+//        List<User> users = userRepository.findByEmailContaining(keyword); // etao correct (using JPA)
+        List<User> users = userRepository.searchUsers("%" + keyword + "%");
+
+
+        List<UserDTO> userDTOS = users.stream().map(
+                (user) -> modelMapper.
+                        map(user, UserDTO.class)).
+                        collect(Collectors.toList());
+        return userDTOS;
     }
 
 }

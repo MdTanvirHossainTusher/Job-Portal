@@ -1,5 +1,7 @@
 package com.example.job_portal.controller;
 
+
+
 import com.example.job_portal.dao.UserDAO;
 import com.example.job_portal.dto.CompanyDTO;
 import com.example.job_portal.dto.ProfileDTO;
@@ -30,6 +32,7 @@ public class UserController {
         this.userDAO = userDAO;
     }
 
+
     @GetMapping
 //    public ResponseEntity<List<UserDTO>> getAllUsers(
     public ResponseEntity<UserResponse> getAllUsers(
@@ -47,7 +50,7 @@ public class UserController {
         UserDTO userDTO = userService.findUserById(userId);
         HttpStatus status = userDTO != null ? HttpStatus.OK : HttpStatus.NOT_FOUND;
         return new ResponseEntity<>(
-                userDTO != null?
+                userDTO != null ?
                         userDTO :
                         new ApiResponse("User not found!", false), status);
     }
@@ -74,9 +77,9 @@ public class UserController {
 
     @GetMapping("/filter")
     public ResponseEntity<List<UserDTO>> filterFromUsers(@RequestParam(required = false) String email,
-                                           @RequestParam(required = false) Double experienceFrom,
-                                           @RequestParam(required = false) Double experienceTo,
-                                           @RequestParam(required = false) String universityName) {
+                                                         @RequestParam(required = false) Double experienceFrom,
+                                                         @RequestParam(required = false) Double experienceTo,
+                                                         @RequestParam(required = false) String universityName) {
         try {
             List<UserDTO> users = userDAO.filterUsers(email, experienceFrom, experienceTo, universityName);
             List<UserDTO> sortedUserList = SortEntityDTO.sortResponseDTO(users, Comparator.comparing(UserDTO::getId).reversed());
@@ -118,4 +121,14 @@ public class UserController {
         ProfileDTO profileDTO = userService.getUserProfile(userId);
         return new ResponseEntity<>(profileDTO, HttpStatus.OK);
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<UserDTO>> searchUserByEmail(
+            @RequestParam(value = "email", required = false) String email
+    ) {
+        List<UserDTO> userDTOS = userService.searchUsers(email);
+        return new ResponseEntity<>(userDTOS, HttpStatus.OK);
+    }
+
 }
+

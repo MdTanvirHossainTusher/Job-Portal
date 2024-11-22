@@ -31,4 +31,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("UPDATE User u SET u.isDeleted = true WHERE u.id = :id")
     void softDeleteUserById(@Param("id") Long id);
 
+    List<User> findByEmailContaining(String email);
+
+    @Query("SELECT u FROM User u WHERE u.isDeleted = false AND u.email LIKE :key")
+    List<User> searchUsers(@Param("key") String keyword);
+
 }

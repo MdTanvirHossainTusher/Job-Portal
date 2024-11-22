@@ -29,4 +29,6 @@ public interface UserService {
 
     ProfileDTO getUserProfile(Long userId);
 
+    List<UserDTO> searchUsers(String keyword);
+
 }
