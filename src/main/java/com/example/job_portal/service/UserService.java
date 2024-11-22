@@ -19,7 +19,7 @@ public interface UserService {
 
 //    List<UserDTO> findAllUser();
 //    List<UserDTO> findAllUser(int pageNumber, int pageSize);
-    UserResponse findAllUser(int pageNumber, int pageSize, String sortBy);
+    UserResponse findAllUser(int pageNumber, int pageSize, String sortBy, String sortDirection);
 
     void deleteUserById(Long id);
 

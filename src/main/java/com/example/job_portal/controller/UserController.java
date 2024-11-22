@@ -35,9 +35,10 @@ public class UserController {
     public ResponseEntity<UserResponse> getAllUsers(
             @RequestParam(value = "pageNumber", defaultValue = "0", required = false) int pageNumber,
             @RequestParam(value = "pageSize", defaultValue = "5", required = false) int pageSize,
-            @RequestParam(value = "sortBy", defaultValue = "id", required = false) String sortBy
+            @RequestParam(value = "sortBy", defaultValue = "id", required = false) String sortBy,
+            @RequestParam(value = "sortDirection", defaultValue = "desc", required = false) String sortDirection
     ) {
-        UserResponse allUser = userService.findAllUser(pageNumber, pageSize, sortBy);
+        UserResponse allUser = userService.findAllUser(pageNumber, pageSize, sortBy, sortDirection);
         return new ResponseEntity<>(allUser, HttpStatus.OK);
     }
 

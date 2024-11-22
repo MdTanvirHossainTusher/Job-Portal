@@ -99,9 +99,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
 //    public List<UserDTO> findAllUser(int pageNumber, int pageSize) {
-    public UserResponse findAllUser(int pageNumber, int pageSize, String sortBy) {
+    public UserResponse findAllUser(int pageNumber, int pageSize, String sortBy, String sortDirection) {
 
-        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy).descending());
+        Sort sort = sortDirection.equalsIgnoreCase("asc") ?
+                Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+
+//        if(sortDirection.equalsIgnoreCase("asc")) {
+//            sort = Sort.by(sortBy).ascending();
+//        }
+//        else {
+//            sort = Sort.by(sortBy).descending();
+//        }
+
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
 
         Page<User> userPage = userRepository.findByIsDeletedFalse(pageable);
 
