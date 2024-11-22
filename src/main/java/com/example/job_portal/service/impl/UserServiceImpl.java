@@ -3,6 +3,7 @@ package com.example.job_portal.service.impl;
 import com.example.job_portal.dto.ProfileDTO;
 import com.example.job_portal.dto.UniversityDTO;
 import com.example.job_portal.dto.UserDTO;
+import com.example.job_portal.dto.response.UserResponse;
 import com.example.job_portal.entity.*;
 import com.example.job_portal.exception.UserAlreadyExistsException;
 import com.example.job_portal.exception.UserNotFoundException;
@@ -12,6 +13,10 @@ import com.example.job_portal.repository.UserRepository;
 import com.example.job_portal.service.UserService;
 import com.example.job_portal.utils.EntityToEntityDTOConverter;
 import com.example.job_portal.utils.SortEntityDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -93,8 +98,16 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public List<UserDTO> findAllUser() {
-        List<User> users = userRepository.findAllUser();
+//    public List<UserDTO> findAllUser(int pageNumber, int pageSize) {
+    public UserResponse findAllUser(int pageNumber, int pageSize, String sortBy) {
+
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy).descending());
+
+        Page<User> userPage = userRepository.findByIsDeletedFalse(pageable);
+
+        List<User> users = userPage.getContent();
+
+//        List<User> users = userRepository.findAllUser();
         List<UserDTO> userDTOs = new ArrayList<>();
 
         for (User user : users) {
@@ -102,7 +115,17 @@ public class UserServiceImpl implements UserService {
                 userDTOs.add(EntityToEntityDTOConverter.convertUserToUserDTO(user));
             }
         }
-        return SortEntityDTO.sortResponseDTO(userDTOs, Comparator.comparing(UserDTO::getId).reversed());
+
+        UserResponse userResponse = new UserResponse();
+        userResponse.setContent(userDTOs);
+        userResponse.setPageNumber(userPage.getNumber());
+        userResponse.setPageSize(userPage.getSize());
+        userResponse.setTotalElements(userPage.getTotalElements());
+        userResponse.setTotalPages(userPage.getTotalPages());
+        userResponse.setLastPage(userPage.isLast());
+
+//        return SortEntityDTO.sortResponseDTO(userDTOs, Comparator.comparing(UserDTO::getId).reversed());
+        return userResponse;
     }
 
     @Override

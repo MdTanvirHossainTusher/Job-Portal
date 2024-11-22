@@ -4,6 +4,7 @@ import com.example.job_portal.dao.UserDAO;
 import com.example.job_portal.dto.CompanyDTO;
 import com.example.job_portal.dto.ProfileDTO;
 import com.example.job_portal.dto.UserDTO;
+import com.example.job_portal.dto.response.UserResponse;
 import com.example.job_portal.entity.api_response.ApiResponse;
 import com.example.job_portal.service.RoleService;
 import com.example.job_portal.service.UserService;
@@ -30,9 +31,14 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<UserDTO>> getAllUsers() {
-        List<UserDTO> users = userService.findAllUser();
-        return new ResponseEntity<>(users, HttpStatus.OK);
+//    public ResponseEntity<List<UserDTO>> getAllUsers(
+    public ResponseEntity<UserResponse> getAllUsers(
+            @RequestParam(value = "pageNumber", defaultValue = "0", required = false) int pageNumber,
+            @RequestParam(value = "pageSize", defaultValue = "5", required = false) int pageSize,
+            @RequestParam(value = "sortBy", defaultValue = "id", required = false) String sortBy
+    ) {
+        UserResponse allUser = userService.findAllUser(pageNumber, pageSize, sortBy);
+        return new ResponseEntity<>(allUser, HttpStatus.OK);
     }
 
     @GetMapping("/{userId}")
