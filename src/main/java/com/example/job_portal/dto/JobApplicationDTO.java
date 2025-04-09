@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class JobApplicationDTO {
-
     private Long jobId;
     private String jobTitle;
     private String jobDescription;
@@ -17,5 +16,4 @@ public class JobApplicationDTO {
     private String jobLocation;
     private CompanyDTO company;
     private Long totalApplications;
-
 }

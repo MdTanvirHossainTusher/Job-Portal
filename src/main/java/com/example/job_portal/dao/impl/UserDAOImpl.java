@@ -3,10 +3,11 @@ package com.example.job_portal.dao.impl;
 import com.example.job_portal.dao.UserDAO;
 import com.example.job_portal.dto.UserDTO;
 import com.example.job_portal.entity.User;
-import com.example.job_portal.exception.UserNotFoundException;
+import com.example.job_portal.exception.ResourceNotFoundException;
 import com.example.job_portal.utils.EntityToEntityDTOConverter;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
@@ -14,13 +15,10 @@ import java.util.List;
 import java.util.Map;
 
 @Repository
+@RequiredArgsConstructor
 public class UserDAOImpl implements UserDAO {
 
     private final EntityManager entityManager;
-
-    public UserDAOImpl(EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
 
     @Override
     public List<UserDTO> filterUsers(String email, Double experienceFrom, Double experienceTo, String universityName) {
@@ -68,7 +66,7 @@ public class UserDAOImpl implements UserDAO {
             return EntityToEntityDTOConverter.convertUsersToUsersDTO(query.getResultList());
         }
         catch (Exception e) {
-            throw new UserNotFoundException("No user found!");
+            throw new ResourceNotFoundException("No user found!");
         }
 
     }

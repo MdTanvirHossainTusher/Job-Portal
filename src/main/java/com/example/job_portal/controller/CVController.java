@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/cvs")
+@RequestMapping("${api.prefix}/cvs")
 public class CVController {
     private final CVService cvService;
 

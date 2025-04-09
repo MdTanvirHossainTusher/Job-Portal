@@ -10,15 +10,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class JobDTO {
-
     private Long id;
     private String jobTitle;
     private String jobDescription;
     private String salary;
     private String jobPosition;
     private String jobLocation;
-
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private boolean isDeleted = false;
-
 }

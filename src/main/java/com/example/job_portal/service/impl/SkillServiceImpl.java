@@ -1,11 +1,10 @@
 package com.example.job_portal.service.impl;
 
 import com.example.job_portal.dto.SkillDTO;
-import com.example.job_portal.dto.UniversityDTO;
 import com.example.job_portal.entity.Profile;
 import com.example.job_portal.entity.Skill;
-import com.example.job_portal.exception.SkillAlreadyExistsException;
-import com.example.job_portal.exception.SkillNotFoundException;
+import com.example.job_portal.exception.ResourceAlreadyExistsException;
+import com.example.job_portal.exception.ResourceNotFoundException;
 import com.example.job_portal.repository.ProfileRepository;
 import com.example.job_portal.repository.SkillRepository;
 import com.example.job_portal.service.SkillService;
@@ -66,7 +65,7 @@ public class SkillServiceImpl implements SkillService {
             if(skillDTO.getSkillName() != null) newSkill.setSkillName(skillDTO.getSkillName());
             return EntityToEntityDTOConverter.convertSkillToSkillDTO(skillRepository.save(newSkill));
         } else {
-            throw new SkillAlreadyExistsException("Skill already exists!");
+            throw new ResourceAlreadyExistsException("Skill already exists!");
         }
 
     }
@@ -75,7 +74,7 @@ public class SkillServiceImpl implements SkillService {
     @Transactional
     public void deleteSkill(Long skillId) {
         Skill skill = skillRepository.findSkillById(skillId).orElseThrow(
-                () -> new SkillNotFoundException(String.format("Skill with id: %d is not found!", skillId)));
+                () -> new ResourceNotFoundException(String.format("Skill with id: %d is not found!", skillId)));
 
         for(Profile profile: skill.getProfiles()) {
             if(!profile.isDeleted()) {

@@ -14,7 +14,6 @@ public class CompanyDTO {
     private String companyLocation;
     private String companyType;
     private String workingMode;
-
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private boolean isDeleted = false;
 }

@@ -40,7 +40,7 @@ public class CVServiceImpl implements CVService {
     @Override
     public CVDTO createCV(Long profileId, CVDTO cvDTO) {
         Profile profile = profileRepository.findByIdAndIsDeletedFalse(profileId)
-                .orElseThrow(() -> new ProfileNotFoundException(
+                .orElseThrow(() -> new ResourceNotFoundException(
                         String.format("Profile with id: %d not found", profileId)));
 
         CV newCV = new CV();
@@ -59,7 +59,7 @@ public class CVServiceImpl implements CVService {
             return EntityToEntityDTOConverter.convertCVToCVDTO(newCV);
         }
         else {
-            throw new CVAlreadyExistsException(String.format("CV has already exists in the profile id: %d", profileId));
+            throw new ResourceAlreadyExistsException(String.format("CV has already exists in the profile id: %d", profileId));
         }
     }
 
@@ -67,7 +67,7 @@ public class CVServiceImpl implements CVService {
     public CVDTO updateCV(Long profileId, CVDTO cvDTO) {
 
         Profile profile = profileRepository.findByIdAndIsDeletedFalse(profileId).orElseThrow(
-                () -> new UserNotFoundException(String.format("Profile with id: %d is not found", profileId)));
+                () -> new ResourceNotFoundException(String.format("Profile with id: %d is not found", profileId)));
 
         if(profile.getCv() != null) {
             CV cv = profile.getCv();
@@ -79,7 +79,7 @@ public class CVServiceImpl implements CVService {
             return EntityToEntityDTOConverter.convertCVToCVDTO(cvRepository.save(cv));
         }
         else {
-            throw new CVNotFoundException(String.format("CV not found for the profile id: %d", profileId));
+            throw new ResourceNotFoundException(String.format("CV not found for the profile id: %d", profileId));
         }
 
     }
@@ -94,13 +94,13 @@ public class CVServiceImpl implements CVService {
     @Override
     public CVDTO getUserCV(Long profileId) {
         Profile profile = profileRepository.findByIdAndIsDeletedFalse(profileId).orElseThrow(
-                () -> new UserNotFoundException(String.format("Profile with id: %d is not found", profileId)));
+                () -> new ResourceNotFoundException(String.format("Profile with id: %d is not found", profileId)));
 
         if(profile.getCv() != null) {
             return EntityToEntityDTOConverter.convertCVToCVDTO(profile.getCv());
         }
         else {
-            throw new CVNotFoundException("CV is not attached to this profile!");
+            throw new ResourceNotFoundException("CV is not attached to this profile!");
         }
     }
 

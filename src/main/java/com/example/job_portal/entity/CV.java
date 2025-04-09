@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = DbCV.TABLE_NAME)
-public class CV extends AuditInfo{
+public class CV extends AuditInfo {
 
     @Column(name = DbCV.CV_FORMAT)
     private String cvFormat;

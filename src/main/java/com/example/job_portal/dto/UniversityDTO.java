@@ -8,10 +8,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UniversityDTO {
-
     private Long id;
     private String name;
     private String degree;
     private String passingYear;
-
 }

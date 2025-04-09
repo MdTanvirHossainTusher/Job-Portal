@@ -44,7 +44,7 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     public List<JobApplicationDTO> getAllJobsUserAppliedOn(Long profileId) {
         Profile profile = profileRepository.findByIdAndIsDeletedFalse(profileId).orElseThrow(
-                () -> new UserNotFoundException(String.format("Profile with id: %d is not found", profileId)));
+                () -> new ResourceNotFoundException(String.format("Profile with id: %d is not found", profileId)));
 
         Long activeJobsCount = profile.getJobs().stream()
                 .filter(job -> !job.isDeleted() && !job.getCompany().isDeleted())
@@ -75,7 +75,7 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     public List<SkillDTO> getAllSkillsUnderProfile(Long profileId) {
         Profile profile = profileRepository.findByIdAndIsDeletedFalse(profileId).orElseThrow(
-                () -> new UserNotFoundException(String.format("Profile with id: %d is not found", profileId)));
+                () -> new ResourceNotFoundException(String.format("Profile with id: %d is not found", profileId)));
 
         if (!profile.isDeleted()) {
             List<Skill> skills = new ArrayList<>();
@@ -97,10 +97,10 @@ public class ProfileServiceImpl implements ProfileService {
     @Transactional
     public void addSkillToUserProfile(Long profileId, Long skillId) {
         Profile profile = profileRepository.findByIdAndIsDeletedFalse(profileId).orElseThrow(
-                () -> new UserNotFoundException(String.format("Profile with id: %d is not found", profileId)));
+                () -> new ResourceNotFoundException(String.format("Profile with id: %d is not found", profileId)));
 
         Skill skill = skillRepository.findSkillById(skillId).orElseThrow(
-                () -> new UserNotFoundException(String.format("Skill with id: %d is not found", skillId)));
+                () -> new ResourceNotFoundException(String.format("Skill with id: %d is not found", skillId)));
 
         if (!profile.isDeleted() && !skill.isDeleted()) {
             boolean skillExists = false;
@@ -114,7 +114,7 @@ public class ProfileServiceImpl implements ProfileService {
                 profile.getSkills().add(skill);
                 profileRepository.save(profile);
             } else {
-                throw new SkillAlreadyExistsException("Skill already exists!");
+                throw new ResourceAlreadyExistsException("Skill already exists!");
             }
         }
     }
@@ -123,7 +123,7 @@ public class ProfileServiceImpl implements ProfileService {
     @Transactional
     public void removeSkillToUserProfile(Long profileId, Long skillId) {
         Profile profile = profileRepository.findByIdAndIsDeletedFalse(profileId).orElseThrow(
-                () -> new UserNotFoundException(String.format("Profile with id: %d is not found", profileId)));
+                () -> new ResourceNotFoundException(String.format("Profile with id: %d is not found", profileId)));
 
         if (!profile.isDeleted()) {
             boolean skillExists = false;
@@ -136,7 +136,7 @@ public class ProfileServiceImpl implements ProfileService {
                 }
             }
             if (!skillExists) {
-                throw new SkillNotFoundException("Skill not found!");
+                throw new ResourceNotFoundException("Skill not found!");
             }
         }
     }
@@ -144,7 +144,7 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     public List<UniversityDTO> getAllUniversitiesUnderProfile(Long profileId) {
         Profile profile = profileRepository.findByIdAndIsDeletedFalse(profileId).orElseThrow(
-                () -> new UserNotFoundException(String.format("Profile with id: %d is not found", profileId)));
+                () -> new ResourceNotFoundException(String.format("Profile with id: %d is not found", profileId)));
 
         if (!profile.isDeleted()) {
             List<University> universityList = new ArrayList<>();
@@ -166,10 +166,10 @@ public class ProfileServiceImpl implements ProfileService {
     @Transactional
     public void addUniversityToUserProfile(Long profileId, Long universityId) {
         Profile profile = profileRepository.findByIdAndIsDeletedFalse(profileId).orElseThrow(
-                () -> new UserNotFoundException(String.format("Profile with id: %d is not found", profileId)));
+                () -> new ResourceNotFoundException(String.format("Profile with id: %d is not found", profileId)));
 
         University university = universityRepository.findUniversityById(universityId).orElseThrow(
-                () -> new UserNotFoundException(String.format("University with id: %d is not found", universityId)));
+                () -> new ResourceNotFoundException(String.format("University with id: %d is not found", universityId)));
 
         if (!profile.isDeleted() && !university.isDeleted()) {
             boolean universityExists = false;
@@ -184,7 +184,7 @@ public class ProfileServiceImpl implements ProfileService {
                 profile.getUniversities().add(university);
                 profileRepository.save(profile);
             } else {
-                throw new UniversityAlreadyExistsException("University already exists!");
+                throw new ResourceAlreadyExistsException("University already exists!");
             }
         }
     }
@@ -193,7 +193,7 @@ public class ProfileServiceImpl implements ProfileService {
     @Transactional
     public void removeUniversityToUserProfile(Long profileId, Long universityId) {
         Profile profile = profileRepository.findByIdAndIsDeletedFalse(profileId).orElseThrow(
-                () -> new UserNotFoundException(String.format("Profile with id: %d is not found", profileId)));
+                () -> new ResourceNotFoundException(String.format("Profile with id: %d is not found", profileId)));
 
         if (!profile.isDeleted()) {
             boolean universityExists = false;
@@ -206,7 +206,7 @@ public class ProfileServiceImpl implements ProfileService {
                 }
             }
             if (!universityExists) {
-                throw new UniversityNotFoundException("University not found!");
+                throw new ResourceNotFoundException("University not found!");
             }
         }
     }
@@ -214,7 +214,7 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     public List<CompanyDTO> getAllCompaniesUnderProfile(Long profileId) {
         Profile profile = profileRepository.findByIdAndIsDeletedFalse(profileId).orElseThrow(
-                () -> new UserNotFoundException(String.format("Profile with id: %d is not found", profileId)));
+                () -> new ResourceNotFoundException(String.format("Profile with id: %d is not found", profileId)));
 
         if (!profile.isDeleted()) {
             List<Company> companyList = new ArrayList<>();
@@ -234,10 +234,10 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     public void addCompanyToUserProfile(Long profileId, Long companyId) {
         Profile profile = profileRepository.findByIdAndIsDeletedFalse(profileId).orElseThrow(
-                () -> new UserNotFoundException(String.format("Profile with id: %d is not found", profileId)));
+                () -> new ResourceNotFoundException(String.format("Profile with id: %d is not found", profileId)));
 
         Company company = companyRepository.findByIdAndIsDeletedFalse(companyId).orElseThrow(
-                () -> new CompanyNotFoundException(String.format("Company with id: %d is not found", companyId)));
+                () -> new ResourceNotFoundException(String.format("Company with id: %d is not found", companyId)));
 
         if (!profile.isDeleted() && !company.isDeleted()) {
             boolean companyExists = false;
@@ -252,7 +252,7 @@ public class ProfileServiceImpl implements ProfileService {
                 profile.getCompanies().add(company);
                 profileRepository.save(profile);
             } else {
-                throw new CompanyAlreadyExistsException("Company already exists!");
+                throw new ResourceAlreadyExistsException("Company already exists!");
             }
         }
     }
@@ -260,7 +260,7 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     public void removeCompanyToUserProfile(Long profileId, Long companyId) {
         Profile profile = profileRepository.findByIdAndIsDeletedFalse(profileId).orElseThrow(
-                () -> new UserNotFoundException(String.format("Profile with id: %d is not found", profileId)));
+                () -> new ResourceNotFoundException(String.format("Profile with id: %d is not found", profileId)));
 
         if (!profile.isDeleted()) {
             boolean companyExists = false;
@@ -273,7 +273,7 @@ public class ProfileServiceImpl implements ProfileService {
                 }
             }
             if (!companyExists) {
-                throw new CompanyNotFoundException("Company not found!");
+                throw new ResourceNotFoundException("Company not found!");
             }
         }
     }

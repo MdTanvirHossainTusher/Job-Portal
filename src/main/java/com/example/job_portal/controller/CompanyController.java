@@ -1,11 +1,12 @@
 package com.example.job_portal.controller;
 
 import com.example.job_portal.dao.CompanyDAO;
-import com.example.job_portal.dto.*;
+import com.example.job_portal.dto.ApplicantsDTO;
+import com.example.job_portal.dto.CompanyDTO;
+import com.example.job_portal.dto.JobDTO;
 import com.example.job_portal.entity.api_response.ApiResponse;
 import com.example.job_portal.service.CompanyService;
 import com.example.job_portal.service.JobService;
-import com.example.job_portal.utils.EntityToEntityDTOConverter;
 import com.example.job_portal.utils.SortEntityDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +16,7 @@ import java.util.Comparator;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/companies")
+@RequestMapping("${api.prefix}/companies")
 public class CompanyController {
     private final CompanyService companyService;
     private final JobService jobService;

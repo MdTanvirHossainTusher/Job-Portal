@@ -5,7 +5,5 @@ import com.example.job_portal.dto.UserDTO;
 import java.util.List;
 
 public interface UserDAO {
-
     List<UserDTO> filterUsers(String email, Double experienceFrom, Double experienceTo, String universityName);
-
 }

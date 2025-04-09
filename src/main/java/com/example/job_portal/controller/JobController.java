@@ -2,7 +2,6 @@ package com.example.job_portal.controller;
 
 import com.example.job_portal.dao.JobDAO;
 import com.example.job_portal.dto.JobDTO;
-import com.example.job_portal.dto.UserDTO;
 import com.example.job_portal.entity.api_response.ApiResponse;
 import com.example.job_portal.service.JobService;
 import com.example.job_portal.utils.SortEntityDTO;
@@ -14,7 +13,7 @@ import java.util.Comparator;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/jobs")
+@RequestMapping("${api.prefix}/jobs")
 public class JobController {
     private final JobService jobService;
     private final JobDAO jobDAO;

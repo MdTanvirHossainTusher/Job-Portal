@@ -2,6 +2,10 @@ package com.example.job_portal.entity;
 
 import com.example.job_portal.constant.db.DbConstant.DbUser;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.util.List;
@@ -22,15 +26,19 @@ import java.util.List;
         })
 public class User extends AuditInfo {
     @Column(name = DbUser.USER_NAME)
+    @NotBlank @NotEmpty @NotNull
     private String name;
 
     @Column(name = DbUser.USER_EMAIL, updatable = false, nullable = false)
+    @Email
     private String email;
 
     @Column(name = DbUser.USER_PASSWORD)
+    @NotBlank
     private String password;
 
     @Column(name = DbUser.IMAGE_URL)
+    @NotBlank
     private String imageUrl;
 
     @Column(name = DbUser.IS_USER_DELETED)

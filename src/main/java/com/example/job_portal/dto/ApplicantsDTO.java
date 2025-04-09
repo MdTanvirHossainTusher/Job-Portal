@@ -9,11 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ApplicantsDTO {
-
     @JsonUnwrapped
     private UserDTO userDTO;
-
     @JsonUnwrapped
     private CVDTO cvdto;
-
 }

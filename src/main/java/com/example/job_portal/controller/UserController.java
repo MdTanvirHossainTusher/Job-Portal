@@ -1,9 +1,7 @@
 package com.example.job_portal.controller;
 
 
-
 import com.example.job_portal.dao.UserDAO;
-import com.example.job_portal.dto.CompanyDTO;
 import com.example.job_portal.dto.ProfileDTO;
 import com.example.job_portal.dto.UserDTO;
 import com.example.job_portal.dto.response.UserResponse;
@@ -19,7 +17,7 @@ import java.util.Comparator;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/users")
+@RequestMapping("${api.prefix}/users")
 public class UserController {
 
     private final UserService userService;

@@ -1,10 +1,9 @@
 package com.example.job_portal.service.impl;
 
 import com.example.job_portal.dto.RoleDTO;
-import com.example.job_portal.dto.SkillDTO;
 import com.example.job_portal.entity.Role;
 import com.example.job_portal.entity.User;
-import com.example.job_portal.exception.UserNotFoundException;
+import com.example.job_portal.exception.ResourceNotFoundException;
 import com.example.job_portal.repository.RoleRepository;
 import com.example.job_portal.repository.UserRepository;
 import com.example.job_portal.service.RoleService;
@@ -98,11 +97,11 @@ public class RoleServiceImpl implements RoleService {
                     userRepository.save(user);
                 }
                 else {
-                    throw new UserNotFoundException(String.format("Role: %s already exists!", existingRole.getRole()));
+                    throw new ResourceNotFoundException(String.format("Role: %s already exists!", existingRole.getRole()));
                 }
             }
             else {
-                throw new UserNotFoundException(String.format("User with id: %d is not found!", userId));
+                throw new ResourceNotFoundException(String.format("User with id: %d is not found!", userId));
             }
         }
         else {

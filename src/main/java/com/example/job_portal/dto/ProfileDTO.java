@@ -11,20 +11,14 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProfileDTO {
-
     @JsonUnwrapped
     private CVDTO cvdto;
-
     @JsonUnwrapped
     private UserDTO userDTO;
-
     @JsonUnwrapped
     private List<SkillDTO> skillDTOS;
-
     @JsonUnwrapped
     private List<UniversityDTO> universityDTOS;
-
     @JsonUnwrapped
     private List<CompanyDTO> companyDTOS;
-
 }

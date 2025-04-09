@@ -3,7 +3,7 @@ package com.example.job_portal.dao.impl;
 import com.example.job_portal.dao.CompanyDAO;
 import com.example.job_portal.dto.CompanyDTO;
 import com.example.job_portal.entity.Company;
-import com.example.job_portal.exception.CompanyNotFoundException;
+import com.example.job_portal.exception.ResourceNotFoundException;
 import com.example.job_portal.utils.EntityToEntityDTOConverter;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
@@ -67,7 +67,7 @@ public class CompanyDAOImpl implements CompanyDAO {
             return EntityToEntityDTOConverter.convertCompaniesToCompaniesDTO(companies);
 
         } catch (Exception e) {
-            throw new CompanyNotFoundException("Error occurred while searching for company");
+            throw new ResourceNotFoundException("Error occurred while searching for company");
         }
     }
 

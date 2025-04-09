@@ -3,7 +3,7 @@ package com.example.job_portal.dao.impl;
 import com.example.job_portal.dao.JobDAO;
 import com.example.job_portal.dto.JobDTO;
 import com.example.job_portal.entity.Job;
-import com.example.job_portal.exception.JobNotFoundException;
+import com.example.job_portal.exception.ResourceNotFoundException;
 import com.example.job_portal.utils.EntityToEntityDTOConverter;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
@@ -64,7 +64,7 @@ public class JobDAOImpl implements JobDAO {
             return EntityToEntityDTOConverter.convertJobsToJobsDTO(jobs);
 
         } catch (Exception e) {
-            throw new JobNotFoundException("Error occurred while searching for jobs");
+            throw new ResourceNotFoundException("Error occurred while searching for jobs");
         }
     }
 

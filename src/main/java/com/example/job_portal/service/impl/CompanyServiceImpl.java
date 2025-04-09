@@ -3,11 +3,9 @@ package com.example.job_portal.service.impl;
 import com.example.job_portal.dto.ApplicantsDTO;
 import com.example.job_portal.dto.CompanyDTO;
 import com.example.job_portal.dto.JobDTO;
-import com.example.job_portal.dto.UserDTO;
 import com.example.job_portal.entity.*;
-import com.example.job_portal.exception.CompanyAlreadyExistsException;
-import com.example.job_portal.exception.CompanyNotFoundException;
-import com.example.job_portal.exception.JobNotFoundException;
+import com.example.job_portal.exception.ResourceAlreadyExistsException;
+import com.example.job_portal.exception.ResourceNotFoundException;
 import com.example.job_portal.repository.CompanyRepository;
 import com.example.job_portal.repository.JobRepository;
 import com.example.job_portal.service.CompanyService;
@@ -34,7 +32,7 @@ public class CompanyServiceImpl implements CompanyService {
     public CompanyDTO createCompany(CompanyDTO companyDTO) {
 
         if(companyRepository.existsByName(companyDTO.getCompanyName())) {
-            throw new CompanyAlreadyExistsException("Company is already exists!");
+            throw new ResourceAlreadyExistsException("Company is already exists!");
         }
 
         Company newCompany = new Company();
@@ -65,7 +63,7 @@ public class CompanyServiceImpl implements CompanyService {
     @Transactional
     public CompanyDTO updateCompany(Long id, CompanyDTO companyDTO) {
         Company existingCompany = companyRepository.findByIdAndIsDeletedFalse(id)
-                .orElseThrow(() -> new CompanyNotFoundException("Company with id: " + id + " is not found!"));
+                .orElseThrow(() -> new ResourceNotFoundException("Company with id: " + id + " is not found!"));
 
         if(existingCompany != null) {
             if(companyDTO.getCompanyType() != null) existingCompany.setCompanyType(companyDTO.getCompanyType());
@@ -77,7 +75,7 @@ public class CompanyServiceImpl implements CompanyService {
             return EntityToEntityDTOConverter.convertCompanyToCompanyDTO(company);
         }
         else {
-            throw new CompanyNotFoundException("Company : " + companyDTO.getCompanyName() + " is not found!");
+            throw new ResourceNotFoundException("Company : " + companyDTO.getCompanyName() + " is not found!");
         }
     }
 
@@ -92,7 +90,7 @@ public class CompanyServiceImpl implements CompanyService {
     public void deleteCompanyById(Long id) {
 
         Company company = companyRepository.findByIdAndIsDeletedFalse(id)
-                .orElseThrow(() -> new CompanyNotFoundException("Company with id: " + id + " is not found!"));
+                .orElseThrow(() -> new ResourceNotFoundException("Company with id: " + id + " is not found!"));
 
         companyRepository.softDeleteJobsByCompanyId(id);
         companyRepository.softDeleteCompanyById(id);
@@ -103,7 +101,7 @@ public class CompanyServiceImpl implements CompanyService {
     public List<JobDTO> getAllJobsUnderOneCompany(Long companyId) {
 
         Company company = companyRepository.findByIdAndIsDeletedFalse(companyId)
-                .orElseThrow(() -> new CompanyNotFoundException("Company with id: " + companyId + " is not found!"));
+                .orElseThrow(() -> new ResourceNotFoundException("Company with id: " + companyId + " is not found!"));
 
 
         if(company != null) {
@@ -119,17 +117,17 @@ public class CompanyServiceImpl implements CompanyService {
                     Comparator.comparing(JobDTO::getId).reversed());
         }
         else {
-            throw new CompanyNotFoundException("Company is not found!");
+            throw new ResourceNotFoundException("Company is not found!");
         }
     }
 
     @Override
     public List<ApplicantsDTO> getAllApplicantsInfoUnderAJobPost(Long companyId, Long jobId) {
         Company company = companyRepository.findByIdAndIsDeletedFalse(companyId)
-                .orElseThrow(() -> new CompanyNotFoundException("Company with id: " + companyId + " is not found!"));
+                .orElseThrow(() -> new ResourceNotFoundException("Company with id: " + companyId + " is not found!"));
 
         Job job = jobRepository.findJobById(jobId).orElseThrow(
-                () -> new JobNotFoundException(String.format("Job with id: %d is not found", jobId)));
+                () -> new ResourceNotFoundException(String.format("Job with id: %d is not found", jobId)));
 
         List<ApplicantsDTO> applicantsDTOList = new ArrayList<>();
 

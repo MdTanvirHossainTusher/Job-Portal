@@ -1,11 +1,16 @@
 package com.example.job_portal.service.impl;
 
-import com.example.job_portal.dto.CompanyDTO;
 import com.example.job_portal.dto.JobDTO;
-import com.example.job_portal.entity.*;
-import com.example.job_portal.exception.*;
-import com.example.job_portal.repository.*;
+import com.example.job_portal.entity.Company;
+import com.example.job_portal.entity.Job;
+import com.example.job_portal.entity.Profile;
+import com.example.job_portal.entity.User;
+import com.example.job_portal.exception.AlreadyAppliedException;
+import com.example.job_portal.exception.ResourceAlreadyExistsException;
+import com.example.job_portal.exception.ResourceNotFoundException;
+import com.example.job_portal.repository.CompanyRepository;
 import com.example.job_portal.repository.JobRepository;
+import com.example.job_portal.repository.UserRepository;
 import com.example.job_portal.service.JobService;
 import com.example.job_portal.utils.EntityToEntityDTOConverter;
 import com.example.job_portal.utils.SortEntityDTO;
@@ -35,7 +40,7 @@ public class JobServiceImpl implements JobService {
     public JobDTO createJob(Long companyId, JobDTO jobDTO) {
         try {
             Company company = companyRepository.findByIdAndIsDeletedFalse(companyId)
-                    .orElseThrow(() -> new CompanyNotFoundException("Company not found with ID: " + companyId));
+                    .orElseThrow(() -> new ResourceNotFoundException("Company not found with ID: " + companyId));
 
             Job newJob = new Job();
             newJob.setId(jobDTO.getId());
@@ -48,7 +53,7 @@ public class JobServiceImpl implements JobService {
 
             return EntityToEntityDTOConverter.convertJobToJobDTO(jobRepository.save(newJob));
 
-        } catch (CompanyNotFoundException | JobAlreadyExistsException e) {
+        } catch (ResourceNotFoundException | ResourceAlreadyExistsException e) {
             throw e;
         } catch (Exception e) {
             throw new RuntimeException("Error creating job: " + e.getMessage(), e);
@@ -73,16 +78,16 @@ public class JobServiceImpl implements JobService {
 
         try {
             Company company = companyRepository.findByIdAndIsDeletedFalse(companyId)
-                    .orElseThrow(() -> new CompanyNotFoundException("Company not found with id: " + companyId));
+                    .orElseThrow(() -> new ResourceNotFoundException("Company not found with id: " + companyId));
 
             for (Job job : company.getJobs()) {
                 if (!job.isDeleted() && job.getId().equals(jobId)) {
                     return EntityToEntityDTOConverter.convertJobToJobDTO(job);
                 }
             }
-            throw new JobNotFoundException("Job not found with id: " + jobId + " in company: " + company.getCompanyName());
+            throw new ResourceNotFoundException("Job not found with id: " + jobId + " in company: " + company.getCompanyName());
 
-        } catch (CompanyNotFoundException ex) {
+        } catch (ResourceNotFoundException ex) {
             throw ex;
         } catch (Exception ex) {
             throw new RuntimeException("Error occurred while finding job: " + ex.getMessage());
@@ -96,7 +101,7 @@ public class JobServiceImpl implements JobService {
 
         try {
             Company company = companyRepository.findByIdAndIsDeletedFalse(companyId)
-                    .orElseThrow(() -> new CompanyNotFoundException("Company not found with id: " + companyId));
+                    .orElseThrow(() -> new ResourceNotFoundException("Company not found with id: " + companyId));
 
             for (Job existingJob : company.getJobs()) {
                 if (!existingJob.isDeleted() && existingJob.getId().equals(jobId)) {
@@ -111,9 +116,9 @@ public class JobServiceImpl implements JobService {
                     return EntityToEntityDTOConverter.convertJobToJobDTO(job);
                 }
             }
-            throw new JobNotFoundException("Job not found with id: " + jobId + " in company: " + company.getCompanyName());
+            throw new ResourceNotFoundException("Job not found with id: " + jobId + " in company: " + company.getCompanyName());
 
-        } catch (CompanyNotFoundException ex) {
+        } catch (ResourceNotFoundException ex) {
             throw ex;
         } catch (Exception ex) {
             throw new RuntimeException("Error occurred while finding job: " + ex.getMessage());
@@ -125,7 +130,7 @@ public class JobServiceImpl implements JobService {
     public void deleteJobById(Long companyId, Long jobId) {
 
         Company company = companyRepository.findByIdAndIsDeletedFalse(companyId)
-                .orElseThrow(() -> new CompanyNotFoundException("Company not found with id: " + companyId));
+                .orElseThrow(() -> new ResourceNotFoundException("Company not found with id: " + companyId));
 
         Iterator<Job> iterator = company.getJobs().iterator();
         while (iterator.hasNext()) {
@@ -136,16 +141,16 @@ public class JobServiceImpl implements JobService {
                 return;
             }
         }
-        throw new JobNotFoundException("Job not found with id: " + jobId);
+        throw new ResourceNotFoundException("Job not found with id: " + jobId);
     }
 
     @Override
     public void applyToJobByUser(Long jobId, Long userId) {
         Job job = jobRepository.findJobById(jobId).orElseThrow(
-                () -> new JobNotFoundException(String.format("Job with id: %d is not found", jobId)));
+                () -> new ResourceNotFoundException(String.format("Job with id: %d is not found", jobId)));
 
         User user = userRepository.findUserById(userId).orElseThrow(
-                () -> new UserNotFoundException(String.format("User with id: %d is not found", userId)));
+                () -> new ResourceNotFoundException(String.format("User with id: %d is not found", userId)));
 
         for(Profile profile: job.getProfiles()) {
             if(profile.getUser().getId().equals(userId)) {

@@ -2,6 +2,9 @@ package com.example.job_portal.entity;
 
 import com.example.job_portal.constant.db.DbConstant.DbRole;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.util.List;
@@ -23,6 +26,7 @@ import java.util.List;
 public class Role extends AuditInfo {
 
     @Column(name = DbRole.ROLE)
+    @NotBlank @NotNull @NotEmpty
     private String role;
 
     @Column(name = DbRole.IS_ROLE_DELETED)

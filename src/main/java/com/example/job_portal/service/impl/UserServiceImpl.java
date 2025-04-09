@@ -4,8 +4,8 @@ import com.example.job_portal.dto.ProfileDTO;
 import com.example.job_portal.dto.UserDTO;
 import com.example.job_portal.dto.response.UserResponse;
 import com.example.job_portal.entity.*;
-import com.example.job_portal.exception.UserAlreadyExistsException;
-import com.example.job_portal.exception.UserNotFoundException;
+import com.example.job_portal.exception.ResourceAlreadyExistsException;
+import com.example.job_portal.exception.ResourceNotFoundException;
 import com.example.job_portal.repository.ProfileRepository;
 import com.example.job_portal.repository.RoleRepository;
 import com.example.job_portal.repository.UserRepository;
@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
     public UserDTO createUser(UserDTO userDTO) {
 
         if(userRepository.existsByEmail(userDTO.getEmail())) {
-            throw new UserAlreadyExistsException("User has already exists!");
+            throw new ResourceAlreadyExistsException("User has already exists!");
         }
         User newUser = new User();
         newUser.setId(userDTO.getId());
@@ -87,7 +87,7 @@ public class UserServiceImpl implements UserService {
     public UserDTO updateUser(Long id, UserDTO userDTO) {
 
         User existingUser = userRepository.findUserById(id)
-                .orElseThrow(() -> new UserNotFoundException(String.format("User with id: %d is not found!", id)));
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("User with id: %d is not found!", id)));
 
         if(userDTO.getName() != null) {
             existingUser.setName(userDTO.getName());
@@ -101,18 +101,10 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-//    public List<UserDTO> findAllUser(int pageNumber, int pageSize) {
     public UserResponse findAllUser(int pageNumber, int pageSize, String sortBy, String sortDirection) {
 
         Sort sort = sortDirection.equalsIgnoreCase("asc") ?
                 Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
-
-//        if(sortDirection.equalsIgnoreCase("asc")) {
-//            sort = Sort.by(sortBy).ascending();
-//        }
-//        else {
-//            sort = Sort.by(sortBy).descending();
-//        }
 
         Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
 
@@ -120,7 +112,6 @@ public class UserServiceImpl implements UserService {
 
         List<User> users = userPage.getContent();
 
-//        List<User> users = userRepository.findAllUser();
         List<UserDTO> userDTOs = new ArrayList<>();
 
         for (User user : users) {
@@ -137,7 +128,6 @@ public class UserServiceImpl implements UserService {
         userResponse.setTotalPages(userPage.getTotalPages());
         userResponse.setLastPage(userPage.isLast());
 
-//        return SortEntityDTO.sortResponseDTO(userDTOs, Comparator.comparing(UserDTO::getId).reversed());
         return userResponse;
     }
 
@@ -146,7 +136,7 @@ public class UserServiceImpl implements UserService {
     public void deleteUserById(Long id) {
 
         User user = userRepository.findUserById(id)
-                .orElseThrow(() -> new UserNotFoundException(
+                .orElseThrow(() -> new ResourceNotFoundException(
                         String.format("User with id: %d is not found!", id)
                 ));
 
@@ -181,7 +171,7 @@ public class UserServiceImpl implements UserService {
             }
         }
         else {
-            throw new UserNotFoundException(String.format("User with id: %d is not found!", userId));
+            throw new ResourceNotFoundException(String.format("User with id: %d is not found!", userId));
         }
 
         Collections.sort(roles);
@@ -215,14 +205,14 @@ public class UserServiceImpl implements UserService {
             }
         }
         else {
-            throw new UserNotFoundException(String.format("User with id: %d is not found!", userId));
+            throw new ResourceNotFoundException(String.format("User with id: %d is not found!", userId));
         }
     }
 
     @Override
     public ProfileDTO getUserProfile(Long userId) {
         User user = userRepository.findUserById(userId)
-                .orElseThrow(() -> new UserNotFoundException(
+                .orElseThrow(() -> new ResourceNotFoundException(
                         String.format("User with id: %d is not found!", userId)));
 
         return EntityToEntityDTOConverter.convertProfileToProfileDTO(user.getProfile());

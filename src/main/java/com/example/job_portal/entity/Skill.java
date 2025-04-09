@@ -2,6 +2,7 @@ package com.example.job_portal.entity;
 
 import com.example.job_portal.constant.db.DbConstant.DbSkill;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -25,7 +26,7 @@ import java.util.List;
 public class Skill extends AuditInfo {
 
     @NotEmpty
-    @NotNull
+    @NotNull @NotBlank
     @Column(name = DbSkill.SKILL_NAME)
     private String skillName;
 

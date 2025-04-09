@@ -1,11 +1,10 @@
 package com.example.job_portal.service.impl;
 
-import com.example.job_portal.dto.CompanyDTO;
 import com.example.job_portal.dto.UniversityDTO;
 import com.example.job_portal.entity.Profile;
 import com.example.job_portal.entity.University;
-import com.example.job_portal.exception.UniversityAlreadyExistsException;
-import com.example.job_portal.exception.UniversityNotFoundException;
+import com.example.job_portal.exception.ResourceAlreadyExistsException;
+import com.example.job_portal.exception.ResourceNotFoundException;
 import com.example.job_portal.repository.ProfileRepository;
 import com.example.job_portal.repository.UniversityRepository;
 import com.example.job_portal.service.UniversityService;
@@ -64,7 +63,7 @@ public class UniversityServiceImpl implements UniversityService {
             return EntityToEntityDTOConverter.convertUniversityToUniversityDTO(universityRepository.save(newUniversity));
         }
         else {
-            throw new UniversityAlreadyExistsException("University already exists!");
+            throw new ResourceAlreadyExistsException("University already exists!");
         }
     }
 
@@ -72,7 +71,7 @@ public class UniversityServiceImpl implements UniversityService {
     @Transactional
     public void deleteUniversity(Long universityId) {
         University university = universityRepository.findUniversityById(universityId).orElseThrow(
-                () -> new UniversityNotFoundException(String.format("University with id: %d is not found!", universityId)));
+                () -> new ResourceNotFoundException(String.format("University with id: %d is not found!", universityId)));
 
         for(Profile profile: university.getProfiles()) {
 
