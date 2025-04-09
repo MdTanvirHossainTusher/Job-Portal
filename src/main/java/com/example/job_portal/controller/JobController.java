@@ -5,6 +5,7 @@ import com.example.job_portal.dto.JobDTO;
 import com.example.job_portal.entity.api_response.ApiResponse;
 import com.example.job_portal.service.JobService;
 import com.example.job_portal.utils.SortEntityDTO;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("${api.prefix}/jobs")
+@Tag(name = "Job", description = "Job Related APIs")
 public class JobController {
     private final JobService jobService;
     private final JobDAO jobDAO;

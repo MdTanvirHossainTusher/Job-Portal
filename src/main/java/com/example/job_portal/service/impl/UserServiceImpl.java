@@ -178,35 +178,29 @@ public class UserServiceImpl implements UserService {
         return roles;
     }
 
-
     @Override
     public void deleteUserRole(Long userId, String roleName) {
         Optional<User> userOptional = userRepository.findUserById(userId);
-        User user = userOptional.orElse(null);
-        boolean roleExists = false;
-
-        if(user != null) {
-            for(Role role: user.getRoles()) {
-                String newRoleName = "ROLE_" + roleName.toUpperCase();
-
-                if(role.getRole().equals(newRoleName)) {
-                    if(!roleName.contains("user")) {
-                        roleExists = true;
-                        user.getRoles().remove(role);
-                        userRepository.save(user);
-                    }
-                    else {
-                        throw new RuntimeException(String.format("Role: '%s' can't be deleted!", roleName));
-                    }
-                }
-            }
-            if(!roleExists) {
-                throw new RuntimeException(String.format("User with id: %d doesn't have role: %s", userId, roleName));
-            }
-        }
-        else {
+        if (userOptional.isEmpty()) {
             throw new ResourceNotFoundException(String.format("User with id: %d is not found!", userId));
         }
+        User user = userOptional.get();
+        String newRoleName = "ROLE_" + roleName.toUpperCase();
+        Role roleToRemove = null;
+        for (Role role : user.getRoles()) {
+            if (role.getRole().equals(newRoleName)) {
+                if (roleName.contains("user")) {
+                    throw new RuntimeException(String.format("Role: '%s' can't be deleted!", roleName));
+                }
+                roleToRemove = role;
+                break;
+            }
+        }
+        if (roleToRemove == null) {
+            throw new RuntimeException(String.format("User with id: %d doesn't have role: %s", userId, roleName));
+        }
+        user.getRoles().remove(roleToRemove);
+        userRepository.save(user);
     }
 
     @Override

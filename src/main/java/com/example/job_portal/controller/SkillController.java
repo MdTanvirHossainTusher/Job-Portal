@@ -3,6 +3,7 @@ package com.example.job_portal.controller;
 import com.example.job_portal.dto.SkillDTO;
 import com.example.job_portal.entity.api_response.ApiResponse;
 import com.example.job_portal.service.SkillService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("${api.prefix}/skills")
+@Tag(name = "Skill", description = "Skill Related APIs")
 public class SkillController {
 
     private final SkillService skillService;

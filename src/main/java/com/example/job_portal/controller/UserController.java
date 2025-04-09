@@ -9,6 +9,7 @@ import com.example.job_portal.entity.api_response.ApiResponse;
 import com.example.job_portal.service.RoleService;
 import com.example.job_portal.service.UserService;
 import com.example.job_portal.utils.SortEntityDTO;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("${api.prefix}/users")
+@Tag(name = "User", description = "User Related APIs")
 public class UserController {
 
     private final UserService userService;
@@ -104,7 +106,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{userId}/delete-role")
-    public ResponseEntity<?> deleteUserRole(
+    public ResponseEntity<ApiResponse> deleteUserRole(
             @PathVariable("userId") Long userId,
             @RequestParam(required = true) String roleName
     ) {

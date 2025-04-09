@@ -3,6 +3,7 @@ package com.example.job_portal.controller;
 import com.example.job_portal.dto.UniversityDTO;
 import com.example.job_portal.entity.api_response.ApiResponse;
 import com.example.job_portal.service.UniversityService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("${api.prefix}/universities")
+@Tag(name = "University", description = "University Related APIs")
 public class UniversityController {
 
     private final UniversityService universityService;

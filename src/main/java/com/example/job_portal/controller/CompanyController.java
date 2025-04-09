@@ -8,6 +8,7 @@ import com.example.job_portal.entity.api_response.ApiResponse;
 import com.example.job_portal.service.CompanyService;
 import com.example.job_portal.service.JobService;
 import com.example.job_portal.utils.SortEntityDTO;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("${api.prefix}/companies")
+@Tag(name = "Company", description = "Company Related APIs")
 public class CompanyController {
     private final CompanyService companyService;
     private final JobService jobService;

@@ -4,6 +4,7 @@ import com.example.job_portal.dto.*;
 import com.example.job_portal.entity.api_response.ApiResponse;
 import com.example.job_portal.service.CVService;
 import com.example.job_portal.service.ProfileService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("${api.prefix}/profiles")
+@Tag(name = "Profile", description = "Profile Related APIs")
 public class ProfileController {
 
     private final CVService cvService;
