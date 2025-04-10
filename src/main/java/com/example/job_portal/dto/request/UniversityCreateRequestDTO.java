@@ -1,4 +1,4 @@
-package com.example.job_portal.dto;
+package com.example.job_portal.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,9 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UniversityDTO {
-    private Long id;
+public class UniversityCreateRequestDTO {
     private String name;
-//    private String degree;
-//    private String passingYear;
 }

@@ -24,7 +24,6 @@ import java.util.List;
                 )
         })
 public class Skill extends AuditInfo {
-
     @NotEmpty
     @NotNull @NotBlank
     @Column(name = DbSkill.SKILL_NAME)

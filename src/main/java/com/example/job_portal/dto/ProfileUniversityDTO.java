@@ -7,9 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UniversityDTO {
-    private Long id;
-    private String name;
-//    private String degree;
-//    private String passingYear;
+public class ProfileUniversityDTO {
+    private Long universityId;
+    private String universityName;
+    private String degree;
+    private String passingYear;
 }

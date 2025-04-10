@@ -141,52 +141,145 @@ public class ProfileServiceImpl implements ProfileService {
         }
     }
 
+//    @Override
+//    public List<UniversityDTO> getAllUniversitiesUnderProfile(Long profileId) {
+//        Profile profile = profileRepository.findByIdAndIsDeletedFalse(profileId).orElseThrow(
+//                () -> new ResourceNotFoundException(String.format("Profile with id: %d is not found", profileId)));
+//
+//        if (!profile.isDeleted()) {
+//            List<University> universityList = new ArrayList<>();
+//
+//            for (University university : profile.getUniversities()) {
+//                if (!university.isDeleted()) {
+//                    universityList.add(university);
+//                }
+//            }
+//            List<UniversityDTO> universityDTOs = EntityToEntityDTOConverter.convertUniversitiesToUniversitiesDTO(universityList);
+//            return SortEntityDTO.sortResponseDTO(universityDTOs, Comparator.comparing(UniversityDTO::getId).reversed());
+//
+//        } else {
+//            throw new RuntimeException("User didn't add any university yet!");
+//        }
+//    }
+
     @Override
-    public List<UniversityDTO> getAllUniversitiesUnderProfile(Long profileId) {
-        Profile profile = profileRepository.findByIdAndIsDeletedFalse(profileId).orElseThrow(
-                () -> new ResourceNotFoundException(String.format("Profile with id: %d is not found", profileId)));
+    public List<ProfileUniversityDTO> getAllUniversitiesUnderProfile(Long profileId) {
+        Profile profile = profileRepository.findByIdAndIsDeletedFalse(profileId)
+                .orElseThrow(() -> new ResourceNotFoundException("Profile not found with id: " + profileId));
+        return EntityToEntityDTOConverter.convertProfileUniversityListToDTO(profile.getProfileUniversities());
+    }
 
-        if (!profile.isDeleted()) {
-            List<University> universityList = new ArrayList<>();
+//    @Override
+//    @Transactional
+//    public void addUniversityToUserProfile(Long profileId, Long universityId) {
+//        Profile profile = profileRepository.findByIdAndIsDeletedFalse(profileId).orElseThrow(
+//                () -> new ResourceNotFoundException(String.format("Profile with id: %d is not found", profileId)));
+//
+//        University university = universityRepository.findUniversityById(universityId).orElseThrow(
+//                () -> new ResourceNotFoundException(String.format("University with id: %d is not found", universityId)));
+//
+//        if (!profile.isDeleted() && !university.isDeleted()) {
+//            boolean universityExists = false;
+//
+//            for (University profileUniversity : profile.getUniversities()) {
+//                if (profileUniversity.getId().equals(universityId)) {
+//                    universityExists = true;
+//                    break;
+//                }
+//            }
+//            if (!universityExists) {
+//                profile.getUniversities().add(university);
+//                profileRepository.save(profile);
+//            } else {
+//                throw new ResourceAlreadyExistsException("University already exists!");
+//            }
+//        }
+//    }
 
-            for (University university : profile.getUniversities()) {
-                if (!university.isDeleted()) {
-                    universityList.add(university);
-                }
-            }
-            List<UniversityDTO> universityDTOs = EntityToEntityDTOConverter.convertUniversitiesToUniversitiesDTO(universityList);
-            return SortEntityDTO.sortResponseDTO(universityDTOs, Comparator.comparing(UniversityDTO::getId).reversed());
+//    @Override
+//    @Transactional
+//    public UniversityDTO updateUniversityToUserProfile(Long profileId, Long universityId, UniversityDTO universityDTO) {
+//        Profile profile = profileRepository.findByIdAndIsDeletedFalse(profileId).orElseThrow(
+//                () -> new ResourceNotFoundException(String.format("Profile with id: %d is not found", profileId)));
+//        University university = universityRepository.findUniversityById(universityId).orElseThrow(
+//                () -> new ResourceNotFoundException(String.format("University with id: %d is not found", universityId)));
+//
+//        if(universityDTO.getPassingYear() != null) university.setPassingYear(universityDTO.getPassingYear());
+//        if(universityDTO.getDegree() != null) university.setDegree(universityDTO.getDegree());
+//        if (!profile.getUniversities().contains(university)) {
+//            profile.getUniversities().add(university);
+//            profileRepository.save(profile);
+//        }
+//        return EntityToEntityDTOConverter.convertUniversityToUniversityDTO(universityRepository.save(university));
+//    }
+//
+//    @Override
+//    @Transactional
+//    public void removeUniversityToUserProfile(Long profileId, Long universityId) {
+//        Profile profile = profileRepository.findByIdAndIsDeletedFalse(profileId).orElseThrow(
+//                () -> new ResourceNotFoundException(String.format("Profile with id: %d is not found", profileId)));
+//
+//        if (!profile.isDeleted()) {
+//            boolean universityExists = false;
+//            for (University profileUniversity : profile.getUniversities()) {
+//                if (profileUniversity.getId().equals(universityId)) {
+//                    universityExists = true;
+//                    profile.getUniversities().remove(profileUniversity);
+//                    profileRepository.save(profile);
+//                    break;
+//                }
+//            }
+//            if (!universityExists) {
+//                throw new ResourceNotFoundException("University not found!");
+//            }
+//        }
+//    }
 
-        } else {
-            throw new RuntimeException("User didn't add any university yet!");
+    @Override
+    @Transactional
+//    public ProfileUniversityDTO addUniversityToUserProfile(Long profileId, Long universityId, String degree, String passingYear) {
+    public ProfileUniversityDTO addUniversityToUserProfile(Long profileId, Long universityId) {
+        Profile profile = profileRepository.findByIdAndIsDeletedFalse(profileId)
+                .orElseThrow(() -> new ResourceNotFoundException("Profile not found with id: " + profileId));
+        University university = universityRepository.findUniversityById(universityId)
+                .orElseThrow(() -> new ResourceNotFoundException("University not found with id: " + universityId));
+
+        boolean universityExists = profile.getProfileUniversities().stream()
+                .anyMatch(pu -> pu.getUniversity().getId().equals(universityId));
+
+        if (universityExists) {
+            throw new ResourceAlreadyExistsException("This university is already added to your profile");
         }
+//        profile.addUniversity(university, degree, passingYear);
+        profile.addUniversity(university);
+        Profile savedProfile = profileRepository.save(profile);
+
+        ProfileUniversity addedUniversity = savedProfile.getProfileUniversities().stream()
+                .filter(pu -> pu.getUniversity().getId().equals(universityId))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Error adding university to profile"));
+
+        return EntityToEntityDTOConverter.convertProfileUniversityToDTO(addedUniversity);
     }
 
     @Override
     @Transactional
-    public void addUniversityToUserProfile(Long profileId, Long universityId) {
-        Profile profile = profileRepository.findByIdAndIsDeletedFalse(profileId).orElseThrow(
-                () -> new ResourceNotFoundException(String.format("Profile with id: %d is not found", profileId)));
+    public ProfileUniversityDTO updateUniversityToUserProfile(Long profileId, Long universityId, String degree,
+                                                              String passingYear) {
+        Profile profile = profileRepository.findByIdAndIsDeletedFalse(profileId)
+                .orElseThrow(() -> new ResourceNotFoundException("Profile not found with id: " + profileId));
 
-        University university = universityRepository.findUniversityById(universityId).orElseThrow(
-                () -> new ResourceNotFoundException(String.format("University with id: %d is not found", universityId)));
+        ProfileUniversity profileUniversity = profile.getProfileUniversities().stream()
+                .filter(pu -> pu.getUniversity().getId().equals(universityId))
+                .findFirst()
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "University with id: " + universityId + " not found in profile with id: " + profileId));
 
-        if (!profile.isDeleted() && !university.isDeleted()) {
-            boolean universityExists = false;
+        if (degree != null) profileUniversity.setDegree(degree);
+        if (passingYear != null) profileUniversity.setPassingYear(passingYear);
 
-            for (University existingUniversity : profile.getUniversities()) {
-                if (existingUniversity.getId().equals(universityId)) {
-                    universityExists = true;
-                    break;
-                }
-            }
-            if (!universityExists) {
-                profile.getUniversities().add(university);
-                profileRepository.save(profile);
-            } else {
-                throw new ResourceAlreadyExistsException("University already exists!");
-            }
-        }
+        profileRepository.save(profile);
+        return EntityToEntityDTOConverter.convertProfileUniversityToDTO(profileUniversity);
     }
 
     @Override
@@ -197,10 +290,10 @@ public class ProfileServiceImpl implements ProfileService {
 
         if (!profile.isDeleted()) {
             boolean universityExists = false;
-            for (University existingUniversity : profile.getUniversities()) {
-                if (existingUniversity.getId().equals(universityId)) {
+            for (ProfileUniversity pu : profile.getProfileUniversities()) {
+                if (pu.getUniversity().getId().equals(universityId) && !pu.getUniversity().isDeleted()) {
                     universityExists = true;
-                    profile.getUniversities().remove(existingUniversity);
+                    profile.getProfileUniversities().remove(pu);
                     profileRepository.save(profile);
                     break;
                 }
@@ -277,5 +370,4 @@ public class ProfileServiceImpl implements ProfileService {
             }
         }
     }
-
 }

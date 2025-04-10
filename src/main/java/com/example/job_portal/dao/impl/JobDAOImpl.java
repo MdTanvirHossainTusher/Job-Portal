@@ -16,7 +16,6 @@ import java.util.Map;
 
 @Repository
 public class JobDAOImpl implements JobDAO {
-
     private final EntityManager entityManager;
 
     public JobDAOImpl(EntityManager entityManager) {
@@ -29,43 +28,33 @@ public class JobDAOImpl implements JobDAO {
         Map<String, Object> parameters = new HashMap<>();
 
         boolean hasFilters = false;
-
         if (jobPosition != null && !jobPosition.trim().isEmpty()) {
             queryBuilder.append(hasFilters ? " AND" : " WHERE");
-            queryBuilder.append(" LOWER(j.jobPosition) LIKE :jobPosition");
+            queryBuilder.append(" LOWER(j.jobPosition) LIKE LOWER(:jobPosition)");
             parameters.put("jobPosition", "%" + jobPosition.toLowerCase() + "%");
             hasFilters = true;
         }
-
         if (jobLocation != null && !jobLocation.trim().isEmpty()) {
             queryBuilder.append(hasFilters ? " AND" : " WHERE");
-            queryBuilder.append(" LOWER(j.jobLocation) LIKE :jobLocation");
+            queryBuilder.append(" LOWER(j.jobLocation) LIKE LOWER(:jobLocation)");
             parameters.put("jobLocation", "%" + jobLocation.toLowerCase() + "%");
             hasFilters = true;
         }
-
         queryBuilder.append(hasFilters ? " AND" : " WHERE");
         queryBuilder.append(" j.isDeleted = false");
 
         try {
             TypedQuery<Job> query = entityManager.createQuery(queryBuilder.toString(), Job.class);
-
             if (!parameters.isEmpty()) {
                 parameters.forEach(query::setParameter);
             }
-
             List<Job> jobs = query.getResultList();
-
-
             if (jobs.isEmpty()) {
                 return new ArrayList<>();
             }
-
             return EntityToEntityDTOConverter.convertJobsToJobsDTO(jobs);
-
         } catch (Exception e) {
             throw new ResourceNotFoundException("Error occurred while searching for jobs");
         }
     }
-
 }

@@ -30,7 +30,7 @@ public class User extends AuditInfo {
     private String name;
 
     @Column(name = DbUser.USER_EMAIL, updatable = false, nullable = false)
-    @Email
+    @Email(message = "Please enter a valid email address")
     private String email;
 
     @Column(name = DbUser.USER_PASSWORD)
@@ -38,7 +38,6 @@ public class User extends AuditInfo {
     private String password;
 
     @Column(name = DbUser.IMAGE_URL)
-    @NotBlank
     private String imageUrl;
 
     @Column(name = DbUser.IS_USER_DELETED)

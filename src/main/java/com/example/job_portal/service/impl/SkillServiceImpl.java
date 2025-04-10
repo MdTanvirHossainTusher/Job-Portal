@@ -18,7 +18,6 @@ import java.util.List;
 
 @Service
 public class SkillServiceImpl implements SkillService {
-
     private final SkillRepository skillRepository;
     private final ProfileRepository profileRepository;
 
@@ -35,20 +34,16 @@ public class SkillServiceImpl implements SkillService {
 
     @Override
     public List<SkillDTO> getAllSkillsUnderApp() {
-
         List<SkillDTO> skillDTOs =  EntityToEntityDTOConverter.convertSkillsToSkillsDTO(skillRepository.findAllSkill());
         return SortEntityDTO.sortResponseDTO(skillDTOs, Comparator.comparing(SkillDTO::getId).reversed());
-
     }
 
     @Override
     @Transactional
     public SkillDTO createSkill(SkillDTO skillDTO) {
-
         if (skillDTO.getSkillName() == null || skillDTO.getSkillName().trim().isEmpty()) {
             throw new IllegalArgumentException("Skill name cannot be empty or whitespace-only");
         }
-
         List<Skill> skills = skillRepository.findAllSkill();
         boolean isSkillExists = false;
 
@@ -59,7 +54,6 @@ public class SkillServiceImpl implements SkillService {
                 break;
             }
         }
-
         if (!isSkillExists) {
             Skill newSkill = new Skill();
             if(skillDTO.getSkillName() != null) newSkill.setSkillName(skillDTO.getSkillName());
@@ -67,7 +61,6 @@ public class SkillServiceImpl implements SkillService {
         } else {
             throw new ResourceAlreadyExistsException("Skill already exists!");
         }
-
     }
 
     @Override
@@ -86,11 +79,8 @@ public class SkillServiceImpl implements SkillService {
                 }
             }
         }
-
         if(!skill.isDeleted()) {
             skillRepository.softDeleteSkillById(skillId);
         }
     }
-
-
 }

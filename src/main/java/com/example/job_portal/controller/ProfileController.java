@@ -81,7 +81,8 @@ public class ProfileController {
                 new ApiResponse("Skill added successfully!", true), HttpStatus.OK);
     }
 
-    @PutMapping("/{profileId}/skills/{skillId}")
+//    @PutMapping("/{profileId}/skills/{skillId}")
+    @DeleteMapping("/{profileId}/skills/{skillId}")
     public ResponseEntity<?> removeSkillToUserProfile(
             @PathVariable Long profileId,
             @PathVariable Long skillId
@@ -91,29 +92,80 @@ public class ProfileController {
                 new ApiResponse("Skill removed successfully!", true), HttpStatus.OK);
     }
 
+//    @GetMapping("/{profileId}/universities")
+//    public ResponseEntity<?> getAllUniversitiesOfUser(
+//            @PathVariable Long profileId
+//    ) {
+//        List<UniversityDTO> universities = profileService.getAllUniversitiesUnderProfile(profileId);
+//        HttpStatus status = !universities.isEmpty() ? HttpStatus.OK : HttpStatus.NOT_FOUND;
+//        return new ResponseEntity<>(
+//                !universities.isEmpty() ?
+//                        universities :
+//                        new ApiResponse("User not added any university yet!", false), status);
+//    }
+
+//    @PostMapping("/{profileId}/universities/{universityId}")
+//    public ResponseEntity<?> addUniversityToUserProfile(
+//            @PathVariable Long profileId,
+//            @PathVariable Long universityId
+//    ) {
+//        profileService.addUniversityToUserProfile(profileId, universityId);
+//        return new ResponseEntity<>(
+//                new ApiResponse("University added successfully!", true), HttpStatus.OK);
+//    }
+//
+//    @DeleteMapping("/{profileId}/universities/{universityId}")
+//    public ResponseEntity<?> removeUniversityToUserProfile(
+//            @PathVariable Long profileId,
+//            @PathVariable Long universityId
+//    ) {
+//        profileService.removeUniversityToUserProfile(profileId, universityId);
+//        return new ResponseEntity<>(
+//                new ApiResponse("University removed successfully!", true), HttpStatus.OK);
+//    }
+//
+//    @PutMapping("/{profileId}/universities/{universityId}")
+//    public ResponseEntity<UniversityDTO> updateUniversityToUserProfile(
+//            @PathVariable Long profileId,
+//            @PathVariable Long universityId,
+//            @Valid @RequestBody UniversityDTO universityDTO
+//    ) {
+//        UniversityDTO updatedUniversityDetails = profileService.updateUniversityToUserProfile
+//                (profileId, universityId, universityDTO);
+//        return new ResponseEntity<>(updatedUniversityDetails, HttpStatus.OK);
+//    }
+
     @GetMapping("/{profileId}/universities")
-    public ResponseEntity<?> getAllUniversitiesOfUser(
-            @PathVariable Long profileId
-    ) {
-        List<UniversityDTO> universities = profileService.getAllUniversitiesUnderProfile(profileId);
-        HttpStatus status = !universities.isEmpty() ? HttpStatus.OK : HttpStatus.NOT_FOUND;
-        return new ResponseEntity<>(
-                !universities.isEmpty() ?
-                        universities :
-                        new ApiResponse("User not added any university yet!", false), status);
+    public ResponseEntity<List<ProfileUniversityDTO>> getAllUniversitiesUnderProfile(@PathVariable Long profileId) {
+        List<ProfileUniversityDTO> universities = profileService.getAllUniversitiesUnderProfile(profileId);
+        return new ResponseEntity<>(universities, HttpStatus.OK);
     }
 
     @PostMapping("/{profileId}/universities/{universityId}")
-    public ResponseEntity<?> addUniversityToUserProfile(
+    public ResponseEntity<ProfileUniversityDTO> addUniversityToUserProfile(
             @PathVariable Long profileId,
             @PathVariable Long universityId
+//            @RequestBody ProfileUniversityDTO educationDetails
     ) {
-        profileService.addUniversityToUserProfile(profileId, universityId);
-        return new ResponseEntity<>(
-                new ApiResponse("University added successfully!", true), HttpStatus.OK);
+
+//        ProfileUniversityDTO result = profileService.addUniversityToUserProfile(
+//                profileId, universityId, educationDetails.getDegree(), educationDetails.getPassingYear());
+        ProfileUniversityDTO result = profileService.addUniversityToUserProfile(profileId, universityId);
+        return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 
     @PutMapping("/{profileId}/universities/{universityId}")
+    public ResponseEntity<ProfileUniversityDTO> updateUniversityToUserProfile(
+            @PathVariable Long profileId,
+            @PathVariable Long universityId,
+            @RequestBody ProfileUniversityDTO educationDetails) {
+
+        ProfileUniversityDTO result = profileService.updateUniversityToUserProfile(
+                profileId, universityId, educationDetails.getDegree(), educationDetails.getPassingYear());
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{profileId}/universities/{universityId}")
     public ResponseEntity<?> removeUniversityToUserProfile(
             @PathVariable Long profileId,
             @PathVariable Long universityId
@@ -145,7 +197,7 @@ public class ProfileController {
                 new ApiResponse("Company added successfully!", true), HttpStatus.OK);
     }
 
-    @PutMapping("/{profileId}/companies/{companyId}")
+    @DeleteMapping("/{profileId}/companies/{companyId}")
     public ResponseEntity<?> removeCompanyToUserProfile(
             @PathVariable Long profileId,
             @PathVariable Long companyId

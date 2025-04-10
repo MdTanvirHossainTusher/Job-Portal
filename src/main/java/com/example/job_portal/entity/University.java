@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @ToString
@@ -24,21 +25,23 @@ import java.util.List;
                 )
         })
 public class University extends AuditInfo {
-
     @NotEmpty
     @NotNull @NotBlank
     @Column(name = DbUniversity.UNIVERSITY_NAME)
     private String name;
 
-    @Column(name = DbUniversity.DEGREE)
-    private String degree;
-
-    @Column(name = DbUniversity.PASSING_YEAR)
-    private String passingYear;
+//    @Column(name = DbUniversity.DEGREE)
+//    private String degree;
+//
+//    @Column(name = DbUniversity.PASSING_YEAR)
+//    private String passingYear;
 
     @Column(name = DbUniversity.IS_UNIVERSITY_DELETED)
     private boolean isDeleted = false;
 
-    @ManyToMany(mappedBy = "universities")
-    private List<Profile> profiles;
+//    @ManyToMany(mappedBy = "universities")
+//    private List<Profile> profiles;
+
+    @OneToMany(mappedBy = "university")
+    private List<ProfileUniversity> profileUniversities = new ArrayList<>();
 }

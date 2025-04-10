@@ -16,9 +16,12 @@ public interface ProfileService {
 
     void removeSkillToUserProfile(Long profileId, Long skillId);
 
-    List<UniversityDTO> getAllUniversitiesUnderProfile(Long universityId);
+//    List<UniversityDTO> getAllUniversitiesUnderProfile(Long universityId);
+    List<ProfileUniversityDTO> getAllUniversitiesUnderProfile(Long universityId);
 
-    void addUniversityToUserProfile(Long profileId, Long universityId);
+//    void addUniversityToUserProfile(Long profileId, Long universityId);
+//    ProfileUniversityDTO  addUniversityToUserProfile(Long profileId, Long universityId, String degree, String passingYear);
+    ProfileUniversityDTO  addUniversityToUserProfile(Long profileId, Long universityId);
 
     void removeUniversityToUserProfile(Long profileId, Long universityId);
 
@@ -27,5 +30,8 @@ public interface ProfileService {
     void addCompanyToUserProfile(Long profileId, Long companyId);
 
     void removeCompanyToUserProfile(Long profileId, Long companyId);
+
+//    UniversityDTO updateUniversityToUserProfile(Long profileId, Long universityId, UniversityDTO universityDTO);
+    ProfileUniversityDTO updateUniversityToUserProfile(Long profileId, Long universityId, String degree, String passingYear);
 
 }

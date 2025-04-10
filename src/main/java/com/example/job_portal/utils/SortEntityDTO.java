@@ -1,9 +1,11 @@
 package com.example.job_portal.utils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class SortEntityDTO<T> {
-
     public static <T> List<T> sortResponseDTO(List<T> dtos, Comparator<T> comparator) {
         if(dtos == null || dtos.isEmpty()) {
             return dtos;
@@ -12,5 +14,4 @@ public class SortEntityDTO<T> {
         Collections.sort(sortedList, comparator);
         return sortedList;
     }
-
 }

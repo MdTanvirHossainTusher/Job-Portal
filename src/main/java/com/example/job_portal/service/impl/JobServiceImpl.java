@@ -5,7 +5,6 @@ import com.example.job_portal.entity.Company;
 import com.example.job_portal.entity.Job;
 import com.example.job_portal.entity.Profile;
 import com.example.job_portal.entity.User;
-import com.example.job_portal.exception.AlreadyAppliedException;
 import com.example.job_portal.exception.ResourceAlreadyExistsException;
 import com.example.job_portal.exception.ResourceNotFoundException;
 import com.example.job_portal.repository.CompanyRepository;
@@ -154,7 +153,7 @@ public class JobServiceImpl implements JobService {
 
         for(Profile profile: job.getProfiles()) {
             if(profile.getUser().getId().equals(userId)) {
-                throw new AlreadyAppliedException("You have already applied to this job");
+                throw new RuntimeException("You have already applied to this job");
             }
         }
 

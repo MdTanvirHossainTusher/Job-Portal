@@ -4,6 +4,7 @@ import com.example.job_portal.dto.RoleDTO;
 import com.example.job_portal.entity.api_response.ApiResponse;
 import com.example.job_portal.service.RoleService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -28,7 +29,7 @@ public class RoleController {
     }
 
     @PostMapping
-    public ResponseEntity<RoleDTO> createUserRole(@RequestBody RoleDTO roleDTO) {
+    public ResponseEntity<RoleDTO> createUserRole(@Valid @RequestBody RoleDTO roleDTO) {
         RoleDTO createdRole = roleService.createRole(roleDTO);
         return new ResponseEntity<>(createdRole, HttpStatus.CREATED);
     }

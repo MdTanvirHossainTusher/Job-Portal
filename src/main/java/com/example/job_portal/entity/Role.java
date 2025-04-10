@@ -24,7 +24,6 @@ import java.util.List;
                 )
         })
 public class Role extends AuditInfo {
-
     @Column(name = DbRole.ROLE)
     @NotBlank @NotNull @NotEmpty
     private String role;

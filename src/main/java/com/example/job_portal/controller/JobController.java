@@ -50,14 +50,10 @@ public class JobController {
             List<JobDTO> sortedJobList = SortEntityDTO.sortResponseDTO(jobs, Comparator.comparing(JobDTO::getId).reversed());
 
             HttpStatus status = !sortedJobList.isEmpty() ? HttpStatus.OK : HttpStatus.NOT_FOUND;
-            return new ResponseEntity<>(
-                    !sortedJobList.isEmpty() ?
-                            sortedJobList :
-                            new ApiResponse("No jobs found!", false), status);
+            return new ResponseEntity<>(!sortedJobList.isEmpty() ?
+                            sortedJobList : new ApiResponse("No jobs found!", false), status);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
-
-
 }

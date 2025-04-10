@@ -4,6 +4,7 @@ import com.example.job_portal.constant.db.DbConstant.DbProfile;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @ToString
@@ -36,13 +37,13 @@ public class Profile extends AuditInfo {
     )
     private List<Skill> skills;
 
-    @ManyToMany
-    @JoinTable(
-            name = "profile_university",
-            joinColumns = @JoinColumn(name = "profile_id"),
-            inverseJoinColumns = @JoinColumn(name = "university_id")
-    )
-    private List<University> universities;
+//    @ManyToMany
+//    @JoinTable(
+//            name = "profile_university",
+//            joinColumns = @JoinColumn(name = "profile_id"),
+//            inverseJoinColumns = @JoinColumn(name = "university_id")
+//    )
+//    private List<University> universities;
 
     @ManyToMany
     @JoinTable(
@@ -67,5 +68,30 @@ public class Profile extends AuditInfo {
             inverseJoinColumns = @JoinColumn(name = "company_id")
     )
     private List<Company> companies;
+
+    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProfileUniversity> profileUniversities = new ArrayList<>();
+
+//    public void addUniversity(University university, String degree, String passingYear) {
+    public void addUniversity(University university) {
+        ProfileUniversity profileUniversity = new ProfileUniversity();
+        profileUniversity.setId(new ProfileUniversityId(this.getId(), university.getId()));
+        profileUniversity.setProfile(this);
+        profileUniversity.setUniversity(university);
+//        profileUniversity.setDegree(degree);
+//        profileUniversity.setPassingYear(passingYear);
+
+        profileUniversities.add(profileUniversity);
+    }
+
+    public void updateUniversityDetails(Long universityId, String degree, String passingYear) {
+        for (ProfileUniversity pu : profileUniversities) {
+            if (pu.getId().getUniversityId().equals(universityId)) {
+                if (degree != null) pu.setDegree(degree);
+                if (passingYear != null) pu.setPassingYear(passingYear);
+                break;
+            }
+        }
+    }
 
 }

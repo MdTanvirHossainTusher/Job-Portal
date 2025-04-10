@@ -10,6 +10,7 @@ import com.example.job_portal.service.RoleService;
 import com.example.job_portal.service.UserService;
 import com.example.job_portal.utils.SortEntityDTO;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,9 +33,7 @@ public class UserController {
         this.userDAO = userDAO;
     }
 
-
     @GetMapping
-//    public ResponseEntity<List<UserDTO>> getAllUsers(
     public ResponseEntity<UserResponse> getAllUsers(
             @RequestParam(value = "pageNumber", defaultValue = "0", required = false) int pageNumber,
             @RequestParam(value = "pageSize", defaultValue = "5", required = false) int pageSize,
@@ -56,13 +55,13 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<UserDTO> createUser(@Valid @RequestBody UserDTO userDTO) {
         UserDTO createdUser = userService.createUser(userDTO);
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
 
     @PutMapping("/{userId}")
-    public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO userDTO, @PathVariable Long userId) {
+    public ResponseEntity<UserDTO> updateUser(@Valid @RequestBody UserDTO userDTO, @PathVariable Long userId) {
         UserDTO updatedUser = userService.updateUser(userId, userDTO);
         return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
@@ -76,10 +75,10 @@ public class UserController {
     }
 
     @GetMapping("/filter")
-    public ResponseEntity<List<UserDTO>> filterFromUsers(@RequestParam(required = false) String email,
-                                                         @RequestParam(required = false) Double experienceFrom,
-                                                         @RequestParam(required = false) Double experienceTo,
-                                                         @RequestParam(required = false) String universityName) {
+    public ResponseEntity<List<UserDTO>> filterFromUsers(
+            @Valid
+            @RequestParam(required = false) String email, @RequestParam(required = false) Double experienceFrom,
+            @RequestParam(required = false) Double experienceTo, @RequestParam(required = false) String universityName) {
         try {
             List<UserDTO> users = userDAO.filterUsers(email, experienceFrom, experienceTo, universityName);
             List<UserDTO> sortedUserList = SortEntityDTO.sortResponseDTO(users, Comparator.comparing(UserDTO::getId).reversed());
@@ -99,7 +98,7 @@ public class UserController {
     @PostMapping("/{userId}/add-role")
     public ResponseEntity<?> addNewRoleToUser(
             @PathVariable("userId") Long userId,
-            @RequestParam(required = true) String roleName
+            @Valid @RequestParam(required = true) String roleName
     ) {
         roleService.addRoleToUser(userId, roleName);
         return new ResponseEntity<>(new ApiResponse("Role added successfully!", true), HttpStatus.OK);

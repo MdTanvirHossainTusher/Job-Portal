@@ -4,6 +4,7 @@ import com.example.job_portal.dto.SkillDTO;
 import com.example.job_portal.entity.api_response.ApiResponse;
 import com.example.job_portal.service.SkillService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +29,7 @@ public class SkillController {
     }
 
     @PostMapping
-    public ResponseEntity<SkillDTO> createSkill(@RequestBody SkillDTO skillDTO) {
+    public ResponseEntity<SkillDTO> createSkill(@Valid @RequestBody SkillDTO skillDTO) {
         SkillDTO skill = skillService.createSkill(skillDTO);
         return new ResponseEntity<>(skill, HttpStatus.CREATED);
     }

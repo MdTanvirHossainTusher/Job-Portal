@@ -1,7 +1,9 @@
 package com.example.job_portal.service.impl;
 
-import com.example.job_portal.dto.UniversityDTO;
+import com.example.job_portal.dto.request.UniversityCreateRequestDTO;
+import com.example.job_portal.dto.response.UniversityCreateResponseDTO;
 import com.example.job_portal.entity.Profile;
+import com.example.job_portal.entity.ProfileUniversity;
 import com.example.job_portal.entity.University;
 import com.example.job_portal.exception.ResourceAlreadyExistsException;
 import com.example.job_portal.exception.ResourceNotFoundException;
@@ -9,18 +11,14 @@ import com.example.job_portal.repository.ProfileRepository;
 import com.example.job_portal.repository.UniversityRepository;
 import com.example.job_portal.service.UniversityService;
 import com.example.job_portal.utils.EntityToEntityDTOConverter;
-import com.example.job_portal.utils.SortEntityDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UniversityServiceImpl implements UniversityService {
-
     private final UniversityRepository universityRepository;
     private final ProfileRepository profileRepository;
 
@@ -36,36 +34,72 @@ public class UniversityServiceImpl implements UniversityService {
     }
 
     @Override
-    public List<UniversityDTO> getAllUniversitiesUnderApp() {
-
-        List<UniversityDTO> universityDTOs =  EntityToEntityDTOConverter.convertUniversitiesToUniversitiesDTO(universityRepository.findAllUniversity());
-        return SortEntityDTO.sortResponseDTO(universityDTOs, Comparator.comparing(UniversityDTO::getId).reversed());
-
+    public List<UniversityCreateResponseDTO> getAllUniversitiesUnderApp() {
+        List<UniversityCreateResponseDTO> universityDTOs =  EntityToEntityDTOConverter.
+                convertUniversitiesToUniversitiesResponseDTO(universityRepository.findAllUniversity());
+        return universityDTOs;
+//        return SortEntityDTO.sortResponseDTO(universityDTOs, Comparator.comparing(UniversityDTO::getId).reversed());
     }
+
+//    @Override
+//    @Transactional
+//    public UniversityDTO createUniversity(UniversityDTO universityDTO) {
+//        Optional<University> university = universityRepository.findUniversityById(universityDTO.getId());
+//        if (universityDTO.getName() == null || universityDTO.getName().trim().isEmpty()) {
+//            throw new IllegalArgumentException("University name cannot be empty or whitespace-only");
+//        }
+//        if(university.isEmpty()) {
+//            University newUniversity = new University();
+//            if(universityDTO.getName() != null) newUniversity.setName(universityDTO.getName());
+//            if(universityDTO.getDegree() != null) newUniversity.setDegree(universityDTO.getDegree());
+//            if(universityDTO.getPassingYear() != null) newUniversity.setPassingYear(universityDTO.getPassingYear());
+//            return EntityToEntityDTOConverter.convertUniversityToUniversityDTO(universityRepository.save(newUniversity));
+//        }
+//        else {
+//            throw new ResourceAlreadyExistsException("University already exists!");
+//        }
+//    }
 
     @Override
     @Transactional
-    public UniversityDTO createUniversity(UniversityDTO universityDTO) {
-
-        Optional<University> university = universityRepository.findUniversityById(universityDTO.getId());
-
-        if (universityDTO.getName() == null || universityDTO.getName().trim().isEmpty()) {
+    public UniversityCreateResponseDTO createUniversity(UniversityCreateRequestDTO universityCreateDTO) {
+        if (universityCreateDTO.getName() == null || universityCreateDTO.getName().trim().isEmpty()) {
             throw new IllegalArgumentException("University name cannot be empty or whitespace-only");
         }
-
-        if(university.isEmpty()) {
-            University newUniversity = new University();
-
-            if(universityDTO.getName() != null) newUniversity.setName(universityDTO.getName());
-            if(universityDTO.getDegree() != null) newUniversity.setDegree(universityDTO.getDegree());
-            if(universityDTO.getPassingYear() != null) newUniversity.setPassingYear(universityDTO.getPassingYear());
-
-            return EntityToEntityDTOConverter.convertUniversityToUniversityDTO(universityRepository.save(newUniversity));
+        if(universityRepository.findByName(universityCreateDTO.getName()).isPresent()) {
+            throw new ResourceAlreadyExistsException("University with this name already exists!");
         }
-        else {
-            throw new ResourceAlreadyExistsException("University already exists!");
-        }
+        University newUniversity = new University();
+        newUniversity.setName(universityCreateDTO.getName().toLowerCase());
+        return EntityToEntityDTOConverter.convertUniversityToUniversityResponseDTO(universityRepository.save(newUniversity));
     }
+
+//    @Override
+//    @Transactional
+//    public void deleteUniversity(Long universityId) {
+//        University university = universityRepository.findUniversityById(universityId).orElseThrow(
+//                () -> new ResourceNotFoundException(String.format("University with id: %d is not found!", universityId)));
+//        for( : university.getProfileUniversities()) {
+//            if(!profile.isDeleted()) {
+//                Iterator<ProfileUniversity> iterator = profile.getProfileUniversities().iterator();
+//                boolean modified = false;
+//
+//                while(iterator.hasNext()) {
+//                    University userUniversity = iterator.next();
+//                    if(!userUniversity.isDeleted() && userUniversity.getId().equals(universityId)) {
+//                        iterator.remove();
+//                        modified = true;
+//                    }
+//                }
+//                if(modified) {
+//                    profileRepository.save(profile);
+//                }
+//            }
+//        }
+//        if(!university.isDeleted()) {
+//            universityRepository.softDeleteUniversityById(universityId);
+//        }
+//    }
 
     @Override
     @Transactional
@@ -73,26 +107,25 @@ public class UniversityServiceImpl implements UniversityService {
         University university = universityRepository.findUniversityById(universityId).orElseThrow(
                 () -> new ResourceNotFoundException(String.format("University with id: %d is not found!", universityId)));
 
-        for(Profile profile: university.getProfiles()) {
+        for(ProfileUniversity profileUniversity : university.getProfileUniversities()) {
+            Profile profile = profileUniversity.getProfile();
 
             if(!profile.isDeleted()) {
-                Iterator<University> iterator = profile.getUniversities().iterator();
+                Iterator<ProfileUniversity> iterator = profile.getProfileUniversities().iterator();
                 boolean modified = false;
 
                 while(iterator.hasNext()) {
-                    University userUniversity = iterator.next();
-                    if(!userUniversity.isDeleted() && userUniversity.getId().equals(universityId)) {
+                    ProfileUniversity pu = iterator.next();
+                    if(pu.getUniversity().getId().equals(universityId) && !pu.getUniversity().isDeleted()) {
                         iterator.remove();
                         modified = true;
                     }
                 }
-
                 if(modified) {
                     profileRepository.save(profile);
                 }
             }
         }
-
         if(!university.isDeleted()) {
             universityRepository.softDeleteUniversityById(universityId);
         }

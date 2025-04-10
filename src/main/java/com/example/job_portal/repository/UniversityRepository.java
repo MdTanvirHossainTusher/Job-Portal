@@ -21,4 +21,7 @@ public interface UniversityRepository extends JpaRepository<University, Long> {
     @Modifying
     @Query("UPDATE University u SET u.isDeleted = true WHERE u.id = :id")
     void softDeleteUniversityById(@Param("id") Long id);
+
+    @Query("SELECT u FROM University u WHERE u.isDeleted = false AND LOWER(u.name) = LOWER(:name)")
+    Optional<University> findByName(String name);
 }

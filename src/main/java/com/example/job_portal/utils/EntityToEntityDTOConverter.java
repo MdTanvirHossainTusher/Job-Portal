@@ -1,10 +1,12 @@
 package com.example.job_portal.utils;
 
 import com.example.job_portal.dto.*;
+import com.example.job_portal.dto.response.UniversityCreateResponseDTO;
 import com.example.job_portal.entity.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class EntityToEntityDTOConverter {
 
@@ -123,32 +125,49 @@ public class EntityToEntityDTOConverter {
         return skillDTOS;
     }
 
-    public static UniversityDTO convertUniversityToUniversityDTO(University university) {
-        return new UniversityDTO(
+//    public static UniversityDTO convertUniversityToUniversityDTO(University university) {
+//        return new UniversityDTO(
+//                university.getId(),
+//                university.getName(),
+//                university.getDegree(),
+//                university.getPassingYear()
+//        );
+//    }
+
+    public static UniversityCreateResponseDTO convertUniversityToUniversityResponseDTO(University university) {
+        return new UniversityCreateResponseDTO(
                 university.getId(),
-                university.getName(),
-                university.getDegree(),
-                university.getPassingYear()
+                university.getName()
         );
     }
 
     public static List<UniversityDTO> convertUniversitiesToUniversitiesDTO(List<University> universities) {
         List<UniversityDTO> universityDTOList = new ArrayList<>();
-
         for (University university : universities) {
             universityDTOList.add(EntityToEntityDTOConverter.convertUniversityToUniversityDTO(university));
         }
         return universityDTOList;
     }
 
-    public static ProfileDTO convertProfileToProfileDTO(Profile profile) {
+    public static List<UniversityCreateResponseDTO> convertUniversitiesToUniversitiesResponseDTO(List<University> universities) {
+        List<UniversityCreateResponseDTO> universityDTOList = new ArrayList<>();
+        for (University university : universities) {
+            universityDTOList.add(EntityToEntityDTOConverter.convertUniversityToUniversityResponseDTO(university));
+        }
+        return universityDTOList;
+    }
 
+    public static ProfileDTO convertProfileToProfileDTO(Profile profile) {
+        CVDTO cvDTO = profile.getCv() != null ?
+                EntityToEntityDTOConverter.convertCVToCVDTO(profile.getCv()) : null;
         return new ProfileDTO(
-                EntityToEntityDTOConverter.convertCVToCVDTO(profile.getCv()),
+                cvDTO,
                 EntityToEntityDTOConverter.convertUserToUserDTO(profile.getUser()),
                 EntityToEntityDTOConverter.convertSkillsToSkillsDTO(profile.getSkills()),
-                EntityToEntityDTOConverter.convertUniversitiesToUniversitiesDTO(profile.getUniversities()),
-                EntityToEntityDTOConverter.convertCompaniesToCompaniesDTO(profile.getCompanies())
+//                EntityToEntityDTOConverter.convertUniversitiesToUniversitiesDTO(profile.getUniversities()),
+//                EntityToEntityDTOConverter.convertUniversitiesToUniversitiesDTO(profile.getProfileUniversities()),
+                EntityToEntityDTOConverter.convertCompaniesToCompaniesDTO(profile.getCompanies()),
+                EntityToEntityDTOConverter.convertProfileUniversityListToDTO(profile.getProfileUniversities())
         );
     }
 
@@ -159,5 +178,27 @@ public class EntityToEntityDTOConverter {
             profileDTOList.add(EntityToEntityDTOConverter.convertProfileToProfileDTO(profile));
         }
         return profileDTOList;
+    }
+
+    public static UniversityDTO convertUniversityToUniversityDTO(University university) {
+        return new UniversityDTO(
+                university.getId(),
+                university.getName()
+        );
+    }
+
+    public static ProfileUniversityDTO convertProfileUniversityToDTO(ProfileUniversity profileUniversity) {
+        return new ProfileUniversityDTO(
+                profileUniversity.getUniversity().getId(),
+                profileUniversity.getUniversity().getName(),
+                profileUniversity.getDegree(),
+                profileUniversity.getPassingYear()
+        );
+    }
+
+    public static List<ProfileUniversityDTO> convertProfileUniversityListToDTO(List<ProfileUniversity> profileUniversities) {
+        return profileUniversities.stream()
+                .map(EntityToEntityDTOConverter::convertProfileUniversityToDTO)
+                .collect(Collectors.toList());
     }
 }
